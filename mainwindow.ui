@@ -55,8 +55,7 @@
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton{
-border:solid 1px #fff;}</string>
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>Standart</string>

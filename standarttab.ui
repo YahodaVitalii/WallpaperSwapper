@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StandartTab</class>
+ <widget class="QWidget" name="StandartTab">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::NoFocus</enum>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(0, 85, 0);</string>
+  </property>
+  <widget class="QWidget" name="StandartTabWidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>500</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QWidget{
+           background-color: rgb(255, 255, 255);
+           }</string>
+   </property>
+   <widget class="QWidget" name="StandartTabButtonMenuWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>95</x>
+      <y>370</y>
+      <width>450</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <widget class="QPushButton" name="StandartTabDleteButton">
+     <property name="geometry">
+      <rect>
+       <x>350</x>
+       <y>15</y>
+       <width>80</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Delete</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="StandartTabSetButton">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>15</y>
+       <width>80</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Set</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="StandartTabAddButton">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>15</y>
+       <width>80</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="StandartTabChooseButton">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>15</y>
+       <width>110</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Choose</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="StandartTabWlapperSliderWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>30</y>
+      <width>540</width>
+      <height>300</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="SliderImageBase" native="true">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>500</width>
+       <height>280</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <widget class="QLabel" name="SliderImage">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>500</width>
+        <height>280</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QPushButton" name="SliderLeftArrow">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>120</y>
+       <width>65</width>
+       <height>65</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="SliderRightArrow">
+     <property name="geometry">
+      <rect>
+       <x>473</x>
+       <y>120</y>
+       <width>65</width>
+       <height>65</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#SliderRightArrow{
+          background-color: rgba(225, 225, 225,0);
+}
+QPushButton#SliderRightArrow::hover{
+          background-color: rgba(225, 225, 225,40);
+}
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,5 +1,7 @@
 QT       += core gui
 
+QT += sql
+LIBS += -lUser32
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -11,14 +13,22 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    style.cpp
+    sqlitedbmanager.cpp \
+    standarttab.cpp \
+    style.cpp \
+    wlapperimage.cpp
 
 HEADERS += \
+    dbmanager.h \
     mainwindow.h \
-    style.h
+    sqlitedbmanager.h \
+    standarttab.h \
+    style.h \
+    wlapperimage.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    standarttab.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

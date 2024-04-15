@@ -9,6 +9,9 @@ public:
     static QString getMainWindowStyle();
     static QString getMainMenuButtonsStyle();
 
+    static QString getTabsStyle();
+    static QString getStandartTabStyle();
+
 };
 
 #endif // STYLE_H
