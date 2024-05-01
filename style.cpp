@@ -41,20 +41,20 @@ QString Style::getStandartTabStyle()
            "}"
            "QPushButton{"
            "background-color: rgb(83, 190, 120);"
-            "border-radius: 15px;"
-            "font-family:'Inter';"
-            "font-size:16px;"
-            "font-weight:800;"
+           "border-radius: 15px;"
+           "font-family:'Inter';"
+           "font-size:16px;"
+           "font-weight:800;"
            "color: rgb(255, 255, 255);"
            "}"
            "QPushButton::hover{"
            "background-color: rgba(83, 190, 120, 200)"
            "}"
 
-           "QPushButton#StandartTabDleteButton{"
+           "QPushButton#StandartTabDeleteButton{"
            "background-color: rgb(226, 123, 141);"
            "}"
-           "QPushButton#StandartTabDleteButton::hover{"
+           "QPushButton#StandartTabDeleteButton::hover{"
            "background-color: rgba(226, 123, 141,200);"
            "}"
 
@@ -78,7 +78,55 @@ QString Style::getStandartTabStyle()
            "QPushButton#SliderRightArrow,QPushButton#SliderLeftArrow::hover{"
            "background-color: rgba(225, 225, 225,40);"
            "}"
-           ;
+            ;
 }
+
+QString Style::getTimeTabStyle()
+{
+    return "QWidget{"
+           "background-color: rgb(232, 248, 238);"
+           "border-radius: 20px;"
+           "}";
+
+}
+
+QString Style::getMenuBarStyle()
+{
+    return
+            "QWidget{"
+            "background-color: rgb(232, 248, 238);"
+
+            "border-radius: 20px;"
+            "}"
+            "QPushButton{"
+            "color :rgb(182, 184, 186);"
+
+            "font-size:14px;"
+            "} "
+            "QPushButton::hover{"
+            "color :rgb(182, 184, 186);"
+            "text-decoration: underline;"
+            "} "
+            "QPushButton#TimeTabMenuBarPlusButton,QPushButton#ListOfImageMenuBarPlusButton{"
+            "background-color: rgb(226, 123, 141);"
+            "color :rgb(255, 255, 255);"
+            "font-size: 40px;"
+            " padding-bottom: 10px;"
+            "} "
+            "QPushButton#TimeTabMenuBarPlusButton,QPushButton#ListOfImageMenuBarPlusButton::hover{"
+            "background-color: rgba(226, 123, 141,200);"
+            "} ";
+}
+
+QString Style::getImageListStyle()
+{
+return             "QWidget{"
+                   "background-color: rgb(232, 248, 238);"
+                   "border-radius: 10px;}"
+                   "";
+}
+
+
+
 
 

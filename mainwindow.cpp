@@ -16,7 +16,31 @@ MainWindow::MainWindow(DBManager* dbManager,QWidget *parent)
     standartTab ->move(165, 0);
    // standartTab->setStyleSheet(Style::getTabsStyle());
 
+//    timeTab = new TimeTab(this->dbManager,this);
+//    timeTab->show();
+//    timeTab->move(165, 0);
+
 }
+
+//void MainWindow::addNewImage()
+//{
+//    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Wlapper"), "/wlapper", tr("Image Files (*.png *.jpg *.bmp *.jpeg)"));
+//    qDebug() << "File selected:" << fileName;
+
+//    if (!fileName.isEmpty()) {
+//        QImage image = loadImage(fileName);
+//        if (!image.isNull()) {
+//            auto wlapperImage = createWlapperImage(fileName, image);
+//            displayImageInLabel(ui->SliderImage, fileName);
+
+//            if (!dbManager->insertIntoImageTable(*wlapperImage)) {
+//                qDebug() << "Error inserting data into the database.";
+//            }
+//        }
+//    } else {
+//        qDebug() << "No file selected.";
+//    }
+//}
 
 MainWindow::~MainWindow()
 {

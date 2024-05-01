@@ -44,9 +44,7 @@
     </sizepolicy>
    </property>
    <property name="styleSheet">
-    <string notr="true">QWidget{
-           background-color: rgb(255, 255, 255);
-           }</string>
+    <string notr="true"/>
    </property>
    <widget class="QWidget" name="StandartTabButtonMenuWidget" native="true">
     <property name="geometry">
@@ -60,7 +58,7 @@
     <property name="styleSheet">
      <string notr="true"/>
     </property>
-    <widget class="QPushButton" name="StandartTabDleteButton">
+    <widget class="QPushButton" name="StandartTabDeleteButton">
      <property name="geometry">
       <rect>
        <x>350</x>
@@ -76,7 +74,7 @@
     <widget class="QPushButton" name="StandartTabSetButton">
      <property name="geometry">
       <rect>
-       <x>250</x>
+       <x>20</x>
        <y>15</y>
        <width>80</width>
        <height>30</height>
@@ -89,10 +87,10 @@
     <widget class="QPushButton" name="StandartTabAddButton">
      <property name="geometry">
       <rect>
-       <x>150</x>
+       <x>240</x>
        <y>15</y>
        <width>80</width>
-       <height>31</height>
+       <height>30</height>
       </rect>
      </property>
      <property name="text">
@@ -102,9 +100,9 @@
     <widget class="QPushButton" name="StandartTabChooseButton">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>130</x>
        <y>15</y>
-       <width>110</width>
+       <width>80</width>
        <height>30</height>
       </rect>
      </property>

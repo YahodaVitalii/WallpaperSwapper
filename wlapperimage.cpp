@@ -4,6 +4,11 @@ WlapperImage::WlapperImage()
 {
 
 }
+
+int WlapperImage::getId() const
+{
+    return id;
+}
 QString WlapperImage::getName() const {
     return name;
 }
@@ -20,7 +25,13 @@ int WlapperImage::getWidth() const {
     return width;
 }
 
-// Сетери
+
+
+void WlapperImage::setId(int newId)
+{
+    id = newId;
+}
+
 void WlapperImage::setName(const QString &newName) {
     name = newName;
 }

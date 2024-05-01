@@ -12,6 +12,7 @@ public:
 
     virtual bool insertIntoImageTable(const WlapperImage& wlapperImage)=0;
     virtual QVector<WlapperImage> getAllImages() = 0;
+    virtual bool deleteImageById(int imageId)=0;
     /*virtual bool inserIntoTable(const User& user) = 0;
     virtual bool updateAccountBalance(int accountId, double newBalance) =0;
     virtual bool updateAccountAmount(int accountId, double newAmount) = 0;

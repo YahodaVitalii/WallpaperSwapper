@@ -23,6 +23,8 @@
 #define TABLE_IMAGE_HEIGHT  "hight"
 #define TABLE_IMAGE_WIDTH  "width"
 
+#define TABLE_RANDOM_IMAGE_LIST
+
 class SqliteDBManager : public DBManager {
 
 public:
@@ -31,6 +33,7 @@ public:
     QSqlDatabase getDB() override;
     bool insertIntoImageTable(const WlapperImage& wlapperImage) override;
     QVector<WlapperImage> getAllImages() override;
+    bool deleteImageById(int imageId) override;
 private:
 
     QSqlDatabase db;

@@ -6,17 +6,9 @@ StandartTab::StandartTab(DBManager *dbManager, QWidget *parent) :
     ui(new Ui::StandartTab), dbManager(dbManager)
 {
     ui->setupUi(this);
-
-    ui->StandartTabWidget->setStyleSheet(Style::getTabsStyle());
-    ui->StandartTabButtonMenuWidget->setStyleSheet(Style::getStandartTabStyle());
-    ui->StandartTabWlapperSliderWidget->setStyleSheet(Style::getStandartTabStyle());
-    ui->SliderRightArrow->setIcon(QIcon(":/resource/SliderRightArrow.png"));
-    ui->SliderRightArrow->setIconSize(QSize(65, 65));
-    ui->SliderLeftArrow->setIcon(QIcon(":/resource/SliderLeftArrow.png"));
-    ui->SliderLeftArrow->setIconSize(QSize(65, 65));
-
-    images = dbManager->getAllImages();
-    showImage(currentIndex);
+    imageManager = new ImageManager(dbManager);
+    //images = dbManager->getAllImages();
+    setStandartTabStyle();
 }
 
 StandartTab::~StandartTab()
@@ -26,65 +18,105 @@ StandartTab::~StandartTab()
 
 void StandartTab::showImage(int index)
 {
-    if (index >= 0 && index < images.size()) {
-            QPixmap pixmap(images[index].getUrl());
-            ui->SliderImage->setPixmap(pixmap.scaled(ui->SliderImage->size(), Qt::KeepAspectRatio));
+    if (index >= 0 && index < imageManager->getsizeOfImages()) {
+        QPixmap pixmap(imageManager->GetImageById(index).getUrl());
+        ui->SliderImage->setPixmap(pixmap.scaled(ui->SliderImage->size(), Qt::KeepAspectRatio));
     }
 }
 
 void StandartTab::nextImage()
 {
-    currentIndex = (currentIndex + 1) % images.size();
+    currentIndex = (currentIndex + 1) % imageManager->getsizeOfImages();
     showImage(currentIndex);
+}
+
+void StandartTab::setStandartTabStyle()
+{
+    ui->StandartTabWidget->setStyleSheet(Style::getTabsStyle());
+    ui->StandartTabButtonMenuWidget->setStyleSheet(Style::getStandartTabStyle());
+    ui->StandartTabWlapperSliderWidget->setStyleSheet(Style::getStandartTabStyle());
+
+    setSliderButtonIcon();
+    showImage(currentIndex);
+}
+
+void StandartTab::setSliderButtonIcon()
+{
+    ui->SliderRightArrow->setIcon(QIcon(":/resource/SliderRightArrow.png"));
+    ui->SliderRightArrow->setIconSize(QSize(65, 65));
+    ui->SliderLeftArrow->setIcon(QIcon(":/resource/SliderLeftArrow.png"));
+    ui->SliderLeftArrow->setIconSize(QSize(65, 65));
+}
+
+QImage StandartTab::loadImage(const QString &fileName)
+{
+    QImage image(fileName);
+        if (image.isNull()) {
+            qDebug() << "Failed to load image from file:" << fileName;
+            QMessageBox::warning(nullptr, QObject::tr("Loading Error"), QObject::tr("Could not load the image from the file."));
+        }
+        return image;
+}
+
+std::unique_ptr<WlapperImage> StandartTab::createWlapperImage(const QString &fileName, const QImage &image)
+{
+    auto wlapperImage = std::make_unique<WlapperImage>();
+       wlapperImage->setName(QFileInfo(fileName).fileName());
+       wlapperImage->setUrl(fileName);
+       wlapperImage->setHeight(image.height());
+       wlapperImage->setWidth(image.width());
+       return wlapperImage;
+}
+
+void StandartTab::displayImageInLabel(QLabel *label, const QString &filePath)
+{
+    QPixmap pixmap(filePath);
+       if (!pixmap.isNull()) {
+           label->setPixmap(pixmap.scaled(label->size(), Qt::KeepAspectRatio));
+           label->setScaledContents(true);
+           qDebug() << "Pixmap loaded successfully, Size:" << pixmap.size();
+       } else {
+           qDebug() << "Failed to load pixmap.";
+       }
 }
 
 void StandartTab::previousImage()
 {
-currentIndex = (currentIndex - 1 + images.size()) % images.size();
+    currentIndex = (currentIndex - 1 + imageManager->getsizeOfImages()) % imageManager->getsizeOfImages();
     showImage(currentIndex);
 }
-void StandartTab::on_StandartTabChooseButton_clicked(){}
-void StandartTab::on_StandartTabAddButton_clicked()
-{
-    QString fileName = QFileDialog::getOpenFileName(this,
-                   tr("Open Wlapper"), "/wlapper", tr("Image Files (*.png *.jpg *.bmp *.jpeg)"));
+void StandartTab::on_StandartTabChooseButton_clicked(){
+    dialogWindowListOfImage = new DialogWindowListOfImage(this->dbManager,this);
+    dialogWindowListOfImage ->show();
+    dialogWindowListOfImage->setStyleSheet(Style::getTabsStyle());
 
+}
+void StandartTab::on_StandartTabAddButton_clicked() {
+
+   //MainWindow::addNewImage();
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Wlapper"), "/wlapper", tr("Image Files (*.png *.jpg *.bmp *.jpeg)"));
     qDebug() << "File selected:" << fileName;
+
     if (!fileName.isEmpty()) {
-        QImage image(fileName);
-        qDebug() << "Image loaded:" << !image.isNull() << ", Size:" << image.size();
-
+        QImage image = loadImage(fileName);
         if (!image.isNull()) {
-            auto wlapperImage = std::make_unique<WlapperImage>();
-            wlapperImage->setName(QFileInfo(fileName).fileName());
-            wlapperImage->setUrl(fileName);
-            wlapperImage->setHeight(image.height());
-            wlapperImage->setWidth(image.width());
-
-            QPixmap pixmap(fileName);
-            if (!pixmap.isNull()) {
-                qDebug() << "Pixmap loaded successfully, Size:" << pixmap.size();
-                ui->SliderImage->setPixmap(pixmap);
-                ui->SliderImage->setScaledContents(true);
-            } else {
-                qDebug() << "Failed to load pixmap.";
-            }
+            auto wlapperImage = createWlapperImage(fileName, image);
+            displayImageInLabel(ui->SliderImage, fileName);
 
             if (!dbManager->insertIntoImageTable(*wlapperImage)) {
                 qDebug() << "Error inserting data into the database.";
             }
-        } else {
-            QMessageBox::warning(this, tr("Loading Error"), tr("Could not load the image from the file."));
         }
     } else {
         qDebug() << "No file selected.";
     }
+    imageManager->getImagesFromTable();
 }
 
 
 void StandartTab::on_SliderLeftArrow_clicked()
 {
-   previousImage();
+    previousImage();
 }
 
 
@@ -99,7 +131,6 @@ bool StandartTab::setWallpaper(const QString &imagePath)
 
     BOOL result = SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, static_cast<void*>(const_cast<wchar_t*>(path.c_str())),
                                         SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
-
     if (result) {
         return true;
     } else {
@@ -110,6 +141,14 @@ bool StandartTab::setWallpaper(const QString &imagePath)
 
 void StandartTab::on_StandartTabSetButton_clicked()
 {
-    setWallpaper(images[currentIndex].getUrl());
+    setWallpaper(imageManager->GetImageById(currentIndex).getUrl());
+}
+
+
+void StandartTab::on_StandartTabDeleteButton_clicked()
+{
+imageManager->deleteImageById(currentIndex);
+
+nextImage();
 }
 

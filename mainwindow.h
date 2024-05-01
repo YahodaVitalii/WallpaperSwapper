@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QPainter>
 #include "standarttab.h"
+#include "timetab.h"
 #include "dbmanager.h"
 #include "sqlitedbmanager.h"
 QT_BEGIN_NAMESPACE
@@ -19,12 +20,15 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(DBManager* dbManrage, QWidget *parent = nullptr);
+   // void addNewImage();
     ~MainWindow();
+
 protected:
     void PaintEvent(QPaintEvent *event);
 private:
     Ui::MainWindow *ui;
     StandartTab* standartTab;
+    TimeTab* timeTab;
 
     DBManager* dbManager;
     QSqlTableModel* model;
