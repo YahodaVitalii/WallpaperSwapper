@@ -93,6 +93,7 @@ bool SqliteDBManager::createTables() {
         return false;
     }
     if (!query.exec("CREATE TABLE List_images_table ("
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                        "time_interval TIMESTAMP,"
                        "image_id_1 INTEGER,"
                        "image_id_2 INTEGER,"
@@ -139,6 +140,7 @@ bool SqliteDBManager::createTables() {
            return false;
        }
     if (!query.exec("CREATE TABLE Week_images_table ("
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                         "Monday_image_id INTEGER,"
                         "Tuesday_image_id INTEGER,"
                         "Wednesday_image_id INTEGER,"
@@ -158,6 +160,7 @@ bool SqliteDBManager::createTables() {
             return false;
         }
     if (!query.exec("CREATE TABLE Day_images_table ("
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                        "hour_00_image_id INTEGER,"
                        "hour_01_image_id INTEGER,"
                        "hour_02_image_id INTEGER,"

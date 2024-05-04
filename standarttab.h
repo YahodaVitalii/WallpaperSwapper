@@ -5,9 +5,9 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QFileDialog>
+#include <Windows.h>
 #include <QMessageBox>
 #include "sqlitedbmanager.h"
-#include <Windows.h>
 #include "dialogwindowlistofimage.h"
 
 #include "imagemanager.h"
@@ -26,16 +26,14 @@ public:
     void showImage(int index);
     void previousImage();
     void nextImage();
-    //QVector<WlapperImage> images;
 
     void setStandartTabStyle();
     void setSliderButtonIcon();
 
-    QImage loadImage(const QString& fileName);
-    std::unique_ptr<WlapperImage> createWlapperImage(const QString& fileName, const QImage& image);
-    void displayImageInLabel(QLabel* label, const QString& filePath);
 
-    bool setWallpaper(const QString &imagePath);
+ void displayImageInLabel(QLabel* label, const QString& filePath);
+
+   bool setWallpaper(const QString &imagePath);
 private slots:
     void on_StandartTabChooseButton_clicked();
     void on_StandartTabAddButton_clicked();
@@ -44,7 +42,8 @@ private slots:
     void on_SliderLeftArrow_clicked();
     void on_SliderRightArrow_clicked();
     void on_StandartTabDeleteButton_clicked();
-
+public slots:
+    void updateImage(int index);
 private:
     Ui::StandartTab *ui;
 

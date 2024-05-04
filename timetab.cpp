@@ -21,3 +21,9 @@ TimeTab::~TimeTab()
 
 
 
+
+void TimeTab::on_TimeTabMenuBarPlusButton_clicked()
+{
+
+}
+

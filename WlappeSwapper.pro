@@ -1,4 +1,4 @@
-QT       += core gui
+QT += core gui widgets
 
 QT += sql
 LIBS += -lUser32
@@ -11,6 +11,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    dialogcreatenewiteminstandarttab.cpp \
     dialogwindowlistofimage.cpp \
     imagemanager.cpp \
     main.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 
 HEADERS += \
     dbmanager.h \
+    dialogcreatenewiteminstandarttab.h \
     dialogwindowlistofimage.h \
     imagemanager.h \
     mainwindow.h \
@@ -35,6 +37,7 @@ HEADERS += \
     wlapperimage.h
 
 FORMS += \
+    dialogcreatenewiteminstandarttab.ui \
     dialogwindowlistofimage.ui \
     mainwindow.ui \
     randomlistimageseditadd.ui \

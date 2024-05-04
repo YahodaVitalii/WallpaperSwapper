@@ -95,27 +95,25 @@ QString Style::getMenuBarStyle()
     return
             "QWidget{"
             "background-color: rgb(232, 248, 238);"
-
             "border-radius: 20px;"
             "}"
             "QPushButton{"
-            "color :rgb(182, 184, 186);"
-
-            "font-size:14px;"
-            "} "
+            "color: rgb(182, 184, 186);"
+            "font-size: 14px;"
+            "}"
             "QPushButton::hover{"
-            "color :rgb(182, 184, 186);"
+            "color: rgb(182, 184, 186);"
             "text-decoration: underline;"
-            "} "
-            "QPushButton#TimeTabMenuBarPlusButton,QPushButton#ListOfImageMenuBarPlusButton{"
+            "}"
+            "QPushButton#TimeTabMenuBarPlusButton, QPushButton#ListOfImageMenuBarPlusButton{"
             "background-color: rgb(226, 123, 141);"
-            "color :rgb(255, 255, 255);"
+            "color: rgb(255, 255, 255);"
             "font-size: 40px;"
-            " padding-bottom: 10px;"
-            "} "
-            "QPushButton#TimeTabMenuBarPlusButton,QPushButton#ListOfImageMenuBarPlusButton::hover{"
-            "background-color: rgba(226, 123, 141,200);"
-            "} ";
+            "padding-bottom: 10px;"
+            "}"
+            "QPushButton#TimeTabMenuBarPlusButton:hover, QPushButton#ListOfImageMenuBarPlusButton:hover{"
+            "background-color: rgba(226, 123, 141, 200);"
+            "}";
 }
 
 QString Style::getImageListStyle()
@@ -123,7 +121,16 @@ QString Style::getImageListStyle()
 return             "QWidget{"
                    "background-color: rgb(232, 248, 238);"
                    "border-radius: 10px;}"
-                   "";
+                   "QPushButton::hover{"
+                   "background-color: rgba(182, 184, 186,80);"
+                   "border-radius:2px;"
+                   "}"
+                   "QPushButton#buttonImage{"
+                   "background-color: rgba(182, 184, 186,0);"
+                   "}"
+                   "QPushButton#buttonImage::hover{"
+                   "background-color: rgba(182, 184, 186,80);"
+                   "}";
 }
 
 
