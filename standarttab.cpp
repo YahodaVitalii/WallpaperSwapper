@@ -1,12 +1,12 @@
 #include "standarttab.h"
 #include "ui_standarttab.h"
 #include "style.h"
-StandartTab::StandartTab(DBManager *dbManager, QWidget *parent) :
+StandartTab::StandartTab(DBManager *dbManager,ImageManager* imageManager, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::StandartTab), dbManager(dbManager)
+    ui(new Ui::StandartTab), dbManager(dbManager),imageManager(imageManager)
 {
     ui->setupUi(this);
-    imageManager = new ImageManager(dbManager);
+   // imageManager = new ImageManager(dbManager);
     setStandartTabStyle();
 }
 

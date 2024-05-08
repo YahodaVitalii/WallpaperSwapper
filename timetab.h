@@ -6,6 +6,9 @@
 #include <QStyleOption>
 #include <QFileDialog>
 #include "sqlitedbmanager.h"
+#include "imagemanager.h"
+#include "style.h"
+#include "timetabrrandomlistwidget.h"
 namespace Ui {
 class TimeTab;
 }
@@ -15,7 +18,7 @@ class TimeTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit TimeTab(DBManager* dbManager,QWidget *parent = nullptr);
+    explicit TimeTab(DBManager* dbManager,ImageManager* imageManager,QWidget *parent = nullptr);
     ~TimeTab();
 
 private slots:
@@ -26,7 +29,9 @@ private slots:
 private:
     Ui::TimeTab *ui;
     DBManager* dbManager;
+    ImageManager* imageManager;
 
+    TimeTabrRandomListWidget* timeTabrRandomListWidget;
 };
 
 #endif // TIMETAB_H

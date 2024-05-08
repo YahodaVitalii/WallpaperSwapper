@@ -11,38 +11,37 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    dialogcreatenewiteminstandarttab.cpp \
     dialogwindowlistofimage.cpp \
     imagemanager.cpp \
+    interfaceaddition.cpp \
     main.cpp \
     mainwindow.cpp \
-    randomlistimageseditadd.cpp \
     sqlitedbmanager.cpp \
     standarttab.cpp \
     style.cpp \
     timetab.cpp \
+    timetabrrandomlistwidget.cpp \
     wlapperimage.cpp
 
 HEADERS += \
     dbmanager.h \
-    dialogcreatenewiteminstandarttab.h \
     dialogwindowlistofimage.h \
     imagemanager.h \
+    interfaceaddition.h \
     mainwindow.h \
-    randomlistimageseditadd.h \
     sqlitedbmanager.h \
     standarttab.h \
     style.h \
     timetab.h \
+    timetabrrandomlistwidget.h \
     wlapperimage.h
 
 FORMS += \
-    dialogcreatenewiteminstandarttab.ui \
     dialogwindowlistofimage.ui \
     mainwindow.ui \
-    randomlistimageseditadd.ui \
     standarttab.ui \
-    timetab.ui
+    timetab.ui \
+    timetabrrandomlistwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

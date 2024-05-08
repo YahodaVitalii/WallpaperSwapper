@@ -59,7 +59,7 @@
     <widget class="QPushButton" name="TimeTabMenuBarWeekButton">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>130</x>
        <y>10</y>
        <width>60</width>
        <height>30</height>
@@ -72,7 +72,7 @@
     <widget class="QPushButton" name="TimeTabMenuBarDayButton">
      <property name="geometry">
       <rect>
-       <x>290</x>
+       <x>210</x>
        <y>10</y>
        <width>60</width>
        <height>30</height>
@@ -85,7 +85,7 @@
     <widget class="QPushButton" name="TimeTabMenuBarRandomButton">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>50</x>
        <y>10</y>
        <width>60</width>
        <height>30</height>
@@ -93,19 +93,6 @@
      </property>
      <property name="text">
       <string>RANDOM</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="TimeTabMenuBarAllButton">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>60</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>ALL</string>
      </property>
     </widget>
    </widget>

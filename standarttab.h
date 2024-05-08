@@ -20,7 +20,7 @@ class StandartTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit StandartTab(DBManager* dbManager,QWidget *parent = nullptr);
+    explicit StandartTab(DBManager* dbManager, ImageManager* imageManager,QWidget *parent = nullptr);
     ~StandartTab();
 
     void showImage(int index);

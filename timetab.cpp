@@ -1,10 +1,9 @@
 #include "timetab.h"
 #include "ui_timetab.h"
-#include "style.h"
 
-TimeTab::TimeTab(DBManager *dbManager,QWidget *parent) :
+TimeTab::TimeTab(DBManager *dbManager,ImageManager* imageManager,QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TimeTab), dbManager(dbManager)
+    ui(new Ui::TimeTab), dbManager(dbManager),imageManager(imageManager)
 {
     ui->setupUi(this);
 
@@ -12,6 +11,10 @@ TimeTab::TimeTab(DBManager *dbManager,QWidget *parent) :
    // ui->TimeTabMenuBar->setStyleSheet(Style::getTimeTabStyle());
         ui->TimeTabMenuBar->setStyleSheet(Style::getMenuBarStyle());
    // ui->StandartTabButtonMenuWidget->setStyleSheet(Style::getStandartTabStyle());
+
+        timeTabrRandomListWidget = new TimeTabrRandomListWidget(dbManager,imageManager,this);
+        timeTabrRandomListWidget ->show();
+        timeTabrRandomListWidget->move(0,100);
 }
 
 TimeTab::~TimeTab()

@@ -2,7 +2,6 @@
 #define DIALOGWINDOWLISTOFIMAGE_H
 
 #include <QDialog>
-#include <QDesktopServices>
 #include <QWidget>
 #include <QLabel>
 #include <QPushButton>
@@ -13,6 +12,7 @@
 #include "sqlitedbmanager.h"
 #include "style.h"
 #include "imagemanager.h"
+#include "interfaceaddition.h"
 namespace Ui {
 class DialogWindowListOfImage;
 }
@@ -29,11 +29,11 @@ public:
     void CreateListOfImageItem(int listItemCordinate_y, int index);
 
 private slots:
-    void on_ListOfImageMenuBarPlusButton_clicked();
-    void on_buttonFullSize_clicked();
-    void on_buttonInfo_clicked();
-     void on_buttonDelete_clicked();
-    void on_buttonImage_clicked();
+  void on_ListOfImageMenuBarPlusButton_clicked();
+//    void on_buttonFullSize_clicked();
+//    void on_buttonInfo_clicked();
+//    void on_buttonDelete_clicked();
+//    void on_buttonImage_clicked();
 
 signals:
      void imageSelected(int index);
@@ -41,10 +41,11 @@ private:
     Ui::DialogWindowListOfImage *ui;
     DBManager* dbManager;
     ImageManager* imageManager;
+    InterfaceAddition* interfaceAddition;
 
-   int listItemCordinate_y;
+
      QScrollArea* scrollArea =new QScrollArea(this);
-     QWidget *containerWidget = new QWidget();
+     //QWidget *containerWidget = new QWidget();
 };
 
 #endif // DIALOGWINDOWLISTOFIMAGE_H
