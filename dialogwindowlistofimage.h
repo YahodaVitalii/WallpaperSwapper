@@ -22,11 +22,12 @@ class DialogWindowListOfImage : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogWindowListOfImage(DBManager* dbManager,QWidget *parent = nullptr);
+    explicit DialogWindowListOfImage(DBManager* dbManager,ImageManager* imageManager, InterfaceAddition* interfaceAddition,QWidget *parent = nullptr);
 
     ~DialogWindowListOfImage();
     void CreateListOfImageIntarface();
     void CreateListOfImageItem(int listItemCordinate_y, int index);
+    void closeEvent(QCloseEvent *event);
 
 private slots:
   void on_ListOfImageMenuBarPlusButton_clicked();
@@ -44,7 +45,7 @@ private:
     InterfaceAddition* interfaceAddition;
 
 
-     QScrollArea* scrollArea =new QScrollArea(this);
+    // QScrollArea* scrollArea =new QScrollArea(this);
      //QWidget *containerWidget = new QWidget();
 };
 

@@ -30,8 +30,8 @@ public:
     void setStandartTabStyle();
     void setSliderButtonIcon();
 
-
- void displayImageInLabel(QLabel* label, const QString& filePath);
+     void CreateDialogWindowListOfImage();
+   void displayImageInLabel(QLabel* label, const QString& filePath);
 
    bool setWallpaper(const QString &imagePath);
 private slots:
@@ -51,7 +51,7 @@ private:
     ImageManager* imageManager;
 
     DialogWindowListOfImage* dialogWindowListOfImage;
-
+   InterfaceAddition* interfaceAddition;
     int currentIndex = 0;
 };
 

@@ -1,21 +1,19 @@
 #include "dialogwindowlistofimage.h"
 #include "ui_dialogwindowlistofimage.h"
-DialogWindowListOfImage::DialogWindowListOfImage(DBManager* dbManager, QWidget *parent) :
+DialogWindowListOfImage::DialogWindowListOfImage(DBManager* dbManager, ImageManager *imageManager, InterfaceAddition *interfaceAddition, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogWindowListOfImage),
-    dbManager(dbManager),
-    scrollArea(new QScrollArea(this))
-    //containerWidget(new QWidget())
+    dbManager(dbManager),interfaceAddition(interfaceAddition),imageManager(imageManager)
+    //scrollArea(new QScrollArea(this))
 {
     ui->setupUi(this);
     ui->ListOfImageMenuBar->setStyleSheet(Style::getMenuBarStyle());
-    imageManager = new ImageManager(dbManager);
-    interfaceAddition = new InterfaceAddition(parent,dbManager,imageManager);
 
-    scrollArea->setFixedSize(300, 420);
-    scrollArea->move(0, 80);
-    scrollArea->setWidgetResizable(true);
-    scrollArea->setWidget(interfaceAddition->containerWidget);
+interfaceAddition->CreateScrollArea(this, interfaceAddition->getContainerWidgetDWindowImageOfList(),300,420,0,80);
+//    scrollArea->setFixedSize(300, 420);
+//    scrollArea->move(0, 80);
+//    scrollArea->setWidgetResizable(true);
+//    scrollArea->setWidget(interfaceAddition->getContainerWidgetDWindowImageOfList());
 
     CreateListOfImageIntarface();
 }
@@ -28,10 +26,19 @@ void DialogWindowListOfImage::CreateListOfImageIntarface()
 }
 
 
-void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked(){
+void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
     int imageId = imageManager->ChooseImageFromFiles();
     if (imageId != -1) {  // Перевірте, що ID є дійсним
-     interfaceAddition->CreateListOfImageItem(imageManager->findImageById(imageId));
+        int imageIndex = imageManager->findImageById(imageId);
+        if (imageIndex != -1) { // Перевірте, чи знайдено зображення з таким індексом
+            interfaceAddition->CreateListOfImageItem(imageIndex);
+        } else {
+            qDebug() << "Image not found for ID:" << imageId;
+            // Обробити помилку, якщо зображення не знайдено
+        }
+    } else {
+        qDebug() << "Failed to choose image.";
+        // Обробити помилку, якщо не вдалося вибрати зображення
     }
 }
 //void DialogWindowListOfImage::on_buttonFullSize_clicked() {
@@ -62,5 +69,8 @@ void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked(){
 //}
 DialogWindowListOfImage::~DialogWindowListOfImage()
 {
-    delete ui;
+ delete ui;
+}
+void DialogWindowListOfImage::closeEvent(QCloseEvent *event) {
+       QDialog::hide();
 }

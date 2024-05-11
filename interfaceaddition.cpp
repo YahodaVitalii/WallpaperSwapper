@@ -2,9 +2,21 @@
 
 InterfaceAddition::InterfaceAddition(QWidget *parent, DBManager* dbManager, ImageManager *imageManager): QWidget(parent),dbManager(dbManager),imageManager(imageManager)
 {
+    containerWidgetDWindowImageOfList = new QWidget();
+       containerWidgetRandomImageListCreate = new QWidget();
 
-    QVBoxLayout *layout = new QVBoxLayout(containerWidget);
-    containerWidget->setLayout(layout);
+
+    QVBoxLayout *layout1 = new QVBoxLayout(containerWidgetDWindowImageOfList);
+    containerWidgetDWindowImageOfList->setLayout(layout1);
+    QVBoxLayout *layout2 = new QVBoxLayout(containerWidgetRandomImageListCreate);
+    containerWidgetRandomImageListCreate->setLayout(layout2);
+
+}
+
+InterfaceAddition::~InterfaceAddition()
+{
+        delete containerWidgetDWindowImageOfList;
+        delete containerWidgetRandomImageListCreate;
 }
 
 void InterfaceAddition::CreateListOfImageItem( int index)
@@ -12,18 +24,19 @@ void InterfaceAddition::CreateListOfImageItem( int index)
     QWidget* listItemMeinWidget = new QWidget();
     listItemMeinWidget->setStyleSheet(Style::getImageListStyle());
     listItemMeinWidget->setFixedSize(260, 120);
-    QVBoxLayout *layout = qobject_cast<QVBoxLayout*>(containerWidget->layout());
-    layout->addWidget(listItemMeinWidget);
+
+    setWidgetIntoScrollArea(containerWidgetDWindowImageOfList,listItemMeinWidget);
     //listItemMeinWidget->move(20, listItemCordinate_y);
 
 
     listItemMeinWidget->show();
 
+    CreateLableWithImage(listItemMeinWidget,index);
     CreateButtonImage(listItemMeinWidget,index);
     CreateButtonFullSize(listItemMeinWidget,index);
     CreateButtonDelete(listItemMeinWidget,index);
     CreateButtonInfo(listItemMeinWidget);
-    CreateLableWithImage(listItemMeinWidget,index);
+
 
 }
 
@@ -33,7 +46,7 @@ void InterfaceAddition::CreateLableWithImage(QWidget *listItemMeinWidget, int in
     //label->setStyleSheet("background-color: rgb(0, 225, 0);");
     label->setFixedSize(220, 110);
     label->move(5, 5);
-
+//qDebug()<<index;
     QPixmap pixmap(imageManager->GetImageByIndex(index).getUrl());
 
     label->setPixmap(pixmap.scaled(label->size(), Qt::KeepAspectRatio));
@@ -84,12 +97,92 @@ void InterfaceAddition::CreateButtonImage(QWidget *listItemMeinWidget, int index
     buttonImage->move(5, 5);
     buttonImage->show();
     buttonImage->setProperty("imageIndex", index);
-    //connect(buttonImage, &QPushButton::clicked, this, &DialogWindowListOfImage::on_buttonImage_clicked);
+    connect(buttonImage, &QPushButton::clicked, this, &InterfaceAddition::on_buttonImage_clicked);
 }
 
+void InterfaceAddition::setWidgetIntoScrollArea(QWidget *conteinerWidget, QWidget *childWidget)
+{
+    QVBoxLayout *layout = qobject_cast<QVBoxLayout*>(conteinerWidget->layout());
+    layout->addWidget(childWidget);
+}
+
+void InterfaceAddition::CreateRandomListOfImageItem(int index)
+{
+    QWidget* RandomListItemMeinWidget = new QWidget();
+    RandomListItemMeinWidget->setStyleSheet(Style::getImageListStyle());
+    RandomListItemMeinWidget->setFixedSize(260, 120);
+
+    setWidgetIntoScrollArea(containerWidgetRandomImageListCreate,RandomListItemMeinWidget);
+    //listItemMeinWidget->move(20, listItemCordinate_y);
+
+
+    RandomListItemMeinWidget->show();
+
+    CreateLableWithImage(RandomListItemMeinWidget,index);
+    CreateButtonImage(RandomListItemMeinWidget,index);
+    CreateButtonFullSize(RandomListItemMeinWidget,index);
+    CreateButtonDelete(RandomListItemMeinWidget,index);
+    CreateButtonInfo(RandomListItemMeinWidget);
+}
+
+QWidget* InterfaceAddition::getContainerWidgetDWindowImageOfList() const
+{
+    return containerWidgetDWindowImageOfList;
+}
+
+void InterfaceAddition::CreateContainerWidgetDWindowImageOfList()
+{
+containerWidgetDWindowImageOfList =  new QWidget();
+}
+
+void InterfaceAddition::DeleteContainerWidgetDWindowImageOfList()
+{
+ delete containerWidgetDWindowImageOfList;
+    containerWidgetDWindowImageOfList = nullptr;
+}
+
+QWidget *InterfaceAddition::getContainerWidgetRandomImageListCreate() const
+{
+    return containerWidgetRandomImageListCreate;
+}
+
+void InterfaceAddition::CreateScrollArea(QWidget *parent, QWidget *child,int width,int hight,int cordinate_X, int cordinate_Y)
+{
+
+    QScrollArea* scrollArea = new QScrollArea(parent);
+        scrollArea->setFixedSize(width, hight);
+        scrollArea->move(cordinate_X, cordinate_Y);
+        scrollArea->setWidgetResizable(true);
+        scrollArea->setWidget(child);
+}
+void InterfaceAddition::ClearConteinerWidget(QWidget *containerWidget)
+{
+    QLayoutItem *child;
+        while ((child = containerWidget->layout()->takeAt(0)) != nullptr) {
+            delete child->widget();
+            delete child;
+        }
+}
+
+//void InterfaceAddition::setTargetContainer(QWidget *container) {
+//    containerWidget = container;
+
+//    // Призначте новий макет для нового контейнера
+//    if (!containerWidget->layout()) {
+//        QVBoxLayout *newLayout = new QVBoxLayout(containerWidget);
+//        containerWidget->setLayout(newLayout);
+//    }
+//}
 void InterfaceAddition::on_buttonFullSize_clicked()
 {
     QString imageUrl = imageManager->GetImageByIndex(sender()->property("imageIndex").toInt()).getUrl();
     QDesktopServices::openUrl(QUrl("file:///" + imageUrl));
+
+}
+
+void InterfaceAddition::on_buttonImage_clicked() {
+    int index = sender()->property("imageIndex").toInt();
+    emit imageSelected(index);  // Сигнал передає індекс зображення
+    //qDebug()<<index;
 }
 

@@ -25,6 +25,11 @@ public:
 
 protected:
     void PaintEvent(QPaintEvent *event);
+private slots:
+    void on_mainMenuStandartButton_clicked();
+
+    void on_mainMenuTimeButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     StandartTab* standartTab;

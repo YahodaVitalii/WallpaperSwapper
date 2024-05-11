@@ -8,6 +8,9 @@ StandartTab::StandartTab(DBManager *dbManager,ImageManager* imageManager, QWidge
     ui->setupUi(this);
    // imageManager = new ImageManager(dbManager);
     setStandartTabStyle();
+    interfaceAddition = new InterfaceAddition(parent,dbManager,imageManager);
+
+    CreateDialogWindowListOfImage();
 }
 
 StandartTab::~StandartTab()
@@ -47,6 +50,13 @@ void StandartTab::setSliderButtonIcon()
     ui->SliderLeftArrow->setIconSize(QSize(65, 65));
 }
 
+void StandartTab::CreateDialogWindowListOfImage()
+{
+    dialogWindowListOfImage = new DialogWindowListOfImage(this->dbManager,imageManager,interfaceAddition,this);
+    connect(interfaceAddition, &InterfaceAddition::imageSelected, this, &StandartTab::updateImage);
+    dialogWindowListOfImage->setStyleSheet(Style::getTabsStyle());
+}
+
 void StandartTab::displayImageInLabel(QLabel *label, const QString &filePath)
 {
     QPixmap pixmap(filePath);
@@ -65,11 +75,7 @@ void StandartTab::previousImage()
     showImage(currentIndex);
 }
 void StandartTab::on_StandartTabChooseButton_clicked(){
-    dialogWindowListOfImage = new DialogWindowListOfImage(this->dbManager,this);
-    connect(dialogWindowListOfImage, &DialogWindowListOfImage::imageSelected, this, &StandartTab::updateImage);
     dialogWindowListOfImage ->show();
-    dialogWindowListOfImage->setStyleSheet(Style::getTabsStyle());
-
 }
 void StandartTab::on_StandartTabAddButton_clicked() {
 
@@ -110,5 +116,6 @@ void StandartTab::updateImage(int index)
 {
     currentIndex = index;
     showImage(currentIndex);
+    dialogWindowListOfImage ->hide();
 }
 

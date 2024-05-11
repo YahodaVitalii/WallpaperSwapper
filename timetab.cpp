@@ -15,6 +15,8 @@ TimeTab::TimeTab(DBManager *dbManager,ImageManager* imageManager,QWidget *parent
         timeTabrRandomListWidget = new TimeTabrRandomListWidget(dbManager,imageManager,this);
         timeTabrRandomListWidget ->show();
         timeTabrRandomListWidget->move(0,100);
+
+      connect(this, &TimeTab::SendSignal, timeTabrRandomListWidget, &TimeTabrRandomListWidget::AddRandomListItem);
 }
 
 TimeTab::~TimeTab()
@@ -27,6 +29,6 @@ TimeTab::~TimeTab()
 
 void TimeTab::on_TimeTabMenuBarPlusButton_clicked()
 {
-
+emit SendSignal();
 }
 

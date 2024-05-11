@@ -34,6 +34,7 @@ public:
     bool insertIntoImageTable(const WlapperImage& wlapperImage) override;
     QVector<WlapperImage> getAllImages() override;
     bool deleteImageById(int imageId) override;
+    bool insertImageList(RandomImageList *imageList) override;
 private:
 
     QSqlDatabase db;

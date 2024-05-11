@@ -25,7 +25,8 @@ private slots:
 
 
     void on_TimeTabMenuBarPlusButton_clicked();
-
+signals:
+    void SendSignal();
 private:
     Ui::TimeTab *ui;
     DBManager* dbManager;

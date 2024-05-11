@@ -16,6 +16,7 @@ SOURCES += \
     interfaceaddition.cpp \
     main.cpp \
     mainwindow.cpp \
+    randomimagelist.cpp \
     sqlitedbmanager.cpp \
     standarttab.cpp \
     style.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     imagemanager.h \
     interfaceaddition.h \
     mainwindow.h \
+    randomimagelist.h \
     sqlitedbmanager.h \
     standarttab.h \
     style.h \

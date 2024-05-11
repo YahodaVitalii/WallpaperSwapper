@@ -92,53 +92,15 @@ bool SqliteDBManager::createTables() {
         qDebug() << query.lastError().text();
         return false;
     }
-    if (!query.exec("CREATE TABLE List_images_table ("
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                       "time_interval TIMESTAMP,"
-                       "image_id_1 INTEGER,"
-                       "image_id_2 INTEGER,"
-                       "image_id_3 INTEGER,"
-                       "image_id_4 INTEGER,"
-                       "image_id_5 INTEGER,"
-                       "image_id_6 INTEGER,"
-                       "image_id_7 INTEGER,"
-                       "image_id_8 INTEGER,"
-                       "image_id_9 INTEGER,"
-                       "image_id_10 INTEGER,"
-                       "image_id_11 INTEGER,"
-                       "image_id_12 INTEGER,"
-                       "image_id_13 INTEGER,"
-                       "image_id_14 INTEGER,"
-                       "image_id_15 INTEGER,"
-                       "image_id_16 INTEGER,"
-                       "image_id_17 INTEGER,"
-                       "image_id_18 INTEGER,"
-                       "image_id_19 INTEGER,"
-                       "image_id_20 INTEGER,"
-                       "FOREIGN KEY (image_id_1) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_2) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_3) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_4) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_5) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_6) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_7) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_8) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_9) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_10) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_11) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_12) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_13) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_14) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_15) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_16) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_17) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_18) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_19) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (image_id_20) REFERENCES TABLE_IMAGE(id))")) {
-           qDebug() << "DataBase: error of create images_table";
-           qDebug() << query.lastError().text();
-           return false;
-       }
+    if (!query.exec("CREATE TABLE RandomImageLists ("
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        "time_interval TIMESTAMP NOT NULL, "
+                        "image_array TEXT NOT NULL)"
+                        )) {
+            qDebug() << "DataBase: error creating RandomImageLists";
+            qDebug() << query.lastError().text();
+            return false;
+        }
     if (!query.exec("CREATE TABLE Week_images_table ("
                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                         "Monday_image_id INTEGER,"
@@ -294,6 +256,33 @@ bool SqliteDBManager::deleteImageById(int imageId) {
     }
 
     return true;
+}
+
+bool SqliteDBManager::insertImageList( RandomImageList *imageList)
+{
+    if (!imageList) {
+           qDebug() << "Null pointer received for image list!";
+           return false;
+       }
+
+       // Серіалізуємо список у формат JSON
+       QString jsonString = imageList->toJsonString();
+
+       // Записуємо його в таблицю
+       QSqlQuery query;
+       query.prepare("INSERT INTO RandomImageLists (time_interval, image_array) VALUES (:time, :images)");
+       query.bindValue(":time", imageList->getTimeInterval());
+       query.bindValue(":images", jsonString);
+
+       if (!query.exec()) {
+           qDebug() << "Error inserting image list into RandomImageLists:" << query.lastError().text();
+           return false;
+       }
+
+       // Отримуємо останній доданий ID та встановлюємо його у не `const` об'єкті
+       imageList->setId(query.lastInsertId().toInt());
+
+       return true;
 }
 
 
