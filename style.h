@@ -14,6 +14,11 @@ public:
     static QString getTimeTabStyle();
     static QString getMenuBarStyle();
     static QString getImageListStyle();
+    static QString getTabWidgetStyle();
+    static QString getIterfaceAdditionStyle();
+    static QString getOnOffButtonStyle();
+    static QString getCreateTabStyle();
+
 
 };
 

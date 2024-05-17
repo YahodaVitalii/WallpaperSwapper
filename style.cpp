@@ -118,19 +118,90 @@ QString Style::getMenuBarStyle()
 
 QString Style::getImageListStyle()
 {
-return             "QWidget{"
-                   "background-color: rgb(232, 248, 238);"
-                   "border-radius: 10px;}"
-                   "QPushButton::hover{"
-                   "background-color: rgba(182, 184, 186,80);"
-                   "border-radius:2px;"
-                   "}"
-                   "QPushButton#buttonImage{"
-                   "background-color: rgba(182, 184, 186,0);"
-                   "}"
-                   "QPushButton#buttonImage::hover{"
-                   "background-color: rgba(182, 184, 186,80);"
-                   "}";
+    return             "QWidget{"
+                       "background-color: rgb(232, 248, 238);"
+                       "border-radius: 10px;}"
+                       "QPushButton::hover{"
+                       "background-color: rgba(182, 184, 186,80);"
+                       "border-radius:2px;"
+                       "}"
+                       "QPushButton#buttonImage{"
+                       "background-color: rgba(182, 184, 186,0);"
+                       "}"
+                       "QPushButton#buttonImage::hover{"
+                       "background-color: rgba(182, 184, 186,80);"
+                       "}";
+}
+
+QString Style::getTabWidgetStyle()
+{
+    return "QTabWidget::pane{"
+           "border-radius: 10px;"
+           "}"
+           "QTabBar::tab:last {"
+           "border-radius: 10px;"
+           "}"
+           "QTabBar::tab:first {"
+           "border-radius: 10px;"
+           "}";
+}
+
+QString Style::getIterfaceAdditionStyle()
+{
+    return "QWidget{"
+           "background-color: rgb(255, 255, 255);"
+           "border: 2px solid rgba(83, 190, 120,76);"
+           "font-family:'Inter';"
+           "font-size:14px;"
+           "font-weight:800;"
+           "color:rgb(182, 184, 186);"
+           "}"
+           "QLabel,QPushButton{"
+           "border:none;"
+           "}";
+}
+
+QString Style::getOnOffButtonStyle()
+{
+    return "QWidget{"
+           "background-color: rgb(255, 255, 255);"
+           "border:none;"
+           "border:1px solid rgb(182, 184, 186);"
+           "}"
+           "QPushButton{"
+           "background-color: rgb(83, 190, 120);"
+           "border:none;"
+           "color:rgb(255, 255, 255);"
+            //"border:2px solid rgb(182, 184, 186);"
+            "}";
+}
+
+QString Style::getCreateTabStyle()
+{
+    return "QWidget{"
+
+           "font-family:'Inter';"
+           "font-size:14px;"
+           "font-weight:800;"
+           "color:rgb(182, 184, 186);"
+           "}"
+           "QPushButton#ButtonAddNewItemOfRandomList{"
+            "background-color: rgb(83, 190, 120);"
+           "color:rgb(255, 255, 255);"
+            "border-radius: 10px;"
+           "}"
+            "QPushButton{"
+           "background-color: rgb(255, 255, 255);"
+            "border:1px solid rgb(182, 184, 186);"
+           "padding:5px;"
+           // "margin-left:5px;"
+           "min-width:60px;"
+           "}"
+           "QLineEdit,QTimeEdit{"
+           "background-color: rgb(255, 255, 255);"
+            "border:1px solid rgb(182, 184, 186);"
+           "}";
+
 }
 
 

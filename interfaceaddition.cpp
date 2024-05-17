@@ -4,19 +4,22 @@ InterfaceAddition::InterfaceAddition(QWidget *parent, DBManager* dbManager, Imag
 {
     containerWidgetDWindowImageOfList = new QWidget();
        containerWidgetRandomImageListCreate = new QWidget();
-
+        containerWidgetRandomImageListShow  = new QWidget();
 
     QVBoxLayout *layout1 = new QVBoxLayout(containerWidgetDWindowImageOfList);
     containerWidgetDWindowImageOfList->setLayout(layout1);
     QVBoxLayout *layout2 = new QVBoxLayout(containerWidgetRandomImageListCreate);
     containerWidgetRandomImageListCreate->setLayout(layout2);
+    QVBoxLayout *layout3 = new QVBoxLayout(containerWidgetRandomImageListShow);
+    containerWidgetRandomImageListShow->setLayout(layout3);
 
 }
 
 InterfaceAddition::~InterfaceAddition()
 {
-        delete containerWidgetDWindowImageOfList;
-        delete containerWidgetRandomImageListCreate;
+//        delete containerWidgetDWindowImageOfList;
+//        delete containerWidgetRandomImageListCreate;
+//        delete containerWidgetRandomImageListShow;
 }
 
 void InterfaceAddition::CreateListOfImageItem( int index)
@@ -31,21 +34,53 @@ void InterfaceAddition::CreateListOfImageItem( int index)
 
     listItemMeinWidget->show();
 
-    CreateLableWithImage(listItemMeinWidget,index);
+    CreateLableWithImage(listItemMeinWidget,index,5,5);
     CreateButtonImage(listItemMeinWidget,index);
     CreateButtonFullSize(listItemMeinWidget,index);
-    CreateButtonDelete(listItemMeinWidget,index);
+    CreateButtonDelete(listItemMeinWidget,index,25,25,230,90);
     CreateButtonInfo(listItemMeinWidget);
 
 
 }
+void InterfaceAddition::CreateRandomListOfImageItem(int index)
+{
+    QWidget* RandomListItemMeinWidget = new QWidget();
+    RandomListItemMeinWidget->setStyleSheet(Style::getImageListStyle());
+    RandomListItemMeinWidget->setFixedSize(310, 120);
+    //RandomListItemMeinWidget->move(100,0);
 
-void InterfaceAddition::CreateLableWithImage(QWidget *listItemMeinWidget, int index)
+
+
+
+    RandomListItemMeinWidget->setStyleSheet(Style::getIterfaceAdditionStyle());
+    setWidgetIntoScrollArea(containerWidgetRandomImageListCreate,RandomListItemMeinWidget);
+    CreateLableWithImage(RandomListItemMeinWidget,index,10,5);
+    CreateButtonFullSize(RandomListItemMeinWidget,index);
+    CreateButtonDelete(RandomListItemMeinWidget,index,25,25,230,90);
+    CreateButtonInfo(RandomListItemMeinWidget);
+}
+
+void InterfaceAddition::CreateRandomListOfImageView(int index, int id, QString name, QString time)
+{
+    QWidget* RandomListViewItemMeinWidget = new QWidget();
+    RandomListViewItemMeinWidget->setStyleSheet(Style::getIterfaceAdditionStyle());
+    RandomListViewItemMeinWidget->setFixedSize(560, 120);
+    setWidgetIntoScrollArea(containerWidgetRandomImageListShow,RandomListViewItemMeinWidget);
+    RandomListViewItemMeinWidget->show();
+    CreateLableWithImage(RandomListViewItemMeinWidget,index,15,5);
+    CreateButtonTurnOnTurnOff(RandomListViewItemMeinWidget);
+    CreateLableWithText(RandomListViewItemMeinWidget,name,290,65);
+     CreateLableWithText(RandomListViewItemMeinWidget,time,290,95);
+     CreateButtonDelete(RandomListViewItemMeinWidget,index,35,35,500,70);
+     CreateButtonEdit(RandomListViewItemMeinWidget,id,35,35,500,20);
+
+}
+void InterfaceAddition::CreateLableWithImage(QWidget *listItemMeinWidget, int index, int cordinate_x, int cordinate_y)
 {
     QLabel* label = new QLabel(listItemMeinWidget);
     //label->setStyleSheet("background-color: rgb(0, 225, 0);");
     label->setFixedSize(220, 110);
-    label->move(5, 5);
+    label->move(cordinate_x, cordinate_y);
 //qDebug()<<index;
     QPixmap pixmap(imageManager->GetImageByIndex(index).getUrl());
 
@@ -65,13 +100,13 @@ void InterfaceAddition::CreateButtonInfo(QWidget *listItemMeinWidget)
     // connect(buttonInfo, &QPushButton::clicked, this, &DialogWindowListOfImage::on_buttonInfo_clicked);
 }
 
-void InterfaceAddition::CreateButtonDelete(QWidget *listItemMeinWidget,int index)
+void InterfaceAddition::CreateButtonDelete(QWidget *listItemMeinWidget,int index,int width,int hight,int cordinate_x,int cordinate_y)
 {
     QPushButton* buttonDelete = new QPushButton(listItemMeinWidget);
-    buttonDelete->setFixedSize(25, 25);
-    buttonDelete->move(230, 90);
+    buttonDelete->setFixedSize(width, hight);
+    buttonDelete->move(cordinate_x, cordinate_y);
     buttonDelete-> setIcon(QIcon(":/resource/Trash@3x.png"));
-    buttonDelete->setIconSize(QSize(25, 25));
+    buttonDelete->setIconSize(QSize(width, hight));
     buttonDelete->show();
     buttonDelete->setProperty("imageIndex", index);
     // connect(buttonDelete, &QPushButton::clicked, this, &DialogWindowListOfImage::on_buttonDelete_clicked);
@@ -106,24 +141,49 @@ void InterfaceAddition::setWidgetIntoScrollArea(QWidget *conteinerWidget, QWidge
     layout->addWidget(childWidget);
 }
 
-void InterfaceAddition::CreateRandomListOfImageItem(int index)
+void InterfaceAddition::CreateButtonTurnOnTurnOff(QWidget *conteinerWidget)
 {
-    QWidget* RandomListItemMeinWidget = new QWidget();
-    RandomListItemMeinWidget->setStyleSheet(Style::getImageListStyle());
-    RandomListItemMeinWidget->setFixedSize(260, 120);
+    QWidget* containerWidgetForButtons = new QWidget(conteinerWidget);
+    containerWidgetForButtons->setFixedSize(160, 40);
+    containerWidgetForButtons->setStyleSheet(Style::getOnOffButtonStyle());
+    containerWidgetForButtons->move(290, 15);
+    containerWidgetForButtons->show();
 
-    setWidgetIntoScrollArea(containerWidgetRandomImageListCreate,RandomListItemMeinWidget);
-    //listItemMeinWidget->move(20, listItemCordinate_y);
+    QPushButton* ButtonOn = new QPushButton(containerWidgetForButtons);
+    ButtonOn->setFixedSize(80, 40);
+    ButtonOn->setText("On");
+    ButtonOn->move(0, 0); // Встановіть позицію кнопки в межах її батьківського віджета
+    ButtonOn->show();
 
-
-    RandomListItemMeinWidget->show();
-
-    CreateLableWithImage(RandomListItemMeinWidget,index);
-    CreateButtonImage(RandomListItemMeinWidget,index);
-    CreateButtonFullSize(RandomListItemMeinWidget,index);
-    CreateButtonDelete(RandomListItemMeinWidget,index);
-    CreateButtonInfo(RandomListItemMeinWidget);
+    QPushButton* ButtonOff = new QPushButton(containerWidgetForButtons);
+    ButtonOff->setFixedSize(80, 40);
+   // ButtonOff->setStyleSheet(Style::getOnOffButtonStyle());
+    ButtonOff->setText("Off");
+    ButtonOff->move(80, 0); // Встановіть позицію кнопки в межах її батьківського віджета
+    ButtonOff->show();
 }
+
+void InterfaceAddition::CreateLableWithText(QWidget *conteinerWidget, QString TextOfLabel, int Cordinate_x, int Cordinate_y)
+{
+    QLabel* labelText = new QLabel(conteinerWidget);
+    labelText->setText(TextOfLabel);
+    labelText->move(Cordinate_x,Cordinate_y);
+    labelText->show();
+}
+
+void InterfaceAddition::CreateButtonEdit(QWidget *conteinerWidget, int id, int width, int hight, int cordinate_x, int cordinate_y)
+{
+    QPushButton* buttonEdit = new QPushButton(conteinerWidget);
+    buttonEdit->setFixedSize(width, hight);
+    buttonEdit->move(cordinate_x, cordinate_y);
+    buttonEdit-> setIcon(QIcon(":/resource/Edit_fill@3x.png"));
+    buttonEdit->setIconSize(QSize(width, hight));
+    buttonEdit->show();
+    buttonEdit->setProperty("ListId", id);
+     connect(buttonEdit, &QPushButton::clicked, this, &InterfaceAddition::on_buttonEdit_clicked);
+}
+
+
 
 QWidget* InterfaceAddition::getContainerWidgetDWindowImageOfList() const
 {
@@ -144,6 +204,11 @@ void InterfaceAddition::DeleteContainerWidgetDWindowImageOfList()
 QWidget *InterfaceAddition::getContainerWidgetRandomImageListCreate() const
 {
     return containerWidgetRandomImageListCreate;
+}
+
+QWidget *InterfaceAddition::getcontainerWidgetRandomImageListShow() const
+{
+   return containerWidgetRandomImageListShow;
 }
 
 void InterfaceAddition::CreateScrollArea(QWidget *parent, QWidget *child,int width,int hight,int cordinate_X, int cordinate_Y)
@@ -183,6 +248,10 @@ void InterfaceAddition::on_buttonFullSize_clicked()
 void InterfaceAddition::on_buttonImage_clicked() {
     int index = sender()->property("imageIndex").toInt();
     emit imageSelected(index);  // Сигнал передає індекс зображення
-    //qDebug()<<index;
+}
+
+void InterfaceAddition::on_buttonEdit_clicked()
+{
+      emit randomImageListEditSignal(sender()->property("ListId").toInt());
 }
 

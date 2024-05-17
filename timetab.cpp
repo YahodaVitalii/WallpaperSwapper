@@ -12,11 +12,14 @@ TimeTab::TimeTab(DBManager *dbManager,ImageManager* imageManager,QWidget *parent
         ui->TimeTabMenuBar->setStyleSheet(Style::getMenuBarStyle());
    // ui->StandartTabButtonMenuWidget->setStyleSheet(Style::getStandartTabStyle());
 
-        timeTabrRandomListWidget = new TimeTabrRandomListWidget(dbManager,imageManager,this);
-        timeTabrRandomListWidget ->show();
-        timeTabrRandomListWidget->move(0,100);
+        timeTabRandomListWidget = new TimeTabRandomListWidget(dbManager,imageManager,this);
+        timeTabRandomListWidget->move(10,100);
+        timeTabRandomListWidget->setStyleSheet(Style::getTimeTabStyle());
+        timeTabRandomListWidget ->show();
 
-      connect(this, &TimeTab::SendSignal, timeTabrRandomListWidget, &TimeTabrRandomListWidget::AddRandomListItem);
+
+      connect(this, &TimeTab::SendSignal, timeTabRandomListWidget, &TimeTabRandomListWidget::AddRandomListItem);
+
 }
 
 TimeTab::~TimeTab()

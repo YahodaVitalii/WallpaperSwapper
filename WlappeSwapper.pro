@@ -21,7 +21,8 @@ SOURCES += \
     standarttab.cpp \
     style.cpp \
     timetab.cpp \
-    timetabrrandomlistwidget.cpp \
+    timetabrandomlistwidget.cpp \
+    timetabweeklistwidget.cpp \
     wlapperimage.cpp
 
 HEADERS += \
@@ -35,7 +36,8 @@ HEADERS += \
     standarttab.h \
     style.h \
     timetab.h \
-    timetabrrandomlistwidget.h \
+    timetabrandomlistwidget.h \
+    timetabweeklistwidget.h \
     wlapperimage.h
 
 FORMS += \
@@ -43,7 +45,8 @@ FORMS += \
     mainwindow.ui \
     standarttab.ui \
     timetab.ui \
-    timetabrrandomlistwidget.ui
+    timetabrandomlistwidget.ui \
+    timetabweeklistwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

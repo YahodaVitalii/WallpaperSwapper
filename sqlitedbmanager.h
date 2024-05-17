@@ -35,6 +35,9 @@ public:
     QVector<WlapperImage> getAllImages() override;
     bool deleteImageById(int imageId) override;
     bool insertImageList(RandomImageList *imageList) override;
+    QVector<RandomImageList> getAllRandomImageLists() override;
+    RandomImageList FindRandomImageListById(int id) override;
+    bool updateRandomImageList(RandomImageList* randomImageList) override;
 private:
 
     QSqlDatabase db;

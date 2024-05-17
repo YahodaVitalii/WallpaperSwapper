@@ -8,7 +8,7 @@
 #include "sqlitedbmanager.h"
 #include "imagemanager.h"
 #include "style.h"
-#include "timetabrrandomlistwidget.h"
+#include "timetabrandomlistwidget.h"
 namespace Ui {
 class TimeTab;
 }
@@ -25,6 +25,8 @@ private slots:
 
 
     void on_TimeTabMenuBarPlusButton_clicked();
+
+
 signals:
     void SendSignal();
 private:
@@ -32,7 +34,7 @@ private:
     DBManager* dbManager;
     ImageManager* imageManager;
 
-    TimeTabrRandomListWidget* timeTabrRandomListWidget;
+    TimeTabRandomListWidget* timeTabRandomListWidget;
 };
 
 #endif // TIMETAB_H

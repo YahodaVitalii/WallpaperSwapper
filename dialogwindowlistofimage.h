@@ -27,7 +27,7 @@ public:
     ~DialogWindowListOfImage();
     void CreateListOfImageIntarface();
     void CreateListOfImageItem(int listItemCordinate_y, int index);
-    void closeEvent(QCloseEvent *event);
+    void closeEvent();
 
 private slots:
   void on_ListOfImageMenuBarPlusButton_clicked();

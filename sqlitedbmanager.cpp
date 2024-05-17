@@ -93,88 +93,89 @@ bool SqliteDBManager::createTables() {
         return false;
     }
     if (!query.exec("CREATE TABLE RandomImageLists ("
-                        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        "time_interval TIMESTAMP NOT NULL, "
-                        "image_array TEXT NOT NULL)"
-                        )) {
-            qDebug() << "DataBase: error creating RandomImageLists";
-            qDebug() << query.lastError().text();
-            return false;
-        }
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    "name VARCHAR(255) NOT NULL,"
+                    "time_interval TIMESTAMP NOT NULL, "
+                    "image_array TEXT NOT NULL)"
+                    )) {
+        qDebug() << "DataBase: error creating RandomImageLists";
+        qDebug() << query.lastError().text();
+        return false;
+    }
     if (!query.exec("CREATE TABLE Week_images_table ("
                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                        "Monday_image_id INTEGER,"
-                        "Tuesday_image_id INTEGER,"
-                        "Wednesday_image_id INTEGER,"
-                        "Thursday_image_id INTEGER,"
-                        "Friday_image_id INTEGER,"
-                        "Saturday_image_id INTEGER,"
-                        "Sunday_image_id INTEGER,"
-                        "FOREIGN KEY (Monday_image_id) REFERENCES TABLE_IMAGE(id),"
-                        "FOREIGN KEY (Tuesday_image_id) REFERENCES TABLE_IMAGE(id),"
-                        "FOREIGN KEY (Wednesday_image_id) REFERENCES TABLE_IMAGE(id),"
-                        "FOREIGN KEY (Thursday_image_id) REFERENCES TABLE_IMAGE(id),"
-                        "FOREIGN KEY (Friday_image_id) REFERENCES TABLE_IMAGE(id),"
-                        "FOREIGN KEY (Saturday_image_id) REFERENCES TABLE_IMAGE(id),"
-                        "FOREIGN KEY (Sunday_image_id) REFERENCES TABLE_IMAGE(id))")) {
-            qDebug() << "DataBase: error of create images_table";
-            qDebug() << query.lastError().text();
-            return false;
-        }
+                    "Monday_image_id INTEGER,"
+                    "Tuesday_image_id INTEGER,"
+                    "Wednesday_image_id INTEGER,"
+                    "Thursday_image_id INTEGER,"
+                    "Friday_image_id INTEGER,"
+                    "Saturday_image_id INTEGER,"
+                    "Sunday_image_id INTEGER,"
+                    "FOREIGN KEY (Monday_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (Tuesday_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (Wednesday_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (Thursday_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (Friday_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (Saturday_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (Sunday_image_id) REFERENCES TABLE_IMAGE(id))")) {
+        qDebug() << "DataBase: error of create images_table";
+        qDebug() << query.lastError().text();
+        return false;
+    }
     if (!query.exec("CREATE TABLE Day_images_table ("
                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                       "hour_00_image_id INTEGER,"
-                       "hour_01_image_id INTEGER,"
-                       "hour_02_image_id INTEGER,"
-                       "hour_03_image_id INTEGER,"
-                       "hour_04_image_id INTEGER,"
-                       "hour_05_image_id INTEGER,"
-                       "hour_06_image_id INTEGER,"
-                       "hour_07_image_id INTEGER,"
-                       "hour_08_image_id INTEGER,"
-                       "hour_09_image_id INTEGER,"
-                       "hour_10_image_id INTEGER,"
-                       "hour_11_image_id INTEGER,"
-                       "hour_12_image_id INTEGER,"
-                       "hour_13_image_id INTEGER,"
-                       "hour_14_image_id INTEGER,"
-                       "hour_15_image_id INTEGER,"
-                       "hour_16_image_id INTEGER,"
-                       "hour_17_image_id INTEGER,"
-                       "hour_18_image_id INTEGER,"
-                       "hour_19_image_id INTEGER,"
-                       "hour_20_image_id INTEGER,"
-                       "hour_21_image_id INTEGER,"
-                       "hour_22_image_id INTEGER,"
-                       "hour_23_image_id INTEGER,"
-                       "FOREIGN KEY (hour_00_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_01_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_02_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_03_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_04_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_05_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_06_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_07_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_08_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_09_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_10_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_11_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_12_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_13_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_14_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_15_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_16_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_17_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_18_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_19_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_20_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_21_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_22_image_id) REFERENCES TABLE_IMAGE(id),"
-                       "FOREIGN KEY (hour_23_image_id) REFERENCES TABLE_IMAGE(id))")) {
-           qDebug() << "DataBase: error of create imagessss";
-           qDebug() << query.lastError().text();
-           return false;
-       }
+                    "hour_00_image_id INTEGER,"
+                    "hour_01_image_id INTEGER,"
+                    "hour_02_image_id INTEGER,"
+                    "hour_03_image_id INTEGER,"
+                    "hour_04_image_id INTEGER,"
+                    "hour_05_image_id INTEGER,"
+                    "hour_06_image_id INTEGER,"
+                    "hour_07_image_id INTEGER,"
+                    "hour_08_image_id INTEGER,"
+                    "hour_09_image_id INTEGER,"
+                    "hour_10_image_id INTEGER,"
+                    "hour_11_image_id INTEGER,"
+                    "hour_12_image_id INTEGER,"
+                    "hour_13_image_id INTEGER,"
+                    "hour_14_image_id INTEGER,"
+                    "hour_15_image_id INTEGER,"
+                    "hour_16_image_id INTEGER,"
+                    "hour_17_image_id INTEGER,"
+                    "hour_18_image_id INTEGER,"
+                    "hour_19_image_id INTEGER,"
+                    "hour_20_image_id INTEGER,"
+                    "hour_21_image_id INTEGER,"
+                    "hour_22_image_id INTEGER,"
+                    "hour_23_image_id INTEGER,"
+                    "FOREIGN KEY (hour_00_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_01_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_02_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_03_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_04_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_05_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_06_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_07_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_08_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_09_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_10_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_11_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_12_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_13_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_14_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_15_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_16_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_17_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_18_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_19_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_20_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_21_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_22_image_id) REFERENCES TABLE_IMAGE(id),"
+                    "FOREIGN KEY (hour_23_image_id) REFERENCES TABLE_IMAGE(id))")) {
+        qDebug() << "DataBase: error of create imagessss";
+        qDebug() << query.lastError().text();
+        return false;
+    }
     return true;
 
 }
@@ -261,29 +262,111 @@ bool SqliteDBManager::deleteImageById(int imageId) {
 bool SqliteDBManager::insertImageList( RandomImageList *imageList)
 {
     if (!imageList) {
-           qDebug() << "Null pointer received for image list!";
-           return false;
-       }
+        qDebug() << "Null pointer received for image list!";
+        return false;
+    }
+    // Серіалізуємо список у формат JSON
+    QString jsonString = imageList->toJsonString();
+    // Записуємо його в таблицю
+    QSqlQuery query;
+    query.prepare("INSERT INTO RandomImageLists (name, time_interval, image_array) VALUES (:name, :time, :images)");
+     query.bindValue(":name", imageList->getName());
+    query.bindValue(":time", imageList->getTimeInterval());
+    query.bindValue(":images", jsonString);
 
-       // Серіалізуємо список у формат JSON
-       QString jsonString = imageList->toJsonString();
+    if (!query.exec()) {
+        qDebug() << "Error inserting image list into RandomImageLists:" << query.lastError().text();
+        return false;
+    }
+    // Отримуємо останній доданий ID та встановлюємо його у не `const` об'єкті
+    imageList->setId(query.lastInsertId().toInt());
 
-       // Записуємо його в таблицю
-       QSqlQuery query;
-       query.prepare("INSERT INTO RandomImageLists (time_interval, image_array) VALUES (:time, :images)");
-       query.bindValue(":time", imageList->getTimeInterval());
-       query.bindValue(":images", jsonString);
-
-       if (!query.exec()) {
-           qDebug() << "Error inserting image list into RandomImageLists:" << query.lastError().text();
-           return false;
-       }
-
-       // Отримуємо останній доданий ID та встановлюємо його у не `const` об'єкті
-       imageList->setId(query.lastInsertId().toInt());
-
-       return true;
+    return true;
 }
 
+QVector<RandomImageList> SqliteDBManager::getAllRandomImageLists()
+{
+    QVector<RandomImageList> randomImageLists;
+
+    QSqlQuery query;
+    if (!query.exec("SELECT id, name, time_interval, image_array FROM RandomImageLists")) {
+        qDebug() << "Error retrieving all random image lists:" << query.lastError().text();
+        return randomImageLists; // Return an empty array in case of error
+    }
+
+    while (query.next()) {
+        int id = query.value(0).toInt();
+        QString name = query.value(1).toString();
+        QDateTime timeInterval = query.value(2).toDateTime();
+        QString jsonImages = query.value(3).toString();
+
+        RandomImageList randomImageList;
+        randomImageList.fromJsonString(jsonImages);
+        randomImageList.setId(id);
+        randomImageList.setName(name); // Set the name
+        randomImageList.setTimeInterval(timeInterval); // Set the time interval
+        randomImageLists.append(randomImageList);
+    }
+
+    return randomImageLists;
+}
+
+RandomImageList SqliteDBManager::FindRandomImageListById(int id) {
+    QSqlQuery query;
+    query.prepare("SELECT id, name, time_interval, image_array FROM RandomImageLists WHERE id = :id");
+    query.bindValue(":id", id);
+
+    if (!query.exec()) {
+        qDebug() << "Error retrieving random image list:" << query.lastError().text();
+        return RandomImageList(); // Return a default-constructed RandomImageList in case of error
+    }
+
+    if (query.next()) {
+        int id = query.value(0).toInt();
+        QString name = query.value(1).toString();
+        QDateTime timeInterval = query.value(2).toDateTime();
+        QString jsonImages = query.value(3).toString();
+
+        RandomImageList randomImageList;
+        randomImageList.fromJsonString(jsonImages);
+        randomImageList.setId(id);
+        randomImageList.setName(name); // Set the name
+        randomImageList.setTimeInterval(timeInterval); // Set the time interval
+     //qDebug()<<randomImageList.getImageIds().size();
+        return randomImageList;
+    }
+
+    return RandomImageList(); // Return a default-constructed RandomImageList if no record with such id is found
+}
+bool SqliteDBManager::updateRandomImageList(RandomImageList* randomImageList) {
+    if (!randomImageList) {
+        qDebug() << "Null pointer received for random image list!";
+        return false;
+    }
+
+    // Перевірка, чи відомий ідентифікатор списку
+    if (randomImageList->getId() == -1) {
+        qDebug() << "Unknown id for random image list!";
+        return false;
+    }
+
+    // Серіалізація списку у формат JSON
+    QString jsonString = randomImageList->toJsonString();
+
+    // Оновлення запису в базі даних
+    QSqlQuery query;
+    query.prepare("UPDATE RandomImageLists SET name = :name, time_interval = :time, image_array = :images WHERE id = :id");
+    query.bindValue(":name", randomImageList->getName());
+    query.bindValue(":time", randomImageList->getTimeInterval());
+    query.bindValue(":images", jsonString);
+    query.bindValue(":id", randomImageList->getId());
+
+    if (!query.exec()) {
+        qDebug() << "Error updating random image list:" << query.lastError().text();
+        return false;
+    }
+
+    return true;
+}
 
 

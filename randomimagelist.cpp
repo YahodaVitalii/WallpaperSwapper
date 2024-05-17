@@ -2,8 +2,18 @@
 
 RandomImageList::RandomImageList() : id(-1) {}
 
-RandomImageList::RandomImageList(const QDateTime& interval, const QVector<int>& ids)
-    : id(-1), timeInterval(interval), imageIds(ids) {}
+RandomImageList::RandomImageList(QString name,const QDateTime& interval, const QVector<int>& ids)
+    : id(-1), name(name),timeInterval(interval), imageIds(ids) {}
+
+QString RandomImageList::getName()
+{
+    return name;
+}
+
+void RandomImageList::setName(QString name)
+{
+    this->name = name;
+}
 
 // Геттери та сеттери
 int RandomImageList::getId() const { return id; }
@@ -26,18 +36,15 @@ QString RandomImageList::toJsonString() const {
     }
 
     QJsonObject jsonObj;
-   // jsonObj["time_interval"] = timeInterval.toString(Qt::ISODate);
     jsonObj["images"] = jsonArray;
 
     QJsonDocument jsonDoc(jsonObj);
     return QString(jsonDoc.toJson(QJsonDocument::Compact));
 }
 
-RandomImageList RandomImageList::fromJsonString(const QString& jsonString) {
+void RandomImageList::fromJsonString(const QString& jsonString) {
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonString.toUtf8());
     QJsonObject jsonObj = jsonDoc.object();
-
-    QDateTime timeInterval = QDateTime::fromString(jsonObj["time_interval"].toString(), Qt::ISODate);
 
     QVector<int> imageIds;
     QJsonArray jsonArray = jsonObj["images"].toArray();
@@ -45,5 +52,5 @@ RandomImageList RandomImageList::fromJsonString(const QString& jsonString) {
         imageIds.append(value.toInt());
     }
 
-    return RandomImageList(timeInterval, imageIds);
+   this->imageIds=imageIds;
 }

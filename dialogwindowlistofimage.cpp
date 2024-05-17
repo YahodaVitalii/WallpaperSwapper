@@ -71,6 +71,6 @@ DialogWindowListOfImage::~DialogWindowListOfImage()
 {
  delete ui;
 }
-void DialogWindowListOfImage::closeEvent(QCloseEvent *event) {
+void DialogWindowListOfImage::closeEvent() {
        QDialog::hide();
 }

@@ -11,13 +11,18 @@
 class RandomImageList {
 private:
     int id;
+    QString name;
     QDateTime timeInterval;
-    QVector<int> imageIds;
+
 
 public:
+    QVector<int> imageIds;
     // Конструктори
     RandomImageList();
-    RandomImageList(const QDateTime& interval, const QVector<int>& ids);
+    RandomImageList(QString name, const QDateTime& interval, const QVector<int>& ids);
+
+    QString getName();
+    void setName(QString name);
 
     // Геттери та сеттери
     int getId() const;
@@ -31,7 +36,7 @@ public:
 
     // Методи серіалізації та десеріалізації у формат JSON
     QString toJsonString() const;
-    static RandomImageList fromJsonString(const QString& jsonString);
+     void fromJsonString(const QString& jsonString);
 };
 
 #endif // RANDOMIMAGELIST_H
