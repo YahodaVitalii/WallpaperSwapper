@@ -10,11 +10,6 @@ DialogWindowListOfImage::DialogWindowListOfImage(DBManager* dbManager, ImageMana
     ui->ListOfImageMenuBar->setStyleSheet(Style::getMenuBarStyle());
 
 interfaceAddition->CreateScrollArea(this, interfaceAddition->getContainerWidgetDWindowImageOfList(),300,420,0,80);
-//    scrollArea->setFixedSize(300, 420);
-//    scrollArea->move(0, 80);
-//    scrollArea->setWidgetResizable(true);
-//    scrollArea->setWidget(interfaceAddition->getContainerWidgetDWindowImageOfList());
-
     CreateListOfImageIntarface();
 }
 
@@ -24,8 +19,6 @@ void DialogWindowListOfImage::CreateListOfImageIntarface()
         interfaceAddition->CreateListOfImageItem(i);
     }
 }
-
-
 void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
     int imageId = imageManager->ChooseImageFromFiles();
     if (imageId != -1) {  // Перевірте, що ID є дійсним

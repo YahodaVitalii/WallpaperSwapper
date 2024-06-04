@@ -148,16 +148,24 @@ QString Style::getTabWidgetStyle()
 
 QString Style::getIterfaceAdditionStyle()
 {
-    return "QWidget{"
+    return "QWidget {"
            "background-color: rgb(255, 255, 255);"
-           "border: 2px solid rgba(83, 190, 120,76);"
-           "font-family:'Inter';"
-           "font-size:14px;"
-           "font-weight:800;"
-           "color:rgb(182, 184, 186);"
+           "border: 2px solid rgba(83, 190, 120, 76);"
+           "font-family: 'Inter';"
+           "font-size: 14px;"
+           "font-weight: 800;"
+           "color: rgb(182, 184, 186);"
            "}"
-           "QLabel,QPushButton{"
-           "border:none;"
+           "QPushButton {"
+           "background-color: rgba(0, 0, 0, 0);"
+           "border: none;"
+           "}"
+           "QLabel {"
+            "background-color: rgba(182, 184, 186, 80);"
+           "border: none;"
+           "}"
+           "QPushButton::hover {"
+           "background-color: rgb(182, 184, 186);"
            "}";
 }
 
@@ -201,6 +209,13 @@ QString Style::getCreateTabStyle()
            "background-color: rgb(255, 255, 255);"
             "border:1px solid rgb(182, 184, 186);"
            "}";
+
+}
+
+QString Style::getPressedImageButtonStyle()
+{return "QPushButton{"
+       "background-color: rgb(182, 184, 186);"
+        "}";
 
 }
 

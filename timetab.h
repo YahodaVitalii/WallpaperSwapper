@@ -9,6 +9,7 @@
 #include "imagemanager.h"
 #include "style.h"
 #include "timetabrandomlistwidget.h"
+#include "timetabweeklistwidget.h"
 namespace Ui {
 class TimeTab;
 }
@@ -20,6 +21,8 @@ class TimeTab : public QWidget
 public:
     explicit TimeTab(DBManager* dbManager,ImageManager* imageManager,QWidget *parent = nullptr);
     ~TimeTab();
+    void CreateimeTabRandomListWidget();
+    void CreateTimeTabWeekListWidget();
 
 private slots:
 
@@ -28,13 +31,15 @@ private slots:
 
 
 signals:
-    void SendSignal();
+    void SendSignalForRandomListWidget();
+    void SendSignalForWeekListWidget();
 private:
     Ui::TimeTab *ui;
     DBManager* dbManager;
     ImageManager* imageManager;
 
     TimeTabRandomListWidget* timeTabRandomListWidget;
+    TimeTabWeekListWidget* timeTabWeekListWidget;
 };
 
 #endif // TIMETAB_H

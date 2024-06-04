@@ -4,6 +4,7 @@
 #include <QSqlDatabase>
 #include "wlapperimage.h"
 #include "randomimagelist.h"
+#include "weekimagelist.h"
 class DBManager {
 public:
 
@@ -18,7 +19,10 @@ public:
     virtual QVector<RandomImageList> getAllRandomImageLists()=0;
     virtual RandomImageList FindRandomImageListById(int id) =0;
     virtual bool updateRandomImageList(RandomImageList* randomImageList)=0;
-
+    virtual  bool updateWeekImageList(WeekImageList* weekImageList) = 0;
+    virtual WeekImageList findWeekImageListById(int id) =0;
+    virtual QVector<WeekImageList> getAllWeekImageLists() =0;
+    virtual bool insertWeekImageList(WeekImageList* weekImageList) =0;
 };
 
 #endif // DBMANAGER_H

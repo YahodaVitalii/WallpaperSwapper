@@ -18,7 +18,7 @@ public:
     static QString getIterfaceAdditionStyle();
     static QString getOnOffButtonStyle();
     static QString getCreateTabStyle();
-
+    static QString getPressedImageButtonStyle();
 
 };
 

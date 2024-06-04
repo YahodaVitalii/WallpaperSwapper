@@ -3,8 +3,11 @@
 InterfaceAddition::InterfaceAddition(QWidget *parent, DBManager* dbManager, ImageManager *imageManager): QWidget(parent),dbManager(dbManager),imageManager(imageManager)
 {
     containerWidgetDWindowImageOfList = new QWidget();
-       containerWidgetRandomImageListCreate = new QWidget();
-        containerWidgetRandomImageListShow  = new QWidget();
+    containerWidgetRandomImageListCreate = new QWidget();
+    containerWidgetRandomImageListShow  = new QWidget();
+    containerWidgetWeekImageListCreate = new QWidget();
+    containerWidgetWeekImageListShow = new QWidget();
+
 
     QVBoxLayout *layout1 = new QVBoxLayout(containerWidgetDWindowImageOfList);
     containerWidgetDWindowImageOfList->setLayout(layout1);
@@ -12,14 +15,17 @@ InterfaceAddition::InterfaceAddition(QWidget *parent, DBManager* dbManager, Imag
     containerWidgetRandomImageListCreate->setLayout(layout2);
     QVBoxLayout *layout3 = new QVBoxLayout(containerWidgetRandomImageListShow);
     containerWidgetRandomImageListShow->setLayout(layout3);
-
+    QVBoxLayout *layout4 =new QVBoxLayout(containerWidgetWeekImageListCreate);
+    containerWidgetWeekImageListCreate->setLayout(layout4);
+    QVBoxLayout *layout5 =new QVBoxLayout(containerWidgetWeekImageListShow);
+    containerWidgetWeekImageListShow->setLayout(layout5);
 }
 
 InterfaceAddition::~InterfaceAddition()
 {
-//        delete containerWidgetDWindowImageOfList;
-//        delete containerWidgetRandomImageListCreate;
-//        delete containerWidgetRandomImageListShow;
+    //        delete containerWidgetDWindowImageOfList;
+    //        delete containerWidgetRandomImageListCreate;
+    //        delete containerWidgetRandomImageListShow;
 }
 
 void InterfaceAddition::CreateListOfImageItem( int index)
@@ -70,21 +76,52 @@ void InterfaceAddition::CreateRandomListOfImageView(int index, int id, QString n
     CreateLableWithImage(RandomListViewItemMeinWidget,index,15,5);
     CreateButtonTurnOnTurnOff(RandomListViewItemMeinWidget);
     CreateLableWithText(RandomListViewItemMeinWidget,name,290,65);
-     CreateLableWithText(RandomListViewItemMeinWidget,time,290,95);
-     CreateButtonDelete(RandomListViewItemMeinWidget,index,35,35,500,70);
-     CreateButtonEdit(RandomListViewItemMeinWidget,id,35,35,500,20);
+    CreateLableWithText(RandomListViewItemMeinWidget,time,290,95);
+    CreateButtonDelete(RandomListViewItemMeinWidget,index,35,35,500,70);
+    CreateButtonEdit(RandomListViewItemMeinWidget,id,35,35,500,20);
+
+}
+
+void InterfaceAddition::CreateWeekListOfImageItem(int index,QString DayOfWeek)
+{
+    QWidget* WeekListDayItemMeinWidget = new QWidget();
+    WeekListDayItemMeinWidget->setStyleSheet(Style::getIterfaceAdditionStyle());
+    WeekListDayItemMeinWidget->setFixedSize(560, 120);
+    setWidgetIntoScrollArea(containerWidgetWeekImageListCreate,WeekListDayItemMeinWidget);
+     CreateLableWithImage(WeekListDayItemMeinWidget,index,5,5);
+    CreateButtonSetImage(WeekListDayItemMeinWidget,DayOfWeek,220,110,5,5);
+    CreateLableWithText(WeekListDayItemMeinWidget,DayOfWeek,290,95);
+
+
+}
+
+void InterfaceAddition::CreateWeekListOfImageView(int index,int id,QString name)
+{
+
+    QWidget* WeekListViewItemMeinWidget = new QWidget();
+    WeekListViewItemMeinWidget->setStyleSheet(Style::getIterfaceAdditionStyle());
+    WeekListViewItemMeinWidget->setFixedSize(560, 120);
+    setWidgetIntoScrollArea(containerWidgetWeekImageListShow,WeekListViewItemMeinWidget);
+    CreateLableWithImage(WeekListViewItemMeinWidget,index,15,5);
+    CreateLableWithText(WeekListViewItemMeinWidget,name,290,65);
+     CreateButtonTurnOnTurnOff(WeekListViewItemMeinWidget);
+     CreateButtonDelete(WeekListViewItemMeinWidget,index,35,35,500,70);
+     CreateButtonEdit(WeekListViewItemMeinWidget,id,35,35,500,20);
 
 }
 void InterfaceAddition::CreateLableWithImage(QWidget *listItemMeinWidget, int index, int cordinate_x, int cordinate_y)
 {
     QLabel* label = new QLabel(listItemMeinWidget);
     //label->setStyleSheet("background-color: rgb(0, 225, 0);");
+    //label->setStyleSheet("QLable{background-color: rgb(232, 248, 238);}");
     label->setFixedSize(220, 110);
     label->move(cordinate_x, cordinate_y);
-//qDebug()<<index;
-    QPixmap pixmap(imageManager->GetImageByIndex(index).getUrl());
-
-    label->setPixmap(pixmap.scaled(label->size(), Qt::KeepAspectRatio));
+    //qDebug()<<index;
+    if (index >= 0 && index < imageManager->getsizeOfImages()) // Перевірка допустимого діапазону індексу
+    {
+        QPixmap pixmap(imageManager->GetImageByIndex(index).getUrl());
+        label->setPixmap(pixmap.scaled(label->size(), Qt::KeepAspectRatio));
+    }
     label->setScaledContents(true);
     label->show();
 }
@@ -121,7 +158,7 @@ void InterfaceAddition::CreateButtonFullSize(QWidget *listItemMeinWidget,int ind
     buttonFullSize->setIconSize(QSize(25, 25));
     buttonFullSize->show();
     buttonFullSize->setProperty("imageIndex", index);
-     connect(buttonFullSize, &QPushButton::clicked, this, &InterfaceAddition::on_buttonFullSize_clicked);
+    connect(buttonFullSize, &QPushButton::clicked, this, &InterfaceAddition::on_buttonFullSize_clicked);
 }
 
 void InterfaceAddition::CreateButtonImage(QWidget *listItemMeinWidget, int index)
@@ -157,7 +194,7 @@ void InterfaceAddition::CreateButtonTurnOnTurnOff(QWidget *conteinerWidget)
 
     QPushButton* ButtonOff = new QPushButton(containerWidgetForButtons);
     ButtonOff->setFixedSize(80, 40);
-   // ButtonOff->setStyleSheet(Style::getOnOffButtonStyle());
+    // ButtonOff->setStyleSheet(Style::getOnOffButtonStyle());
     ButtonOff->setText("Off");
     ButtonOff->move(80, 0); // Встановіть позицію кнопки в межах її батьківського віджета
     ButtonOff->show();
@@ -180,7 +217,20 @@ void InterfaceAddition::CreateButtonEdit(QWidget *conteinerWidget, int id, int w
     buttonEdit->setIconSize(QSize(width, hight));
     buttonEdit->show();
     buttonEdit->setProperty("ListId", id);
-     connect(buttonEdit, &QPushButton::clicked, this, &InterfaceAddition::on_buttonEdit_clicked);
+    connect(buttonEdit, &QPushButton::clicked, this, &InterfaceAddition::on_buttonEdit_clicked);
+}
+
+void InterfaceAddition::CreateButtonSetImage(QWidget *listItemMeinWidget,  QString day, int width, int hight, int cordinate_x, int cordinate_y)
+{
+    QPushButton* ButtonSetImage = new QPushButton(listItemMeinWidget);
+    ButtonSetImage->setObjectName("buttonImage");  // Встановлення об'єктного імені
+    ButtonSetImage->setFixedSize(width, hight);
+    ButtonSetImage->move(cordinate_x, cordinate_y);
+    ButtonSetImage-> setIcon(QIcon(":/resource/Img_load_box_fill@3x.png"));
+    ButtonSetImage->setIconSize(QSize(40, 40));
+    ButtonSetImage->show();
+    ButtonSetImage->setProperty("DayOfButton", day);
+    connect(ButtonSetImage, &QPushButton::clicked, this, &InterfaceAddition::on_ButtonSetImage_clicked);
 }
 
 
@@ -192,12 +242,12 @@ QWidget* InterfaceAddition::getContainerWidgetDWindowImageOfList() const
 
 void InterfaceAddition::CreateContainerWidgetDWindowImageOfList()
 {
-containerWidgetDWindowImageOfList =  new QWidget();
+    containerWidgetDWindowImageOfList =  new QWidget();
 }
 
 void InterfaceAddition::DeleteContainerWidgetDWindowImageOfList()
 {
- delete containerWidgetDWindowImageOfList;
+    delete containerWidgetDWindowImageOfList;
     containerWidgetDWindowImageOfList = nullptr;
 }
 
@@ -208,25 +258,35 @@ QWidget *InterfaceAddition::getContainerWidgetRandomImageListCreate() const
 
 QWidget *InterfaceAddition::getcontainerWidgetRandomImageListShow() const
 {
-   return containerWidgetRandomImageListShow;
+    return containerWidgetRandomImageListShow;
+}
+
+QWidget *InterfaceAddition::getcontainerWidgetWeekImageListCreate() const
+{
+    return containerWidgetWeekImageListCreate;
+}
+
+QWidget *InterfaceAddition::getcontainerWidgetWeekImageListShow() const
+{
+  return containerWidgetWeekImageListShow;
 }
 
 void InterfaceAddition::CreateScrollArea(QWidget *parent, QWidget *child,int width,int hight,int cordinate_X, int cordinate_Y)
 {
 
     QScrollArea* scrollArea = new QScrollArea(parent);
-        scrollArea->setFixedSize(width, hight);
-        scrollArea->move(cordinate_X, cordinate_Y);
-        scrollArea->setWidgetResizable(true);
-        scrollArea->setWidget(child);
+    scrollArea->setFixedSize(width, hight);
+    scrollArea->move(cordinate_X, cordinate_Y);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setWidget(child);
 }
 void InterfaceAddition::ClearConteinerWidget(QWidget *containerWidget)
 {
     QLayoutItem *child;
-        while ((child = containerWidget->layout()->takeAt(0)) != nullptr) {
-            delete child->widget();
-            delete child;
-        }
+    while ((child = containerWidget->layout()->takeAt(0)) != nullptr) {
+        delete child->widget();
+        delete child;
+    }
 }
 
 //void InterfaceAddition::setTargetContainer(QWidget *container) {
@@ -247,11 +307,21 @@ void InterfaceAddition::on_buttonFullSize_clicked()
 
 void InterfaceAddition::on_buttonImage_clicked() {
     int index = sender()->property("imageIndex").toInt();
-    emit imageSelected(index);  // Сигнал передає індекс зображення
+   emit imageSelected(index);  // Сигнал передає індекс зображення
+    //qDebug()<<4545;
 }
 
 void InterfaceAddition::on_buttonEdit_clicked()
 {
-      emit randomImageListEditSignal(sender()->property("ListId").toInt());
+    emit randomImageListEditSignal(sender()->property("ListId").toInt());
+    emit weekImageListEditSignal(sender()->property("ListId").toInt());
+
+}
+
+void InterfaceAddition::on_ButtonSetImage_clicked()
+{
+   // qDebug()<<"here";
+   QString day = sender()->property("DayOfButton").toString();
+   emit setImageIntoWeekListItem(day);  // Сигнал передає індекс зображення
 }
 

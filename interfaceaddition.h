@@ -19,6 +19,8 @@ public:
     void CreateListOfImageItem(int index);
     void CreateRandomListOfImageItem(int index);
     void CreateRandomListOfImageView(int index,int id,QString name,QString time);
+    void CreateWeekListOfImageItem(int index, QString DayOfWeek);
+    void CreateWeekListOfImageView(int index, int id, QString name);
 
     void CreateLableWithImage(QWidget* listItemMeinWidget, int index, int cordinate_x, int cordinate_y);
     void CreateButtonInfo(QWidget* listItemMeinWidget);
@@ -29,14 +31,16 @@ public:
     void CreateButtonTurnOnTurnOff(QWidget* conteinerWidget);
     void CreateLableWithText(QWidget* conteinerWidget, QString TextOfLabel, int Cordinate_x, int Cordinate_y);
     void CreateButtonEdit(QWidget* conteinerWidget, int id, int width, int hight, int cordinate_x, int cordinate_y);
+    void CreateButtonSetImage(QWidget *listItemMeinWidget, QString day,int width, int hight, int cordinate_x, int cordinate_y);
 
     QWidget* getContainerWidgetDWindowImageOfList() const;
     void CreateContainerWidgetDWindowImageOfList();
     void DeleteContainerWidgetDWindowImageOfList();
     QWidget* getContainerWidgetRandomImageListCreate() const;
     QWidget *getcontainerWidgetRandomImageListShow() const;
-
-   void CreateScrollArea(QWidget* parent, QWidget* child, int width, int hight, int cordinate_X, int cordinate_Y);
+    QWidget *getcontainerWidgetWeekImageListCreate() const;
+    QWidget* getcontainerWidgetWeekImageListShow() const;
+    void CreateScrollArea(QWidget* parent, QWidget* child, int width, int hight, int cordinate_X, int cordinate_Y);
     void ClearConteinerWidget(QWidget* containerWidget);
 
     //void setTargetContainer(QWidget *container);
@@ -45,14 +49,19 @@ public:
 signals:
     void imageSelected(int index);
     void randomImageListEditSignal(int id);
+    void weekImageListEditSignal(int id);
+    void setImageIntoWeekListItem(QString day);
 private slots:
     void on_buttonFullSize_clicked();
     void on_buttonImage_clicked();
-   void on_buttonEdit_clicked();
+    void on_buttonEdit_clicked();
+    void on_ButtonSetImage_clicked();
 private:
     QWidget *containerWidgetDWindowImageOfList = nullptr;
     QWidget *containerWidgetRandomImageListCreate = nullptr;
     QWidget *containerWidgetRandomImageListShow = nullptr;
+    QWidget *containerWidgetWeekImageListCreate = nullptr;
+    QWidget *containerWidgetWeekImageListShow = nullptr;
 
     QWidget *parentWidget;
     ImageManager* imageManager;

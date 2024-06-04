@@ -6,20 +6,10 @@ TimeTab::TimeTab(DBManager *dbManager,ImageManager* imageManager,QWidget *parent
     ui(new Ui::TimeTab), dbManager(dbManager),imageManager(imageManager)
 {
     ui->setupUi(this);
-
     ui->TimeTabWidget->setStyleSheet(Style::getTabsStyle());
-   // ui->TimeTabMenuBar->setStyleSheet(Style::getTimeTabStyle());
-        ui->TimeTabMenuBar->setStyleSheet(Style::getMenuBarStyle());
-   // ui->StandartTabButtonMenuWidget->setStyleSheet(Style::getStandartTabStyle());
-
-        timeTabRandomListWidget = new TimeTabRandomListWidget(dbManager,imageManager,this);
-        timeTabRandomListWidget->move(10,100);
-        timeTabRandomListWidget->setStyleSheet(Style::getTimeTabStyle());
-        timeTabRandomListWidget ->show();
-
-
-      connect(this, &TimeTab::SendSignal, timeTabRandomListWidget, &TimeTabRandomListWidget::AddRandomListItem);
-
+    ui->TimeTabMenuBar->setStyleSheet(Style::getMenuBarStyle());
+  //CreateimeTabRandomListWidget();
+  CreateTimeTabWeekListWidget();
 }
 
 TimeTab::~TimeTab()
@@ -27,11 +17,28 @@ TimeTab::~TimeTab()
     delete ui;
 }
 
+void TimeTab::CreateimeTabRandomListWidget()
+{
+    timeTabRandomListWidget = new TimeTabRandomListWidget(dbManager,imageManager,this);
+    timeTabRandomListWidget->move(10,100);
+    timeTabRandomListWidget->setStyleSheet(Style::getTimeTabStyle());
+    timeTabRandomListWidget ->show();
+    connect(this, &TimeTab::SendSignalForRandomListWidget, timeTabRandomListWidget, &TimeTabRandomListWidget::AddRandomListItem);
+}
 
-
+void TimeTab::CreateTimeTabWeekListWidget()
+{
+    timeTabWeekListWidget = new TimeTabWeekListWidget(dbManager,imageManager,this);
+    timeTabWeekListWidget->move(10,100);
+    timeTabWeekListWidget->setStyleSheet(Style::getTimeTabStyle());
+    timeTabWeekListWidget ->show();
+    connect(this, &TimeTab::SendSignalForWeekListWidget, timeTabWeekListWidget, &TimeTabWeekListWidget::AddWeekListItem);
+}
 
 void TimeTab::on_TimeTabMenuBarPlusButton_clicked()
 {
-emit SendSignal();
+    //emit SendSignalForRandomListWidget();
+    emit SendSignalForWeekListWidget();
 }
+
 

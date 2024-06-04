@@ -104,20 +104,8 @@ bool SqliteDBManager::createTables() {
     }
     if (!query.exec("CREATE TABLE Week_images_table ("
                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    "Monday_image_id INTEGER,"
-                    "Tuesday_image_id INTEGER,"
-                    "Wednesday_image_id INTEGER,"
-                    "Thursday_image_id INTEGER,"
-                    "Friday_image_id INTEGER,"
-                    "Saturday_image_id INTEGER,"
-                    "Sunday_image_id INTEGER,"
-                    "FOREIGN KEY (Monday_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (Tuesday_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (Wednesday_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (Thursday_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (Friday_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (Saturday_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (Sunday_image_id) REFERENCES TABLE_IMAGE(id))")) {
+                    "name TEXT,"
+                    "images TEXT)")) {
         qDebug() << "DataBase: error of create images_table";
         qDebug() << query.lastError().text();
         return false;
@@ -368,5 +356,107 @@ bool SqliteDBManager::updateRandomImageList(RandomImageList* randomImageList) {
 
     return true;
 }
+bool SqliteDBManager::insertWeekImageList(WeekImageList* weekImageList)
+{
+    if (!weekImageList) {
+        qDebug() << "Null pointer received for week image list!";
+        return false;
+    }
+    // Серіалізуємо список у формат JSON
+    QString jsonString = weekImageList->toJsonString();
+    // Записуємо його в таблицю
+    QSqlQuery query;
+    query.prepare("INSERT INTO Week_images_table (name, images) VALUES (:name, :images)");
+    query.bindValue(":name", weekImageList->getName());
+    query.bindValue(":images", jsonString);
 
+    if (!query.exec()) {
+        qDebug() << "Error inserting week image list into Week_images_table:" << query.lastError().text();
+        return false;
+    }
+    // Отримуємо останній доданий ID та встановлюємо його у не `const` об'єкті
+    weekImageList->setId(query.lastInsertId().toInt());
+
+    return true;
+}
+
+QVector<WeekImageList> SqliteDBManager::getAllWeekImageLists()
+{
+    QVector<WeekImageList> weekImageLists;
+
+    QSqlQuery query;
+    if (!query.exec("SELECT id, name, images FROM Week_images_table")) {
+        qDebug() << "Error retrieving all week image lists:" << query.lastError().text();
+        return weekImageLists; // Return an empty array in case of error
+    }
+
+    while (query.next()) {
+        int id = query.value(0).toInt();
+        QString name = query.value(1).toString();
+        QString jsonImages = query.value(2).toString();
+
+        WeekImageList weekImageList;
+        weekImageList.fromJsonString(jsonImages);
+        weekImageList.setId(id);
+        weekImageList.setName(name); // Set the name
+        weekImageLists.append(weekImageList);
+    }
+
+    return weekImageLists;
+}
+
+WeekImageList SqliteDBManager::findWeekImageListById(int id) {
+    QSqlQuery query;
+    query.prepare("SELECT id, name, images FROM Week_images_table WHERE id = :id");
+    query.bindValue(":id", id);
+
+    if (!query.exec()) {
+        qDebug() << "Error retrieving week image list:" << query.lastError().text();
+        return WeekImageList(); // Return a default-constructed WeekImageList in case of error
+    }
+
+    if (query.next()) {
+        int id = query.value(0).toInt();
+        QString name = query.value(1).toString();
+        QString jsonImages = query.value(2).toString();
+
+        WeekImageList weekImageList;
+        weekImageList.fromJsonString(jsonImages);
+        weekImageList.setId(id);
+        weekImageList.setName(name); // Set the name
+        return weekImageList;
+    }
+
+    return WeekImageList(); // Return a default-constructed WeekImageList if no record with such id is found
+}
+
+bool SqliteDBManager::updateWeekImageList(WeekImageList* weekImageList) {
+    if (!weekImageList) {
+        qDebug() << "Null pointer received for week image list!";
+        return false;
+    }
+
+    // Перевірка, чи відомий ідентифікатор списку
+    if (weekImageList->getId() == -1) {
+        qDebug() << "Unknown id for week image list!";
+        return false;
+    }
+
+    // Серіалізація списку у формат JSON
+    QString jsonString = weekImageList->toJsonString();
+
+    // Оновлення запису в базі даних
+    QSqlQuery query;
+    query.prepare("UPDATE Week_images_table SET name = :name, images = :images WHERE id = :id");
+    query.bindValue(":name", weekImageList->getName());
+    query.bindValue(":images", jsonString);
+    query.bindValue(":id", weekImageList->getId());
+
+    if (!query.exec()) {
+        qDebug() << "Error updating week image list:" << query.lastError().text();
+        return false;
+    }
+
+    return true;
+}
 

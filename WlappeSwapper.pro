@@ -23,6 +23,7 @@ SOURCES += \
     timetab.cpp \
     timetabrandomlistwidget.cpp \
     timetabweeklistwidget.cpp \
+    weekimagelist.cpp \
     wlapperimage.cpp
 
 HEADERS += \
@@ -38,6 +39,7 @@ HEADERS += \
     timetab.h \
     timetabrandomlistwidget.h \
     timetabweeklistwidget.h \
+    weekimagelist.h \
     wlapperimage.h
 
 FORMS += \
