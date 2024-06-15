@@ -36,12 +36,17 @@ public:
     bool deleteImageById(int imageId) override;
     bool insertImageList(RandomImageList *imageList) override;
     bool insertWeekImageList(WeekImageList* weekImageList) override;
+    bool SqliteDBManager::insertDayImageList(DayImageList* dayImageList) override;
     QVector<RandomImageList> getAllRandomImageLists() override;
     QVector<WeekImageList> getAllWeekImageLists() override;
+    QVector<DayImageList> getAllDayImageLists() override;
     RandomImageList FindRandomImageListById(int id) override;
     WeekImageList findWeekImageListById(int id) override;
+    DayImageList findDayImageListById(int id) override;
     bool updateRandomImageList(RandomImageList* randomImageList) override;
     bool updateWeekImageList(WeekImageList* weekImageList) override;
+    bool updateDayImageList(DayImageList* dayImageList) override;
+
 private:
 
     QSqlDatabase db;

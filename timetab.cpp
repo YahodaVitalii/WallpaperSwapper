@@ -8,8 +8,9 @@ TimeTab::TimeTab(DBManager *dbManager,ImageManager* imageManager,QWidget *parent
     ui->setupUi(this);
     ui->TimeTabWidget->setStyleSheet(Style::getTabsStyle());
     ui->TimeTabMenuBar->setStyleSheet(Style::getMenuBarStyle());
-  //CreateimeTabRandomListWidget();
-  CreateTimeTabWeekListWidget();
+    //CreateimeTabRandomListWidget();
+   //CreateTimeTabWeekListWidget();
+    CreateTimeTabDayListWidget();
 }
 
 TimeTab::~TimeTab()
@@ -35,10 +36,20 @@ void TimeTab::CreateTimeTabWeekListWidget()
     connect(this, &TimeTab::SendSignalForWeekListWidget, timeTabWeekListWidget, &TimeTabWeekListWidget::AddWeekListItem);
 }
 
+void TimeTab::CreateTimeTabDayListWidget()
+{
+    timeTabDayListWidget = new TimeTabDayListWidget(dbManager,imageManager,this);
+    timeTabDayListWidget->move(10,100);
+    timeTabDayListWidget->setStyleSheet(Style::getTimeTabStyle());
+    timeTabDayListWidget ->show();
+    connect(this, &TimeTab::SendSignalForDayListWidget, timeTabDayListWidget, &TimeTabDayListWidget::AddDayListItem);
+}
+
 void TimeTab::on_TimeTabMenuBarPlusButton_clicked()
 {
-    //emit SendSignalForRandomListWidget();
+    emit SendSignalForRandomListWidget();
     emit SendSignalForWeekListWidget();
+    emit SendSignalForDayListWidget();
 }
 
 

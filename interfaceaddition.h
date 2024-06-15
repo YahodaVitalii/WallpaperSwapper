@@ -6,6 +6,7 @@
 #include <QPixmap>
 #include <QVBoxLayout>
 #include <QDebug>
+#include <QTimeEdit>
 #include <QDesktopServices>
 #include <QScrollArea>
 #include "style.h"
@@ -21,6 +22,7 @@ public:
     void CreateRandomListOfImageView(int index,int id,QString name,QString time);
     void CreateWeekListOfImageItem(int index, QString DayOfWeek);
     void CreateWeekListOfImageView(int index, int id, QString name);
+    void CreateDayListOfImageItem(int index);
 
     void CreateLableWithImage(QWidget* listItemMeinWidget, int index, int cordinate_x, int cordinate_y);
     void CreateButtonInfo(QWidget* listItemMeinWidget);
@@ -32,14 +34,17 @@ public:
     void CreateLableWithText(QWidget* conteinerWidget, QString TextOfLabel, int Cordinate_x, int Cordinate_y);
     void CreateButtonEdit(QWidget* conteinerWidget, int id, int width, int hight, int cordinate_x, int cordinate_y);
     void CreateButtonSetImage(QWidget *listItemMeinWidget, QString day,int width, int hight, int cordinate_x, int cordinate_y);
+    void CreateTimeEditor(QWidget *listItemMeinWidget, int cordinate_x, int cordinate_y);
 
     QWidget* getContainerWidgetDWindowImageOfList() const;
     void CreateContainerWidgetDWindowImageOfList();
     void DeleteContainerWidgetDWindowImageOfList();
-    QWidget* getContainerWidgetRandomImageListCreate() const;
+    QWidget *getContainerWidgetRandomImageListCreate() const;
     QWidget *getcontainerWidgetRandomImageListShow() const;
     QWidget *getcontainerWidgetWeekImageListCreate() const;
-    QWidget* getcontainerWidgetWeekImageListShow() const;
+    QWidget *getcontainerWidgetWeekImageListShow() const;
+    QWidget *getcontainerWidgetDayImageListCreate()const;
+    QWidget *getcontainerWidgetDayImageListShow() const;
     void CreateScrollArea(QWidget* parent, QWidget* child, int width, int hight, int cordinate_X, int cordinate_Y);
     void ClearConteinerWidget(QWidget* containerWidget);
 
@@ -62,7 +67,8 @@ private:
     QWidget *containerWidgetRandomImageListShow = nullptr;
     QWidget *containerWidgetWeekImageListCreate = nullptr;
     QWidget *containerWidgetWeekImageListShow = nullptr;
-
+    QWidget* containerWidgetDayImageListCreate =nullptr ;
+    QWidget* containerWidgetDayImageListShow =nullptr ;
     QWidget *parentWidget;
     ImageManager* imageManager;
     DBManager* dbManager;

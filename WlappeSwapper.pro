@@ -11,6 +11,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    dayimagelist.cpp \
     dialogwindowlistofimage.cpp \
     imagemanager.cpp \
     interfaceaddition.cpp \
@@ -21,12 +22,14 @@ SOURCES += \
     standarttab.cpp \
     style.cpp \
     timetab.cpp \
+    timetabdaylistwidget.cpp \
     timetabrandomlistwidget.cpp \
     timetabweeklistwidget.cpp \
     weekimagelist.cpp \
     wlapperimage.cpp
 
 HEADERS += \
+    dayimagelist.h \
     dbmanager.h \
     dialogwindowlistofimage.h \
     imagemanager.h \
@@ -37,6 +40,7 @@ HEADERS += \
     standarttab.h \
     style.h \
     timetab.h \
+    timetabdaylistwidget.h \
     timetabrandomlistwidget.h \
     timetabweeklistwidget.h \
     weekimagelist.h \
@@ -47,6 +51,7 @@ FORMS += \
     mainwindow.ui \
     standarttab.ui \
     timetab.ui \
+    timetabdaylistwidget.ui \
     timetabrandomlistwidget.ui \
     timetabweeklistwidget.ui
 

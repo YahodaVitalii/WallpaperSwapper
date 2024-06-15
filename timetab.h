@@ -10,6 +10,7 @@
 #include "style.h"
 #include "timetabrandomlistwidget.h"
 #include "timetabweeklistwidget.h"
+#include "timetabdaylistwidget.h"
 namespace Ui {
 class TimeTab;
 }
@@ -23,6 +24,7 @@ public:
     ~TimeTab();
     void CreateimeTabRandomListWidget();
     void CreateTimeTabWeekListWidget();
+    void CreateTimeTabDayListWidget();
 
 private slots:
 
@@ -33,6 +35,7 @@ private slots:
 signals:
     void SendSignalForRandomListWidget();
     void SendSignalForWeekListWidget();
+    void SendSignalForDayListWidget();
 private:
     Ui::TimeTab *ui;
     DBManager* dbManager;
@@ -40,6 +43,8 @@ private:
 
     TimeTabRandomListWidget* timeTabRandomListWidget;
     TimeTabWeekListWidget* timeTabWeekListWidget;
+    TimeTabDayListWidget*  timeTabDayListWidget;
+
 };
 
 #endif // TIMETAB_H

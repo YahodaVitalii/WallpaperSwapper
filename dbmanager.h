@@ -5,6 +5,7 @@
 #include "wlapperimage.h"
 #include "randomimagelist.h"
 #include "weekimagelist.h"
+#include "dayimagelist.h"
 class DBManager {
 public:
 
@@ -23,6 +24,10 @@ public:
     virtual WeekImageList findWeekImageListById(int id) =0;
     virtual QVector<WeekImageList> getAllWeekImageLists() =0;
     virtual bool insertWeekImageList(WeekImageList* weekImageList) =0;
+    virtual bool updateDayImageList(DayImageList* dayImageList) = 0;
+    virtual DayImageList findDayImageListById(int id)= 0;
+    virtual QVector<DayImageList> getAllDayImageLists() =0;
+    virtual bool insertDayImageList(DayImageList* dayImageList) = 0;
 };
 
 #endif // DBMANAGER_H

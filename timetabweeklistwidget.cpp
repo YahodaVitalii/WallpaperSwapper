@@ -12,7 +12,7 @@ TimeTabWeekListWidget::TimeTabWeekListWidget(DBManager *dbManager, ImageManager 
     SetTimeTabWeekListWidgetStyle();
     CreateDialogWindowListOfImage();
     connect(interfaceAddition, &InterfaceAddition::setImageIntoWeekListItem, this, &TimeTabWeekListWidget::ShowDialogWindow);
-connect(interfaceAddition, &InterfaceAddition::weekImageListEditSignal, this, &TimeTabWeekListWidget::receiveWeekImageListEditSignal);
+    connect(interfaceAddition, &InterfaceAddition::weekImageListEditSignal, this, &TimeTabWeekListWidget::receiveWeekImageListEditSignal);
     currentImageIds = fillCurrentImageIds(days);
 
     currentWeekImageList = new WeekImageList();

@@ -25,7 +25,6 @@ SqliteDBManager* SqliteDBManager::getInstance() {
 
 
 void SqliteDBManager::connectToDataBase() {
-
     if (QFile(DATABASE_FILE_NAME).exists()) {
         this->openDataBase();
 
@@ -111,55 +110,9 @@ bool SqliteDBManager::createTables() {
         return false;
     }
     if (!query.exec("CREATE TABLE Day_images_table ("
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    "hour_00_image_id INTEGER,"
-                    "hour_01_image_id INTEGER,"
-                    "hour_02_image_id INTEGER,"
-                    "hour_03_image_id INTEGER,"
-                    "hour_04_image_id INTEGER,"
-                    "hour_05_image_id INTEGER,"
-                    "hour_06_image_id INTEGER,"
-                    "hour_07_image_id INTEGER,"
-                    "hour_08_image_id INTEGER,"
-                    "hour_09_image_id INTEGER,"
-                    "hour_10_image_id INTEGER,"
-                    "hour_11_image_id INTEGER,"
-                    "hour_12_image_id INTEGER,"
-                    "hour_13_image_id INTEGER,"
-                    "hour_14_image_id INTEGER,"
-                    "hour_15_image_id INTEGER,"
-                    "hour_16_image_id INTEGER,"
-                    "hour_17_image_id INTEGER,"
-                    "hour_18_image_id INTEGER,"
-                    "hour_19_image_id INTEGER,"
-                    "hour_20_image_id INTEGER,"
-                    "hour_21_image_id INTEGER,"
-                    "hour_22_image_id INTEGER,"
-                    "hour_23_image_id INTEGER,"
-                    "FOREIGN KEY (hour_00_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_01_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_02_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_03_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_04_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_05_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_06_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_07_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_08_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_09_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_10_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_11_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_12_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_13_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_14_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_15_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_16_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_17_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_18_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_19_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_20_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_21_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_22_image_id) REFERENCES TABLE_IMAGE(id),"
-                    "FOREIGN KEY (hour_23_image_id) REFERENCES TABLE_IMAGE(id))")) {
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    "name TEXT, "
+                    "images TEXT)")) {
         qDebug() << "DataBase: error of create imagessss";
         qDebug() << query.lastError().text();
         return false;
@@ -247,8 +200,7 @@ bool SqliteDBManager::deleteImageById(int imageId) {
     return true;
 }
 
-bool SqliteDBManager::insertImageList( RandomImageList *imageList)
-{
+bool SqliteDBManager::insertImageList( RandomImageList *imageList){
     if (!imageList) {
         qDebug() << "Null pointer received for image list!";
         return false;
@@ -272,8 +224,7 @@ bool SqliteDBManager::insertImageList( RandomImageList *imageList)
     return true;
 }
 
-QVector<RandomImageList> SqliteDBManager::getAllRandomImageLists()
-{
+QVector<RandomImageList> SqliteDBManager::getAllRandomImageLists(){
     QVector<RandomImageList> randomImageLists;
 
     QSqlQuery query;
@@ -356,8 +307,7 @@ bool SqliteDBManager::updateRandomImageList(RandomImageList* randomImageList) {
 
     return true;
 }
-bool SqliteDBManager::insertWeekImageList(WeekImageList* weekImageList)
-{
+bool SqliteDBManager::insertWeekImageList(WeekImageList* weekImageList){
     if (!weekImageList) {
         qDebug() << "Null pointer received for week image list!";
         return false;
@@ -380,8 +330,7 @@ bool SqliteDBManager::insertWeekImageList(WeekImageList* weekImageList)
     return true;
 }
 
-QVector<WeekImageList> SqliteDBManager::getAllWeekImageLists()
-{
+QVector<WeekImageList> SqliteDBManager::getAllWeekImageLists(){
     QVector<WeekImageList> weekImageLists;
 
     QSqlQuery query;
@@ -459,4 +408,104 @@ bool SqliteDBManager::updateWeekImageList(WeekImageList* weekImageList) {
 
     return true;
 }
+bool SqliteDBManager::insertDayImageList(DayImageList* dayImageList){
+    if (!dayImageList) {
+        qDebug() << "Null pointer received for day image list!";
+        return false;
+    }
+    // Серіалізуємо список у формат JSON
+    QString jsonString = dayImageList->toJsonString();
+    // Записуємо його в таблицю
+    QSqlQuery query;
+    query.prepare("INSERT INTO Week_images_table (name, images) VALUES (:name, :images)");
+    query.bindValue(":name", dayImageList->getName());
+    query.bindValue(":images", jsonString);
 
+    if (!query.exec()) {
+        qDebug() << "Error inserting day image list into Week_images_table:" << query.lastError().text();
+        return false;
+    }
+    // Отримуємо останній доданий ID та встановлюємо його у не `const` об'єкті
+    dayImageList->setId(query.lastInsertId().toInt());
+
+    return true;
+}
+
+QVector<DayImageList> SqliteDBManager::getAllDayImageLists(){
+    QVector<DayImageList> dayImageLists;
+
+    QSqlQuery query;
+    if (!query.exec("SELECT id, name, images FROM Week_images_table")) {
+        qDebug() << "Error retrieving all day image lists:" << query.lastError().text();
+        return dayImageLists; // Return an empty array in case of error
+    }
+
+    while (query.next()) {
+        int id = query.value(0).toInt();
+        QString name = query.value(1).toString();
+        QString jsonImages = query.value(2).toString();
+
+        DayImageList dayImageList;
+        dayImageList.fromJsonString(jsonImages);
+        dayImageList.setId(id);
+        dayImageList.setName(name); // Set the name
+        dayImageLists.append(dayImageList);
+    }
+
+    return dayImageLists;
+}
+
+DayImageList SqliteDBManager::findDayImageListById(int id) {
+    QSqlQuery query;
+    query.prepare("SELECT id, name, images FROM Week_images_table WHERE id = :id");
+    query.bindValue(":id", id);
+
+    if (!query.exec()) {
+        qDebug() << "Error retrieving day image list:" << query.lastError().text();
+        return DayImageList(); // Return a default-constructed DayImageList in case of error
+    }
+
+    if (query.next()) {
+        int id = query.value(0).toInt();
+        QString name = query.value(1).toString();
+        QString jsonImages = query.value(2).toString();
+
+        DayImageList dayImageList;
+        dayImageList.fromJsonString(jsonImages);
+        dayImageList.setId(id);
+        dayImageList.setName(name); // Set the name
+        return dayImageList;
+    }
+
+    return DayImageList(); // Return a default-constructed DayImageList if no record with such id is found
+}
+
+bool SqliteDBManager::updateDayImageList(DayImageList* dayImageList) {
+    if (!dayImageList) {
+        qDebug() << "Null pointer received for day image list!";
+        return false;
+    }
+
+    // Перевірка, чи відомий ідентифікатор списку
+    if (dayImageList->getId() == -1) {
+        qDebug() << "Unknown id for day image list!";
+        return false;
+    }
+
+    // Серіалізація списку у формат JSON
+    QString jsonString = dayImageList->toJsonString();
+
+    // Оновлення запису в базі даних
+    QSqlQuery query;
+    query.prepare("UPDATE Week_images_table SET name = :name, images = :images WHERE id = :id");
+    query.bindValue(":name", dayImageList->getName());
+    query.bindValue(":images", jsonString);
+    query.bindValue(":id", dayImageList->getId());
+
+    if (!query.exec()) {
+        qDebug() << "Error updating day image list:" << query.lastError().text();
+        return false;
+    }
+
+    return true;
+}

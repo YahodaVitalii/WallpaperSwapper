@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
     DBManager* dbManager = SqliteDBManager::getInstance();
 
     dbManager->connectToDataBase();
+
     MainWindow w(dbManager);
     w.show();
     return a.exec();
