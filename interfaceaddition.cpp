@@ -116,17 +116,40 @@ void InterfaceAddition::CreateWeekListOfImageView(int index,int id,QString name)
 
 }
 
-void InterfaceAddition::CreateDayListOfImageItem(int index)
+void InterfaceAddition::CreateDayListOfImageItem(int id,int index)
 {
 QWidget* DayListDayItemMeinWidget = new QWidget();
 DayListDayItemMeinWidget->setStyleSheet(Style::getIterfaceAdditionStyle());
 DayListDayItemMeinWidget->setFixedSize(560, 120);
 setWidgetIntoScrollArea(containerWidgetDayImageListCreate,DayListDayItemMeinWidget);
  CreateLableWithImage(DayListDayItemMeinWidget,index,15,5);
- CreateTimeEditor(DayListDayItemMeinWidget,290,10);
- CreateTimeEditor(DayListDayItemMeinWidget,390,10);
+ QTimeEdit* startTimeEdit = CreateTimeEditor(DayListDayItemMeinWidget,id,290,10);
+ QTimeEdit* endTimeEdit = CreateTimeEditor(DayListDayItemMeinWidget,id,390,10);
  CreateLableWithText(DayListDayItemMeinWidget,"from",245,10);
  CreateLableWithText(DayListDayItemMeinWidget,"to",370,10);
+
+ connect(startTimeEdit, &QTimeEdit::timeChanged, this, [=](const QTime& time) {
+        updateTimeEdit(id, time, endTimeEdit->time());
+    });
+
+   connect(endTimeEdit, &QTimeEdit::timeChanged, this, [=](const QTime& time) {
+       updateTimeEdit(id, startTimeEdit->time(), time);
+   });
+}
+
+void InterfaceAddition::CreateDayListOfImage(int index, int id,QString name, QString time)
+{
+QWidget* DayListViewMeinWidget = new QWidget();
+DayListViewMeinWidget->setStyleSheet(Style::getIterfaceAdditionStyle());
+DayListViewMeinWidget->setFixedSize(560, 120);
+setWidgetIntoScrollArea(containerWidgetDayImageListShow,DayListViewMeinWidget);
+CreateLableWithImage(DayListViewMeinWidget,index,15,5);
+ CreateLableWithText(DayListViewMeinWidget,name,290,25);
+  CreateLableWithText(DayListViewMeinWidget,time,290,65);
+ CreateButtonEdit(DayListViewMeinWidget,id,35,35,500,20);
+  CreateButtonDelete(DayListViewMeinWidget,index,35,35,500,70);
+  CreateButtonTurnOnTurnOff(DayListViewMeinWidget);
+
 }
 void InterfaceAddition::CreateLableWithImage(QWidget *listItemMeinWidget, int index, int cordinate_x, int cordinate_y)
 {
@@ -252,12 +275,14 @@ void InterfaceAddition::CreateButtonSetImage(QWidget *listItemMeinWidget,  QStri
     connect(ButtonSetImage, &QPushButton::clicked, this, &InterfaceAddition::on_ButtonSetImage_clicked);
 }
 
-void InterfaceAddition::CreateTimeEditor(QWidget *listItemMeinWidget,int cordinate_x,int cordinate_y)
+QTimeEdit* InterfaceAddition::CreateTimeEditor(QWidget *listItemMeinWidget,int id,int cordinate_x,int cordinate_y)
 {
 QTimeEdit* TimeEdit = new QTimeEdit(listItemMeinWidget);
 TimeEdit->setFixedSize(70,30);
 TimeEdit->move(cordinate_x, cordinate_y);
+TimeEdit->setProperty("id",id);
 TimeEdit->show();
+return TimeEdit;
 }
 
 
@@ -350,8 +375,10 @@ void InterfaceAddition::on_buttonImage_clicked() {
 
 void InterfaceAddition::on_buttonEdit_clicked()
 {
-    emit randomImageListEditSignal(sender()->property("ListId").toInt());
-    emit weekImageListEditSignal(sender()->property("ListId").toInt());
+    int elementId = sender()->property("ListId").toInt();
+//    emit randomImageListEditSignal(elementId);
+//    emit weekImageListEditSignal(elementId);
+    emit sendEditSignalToItem(elementId);
 
 }
 

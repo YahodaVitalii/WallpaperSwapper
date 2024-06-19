@@ -28,6 +28,7 @@ QString DayImageList::toJsonString() const {
         jsonTimeRangeImage["startTime"] = timeRangeImage.startTime;
         jsonTimeRangeImage["endTime"] = timeRangeImage.endTime;
         jsonTimeRangeImage["imageId"] = timeRangeImage.imageId;
+        jsonTimeRangeImage["id"] = timeRangeImage.id; // Include the new field
         jsonArray.append(jsonTimeRangeImage);
     }
 
@@ -39,6 +40,7 @@ QString DayImageList::toJsonString() const {
     return QString(jsonDoc.toJson(QJsonDocument::Compact));
 }
 
+// JSON deserialization method
 void DayImageList::fromJsonString(const QString& jsonString) {
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonString.toUtf8());
     QJsonObject jsonObj = jsonDoc.object();
@@ -52,7 +54,8 @@ void DayImageList::fromJsonString(const QString& jsonString) {
         TimeRangeImage timeRangeImage(
             jsonTimeRangeImage["startTime"].toString(),
             jsonTimeRangeImage["endTime"].toString(),
-            jsonTimeRangeImage["imageId"].toInt()
+            jsonTimeRangeImage["imageId"].toInt(),
+            jsonTimeRangeImage["id"].toInt() // Include the new field
         );
         images.append(timeRangeImage);
     }

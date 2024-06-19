@@ -12,7 +12,7 @@ TimeTabWeekListWidget::TimeTabWeekListWidget(DBManager *dbManager, ImageManager 
     SetTimeTabWeekListWidgetStyle();
     CreateDialogWindowListOfImage();
     connect(interfaceAddition, &InterfaceAddition::setImageIntoWeekListItem, this, &TimeTabWeekListWidget::ShowDialogWindow);
-    connect(interfaceAddition, &InterfaceAddition::weekImageListEditSignal, this, &TimeTabWeekListWidget::receiveWeekImageListEditSignal);
+    connect(interfaceAddition, &InterfaceAddition::sendEditSignalToItem, this, &TimeTabWeekListWidget::receiveWeekImageListEditSignal);
     currentImageIds = fillCurrentImageIds(days);
 
     currentWeekImageList = new WeekImageList();
@@ -119,6 +119,7 @@ void TimeTabWeekListWidget::on_CreateTabButtonBox_rejected()
 
 void TimeTabWeekListWidget::AddWeekListItem()
 {
+    currentWeekImageList = new WeekImageList();
     currentImageIds = fillCurrentImageIds(days);
     interfaceAddition->ClearConteinerWidget(interfaceAddition->getcontainerWidgetWeekImageListCreate());
     CreateTabCreateListOfWidgets();

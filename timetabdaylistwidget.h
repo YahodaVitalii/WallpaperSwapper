@@ -22,9 +22,15 @@ public:
 
     void SetTimeTabDayListWidgetStyle();
     void CreateDialogWindowListOfImage();
+    void CreateViewTabInterface();
+    void CreatInterfaceCreateTab();
+     void UpdateViewTabItem();
+     void AddNewDayList();
 public slots:
     void AddDayListItem();
     void addImageInList(int index);
+    void getTimeEditUpdatetData(int id,QTime startTime,QTime endTime);
+    void receiveDayImageListEditSignal(int id);
 private slots:
     void on_ButtonAddNewItemOfDayList_clicked();
 
@@ -40,7 +46,7 @@ private:
     ImageManager *imageManager;
     InterfaceAddition* interfaceAddition;
 
-    DayImageList* dayImageList;
+    DayImageList* currentDayImageList;
     QVector<DayImageList> DayImageLists;
     QVector<TimeRangeImage> currentImageIds;
 };

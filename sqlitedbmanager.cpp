@@ -417,10 +417,10 @@ bool SqliteDBManager::insertDayImageList(DayImageList* dayImageList){
     QString jsonString = dayImageList->toJsonString();
     // Записуємо його в таблицю
     QSqlQuery query;
-    query.prepare("INSERT INTO Week_images_table (name, images) VALUES (:name, :images)");
+    query.prepare("INSERT INTO Day_images_table (name, images) VALUES (:name, :images)");
     query.bindValue(":name", dayImageList->getName());
     query.bindValue(":images", jsonString);
-
+  qDebug() << "done";
     if (!query.exec()) {
         qDebug() << "Error inserting day image list into Week_images_table:" << query.lastError().text();
         return false;
@@ -435,7 +435,7 @@ QVector<DayImageList> SqliteDBManager::getAllDayImageLists(){
     QVector<DayImageList> dayImageLists;
 
     QSqlQuery query;
-    if (!query.exec("SELECT id, name, images FROM Week_images_table")) {
+    if (!query.exec("SELECT id, name, images FROM Day_images_table")) {
         qDebug() << "Error retrieving all day image lists:" << query.lastError().text();
         return dayImageLists; // Return an empty array in case of error
     }
@@ -457,7 +457,7 @@ QVector<DayImageList> SqliteDBManager::getAllDayImageLists(){
 
 DayImageList SqliteDBManager::findDayImageListById(int id) {
     QSqlQuery query;
-    query.prepare("SELECT id, name, images FROM Week_images_table WHERE id = :id");
+    query.prepare("SELECT id, name, images FROM Day_images_table WHERE id = :id");
     query.bindValue(":id", id);
 
     if (!query.exec()) {
@@ -497,7 +497,7 @@ bool SqliteDBManager::updateDayImageList(DayImageList* dayImageList) {
 
     // Оновлення запису в базі даних
     QSqlQuery query;
-    query.prepare("UPDATE Week_images_table SET name = :name, images = :images WHERE id = :id");
+    query.prepare("UPDATE Day_images_table SET name = :name, images = :images WHERE id = :id");
     query.bindValue(":name", dayImageList->getName());
     query.bindValue(":images", jsonString);
     query.bindValue(":id", dayImageList->getId());

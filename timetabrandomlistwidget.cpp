@@ -14,7 +14,7 @@ TimeTabRandomListWidget::TimeTabRandomListWidget(DBManager* dbManager, ImageMana
 
     interfaceAddition->CreateScrollArea(ui->CreateTab, interfaceAddition->getContainerWidgetRandomImageListCreate(),600,280,0,60);
     interfaceAddition->CreateScrollArea(ui->ViewTab, interfaceAddition->getcontainerWidgetRandomImageListShow(), 600, 360, 0, 10);
-    connect(interfaceAddition, &InterfaceAddition::randomImageListEditSignal, this, &TimeTabRandomListWidget::receiveRandomImageListEditSignal);
+    connect(interfaceAddition, &InterfaceAddition::sendEditSignalToItem, this, &TimeTabRandomListWidget::receiveRandomImageListEditSignal);
 
 }
 
@@ -78,6 +78,7 @@ void TimeTabRandomListWidget::addImageInList(int index)
 
 void TimeTabRandomListWidget::AddRandomListItem()
 {
+    CurrentRandomImageList = new RandomImageList();
     ui->timeEditTimeInterval->setTime(QTime(0, 0));
     currentImageIds.clear();
     interfaceAddition->ClearConteinerWidget(interfaceAddition->getContainerWidgetRandomImageListCreate());
