@@ -2,29 +2,30 @@
 
 InterfaceAddition::InterfaceAddition(QWidget *parent, DBManager* dbManager, ImageManager *imageManager): QWidget(parent),dbManager(dbManager),imageManager(imageManager)
 {
-    containerWidgetDWindowImageOfList = new QWidget();
-    containerWidgetRandomImageListCreate = new QWidget();
-    containerWidgetRandomImageListShow  = new QWidget();
-    containerWidgetWeekImageListCreate = new QWidget();
-    containerWidgetWeekImageListShow = new QWidget();
-    containerWidgetDayImageListCreate = new QWidget();
-    containerWidgetDayImageListShow = new QWidget();
+//    containerWidgetDWindowImageOfList = new QWidget();
+//    containerWidgetRandomImageListCreate = new QWidget();
+//    containerWidgetRandomImageListShow  = new QWidget();
+//    containerWidgetWeekImageListCreate = new QWidget();
+//    containerWidgetWeekImageListShow = new QWidget();
+//    containerWidgetDayImageListCreate = new QWidget();
+//    containerWidgetDayImageListShow = new QWidget();
 
 
-    QVBoxLayout *layout1 = new QVBoxLayout(containerWidgetDWindowImageOfList);
-    containerWidgetDWindowImageOfList->setLayout(layout1);
-    QVBoxLayout *layout2 = new QVBoxLayout(containerWidgetRandomImageListCreate);
-    containerWidgetRandomImageListCreate->setLayout(layout2);
-    QVBoxLayout *layout3 = new QVBoxLayout(containerWidgetRandomImageListShow);
-    containerWidgetRandomImageListShow->setLayout(layout3);
-    QVBoxLayout *layout4 =new QVBoxLayout(containerWidgetWeekImageListCreate);
-    containerWidgetWeekImageListCreate->setLayout(layout4);
-    QVBoxLayout *layout5 =new QVBoxLayout(containerWidgetWeekImageListShow);
-    containerWidgetWeekImageListShow->setLayout(layout5);
-    QVBoxLayout *layout6 =new QVBoxLayout(containerWidgetDayImageListCreate);
-    containerWidgetDayImageListCreate->setLayout(layout6);
-    QVBoxLayout *layout7 =new QVBoxLayout(containerWidgetDayImageListShow);
-    containerWidgetDayImageListShow->setLayout(layout7);
+//    QVBoxLayout *layout1 = new QVBoxLayout(containerWidgetDWindowImageOfList);
+//    containerWidgetDWindowImageOfList->setLayout(layout1);
+//    QVBoxLayout *layout2 = new QVBoxLayout(containerWidgetRandomImageListCreate);
+//    containerWidgetRandomImageListCreate->setLayout(layout2);
+//    QVBoxLayout *layout3 = new QVBoxLayout(containerWidgetRandomImageListShow);
+//    containerWidgetRandomImageListShow->setLayout(layout3);
+//    QVBoxLayout *layout4 =new QVBoxLayout(containerWidgetWeekImageListCreate);
+//    containerWidgetWeekImageListCreate->setLayout(layout4);
+//    QVBoxLayout *layout5 =new QVBoxLayout(containerWidgetWeekImageListShow);
+//    containerWidgetWeekImageListShow->setLayout(layout5);
+//    QVBoxLayout *layout6 =new QVBoxLayout(containerWidgetDayImageListCreate);
+//    containerWidgetDayImageListCreate->setLayout(layout6);
+//    QVBoxLayout *layout7 =new QVBoxLayout(containerWidgetDayImageListShow);
+//    containerWidgetDayImageListShow->setLayout(layout7);
+
 }
 
 InterfaceAddition::~InterfaceAddition()
@@ -34,122 +35,121 @@ InterfaceAddition::~InterfaceAddition()
     //        delete containerWidgetRandomImageListShow;
 }
 
-void InterfaceAddition::CreateListOfImageItem( int index)
+QWidget *InterfaceAddition::CreateListOfImageItem(int imageIndex)
 {
     QWidget* listItemMeinWidget = new QWidget();
     listItemMeinWidget->setStyleSheet(Style::getImageListStyle());
     listItemMeinWidget->setFixedSize(260, 120);
 
-    setWidgetIntoScrollArea(containerWidgetDWindowImageOfList,listItemMeinWidget);
-    //listItemMeinWidget->move(20, listItemCordinate_y);
-
-
-    listItemMeinWidget->show();
-
-    CreateLableWithImage(listItemMeinWidget,index,5,5);
-    CreateButtonImage(listItemMeinWidget,index);
-    CreateButtonFullSize(listItemMeinWidget,index);
-    CreateButtonDelete(listItemMeinWidget,index,25,25,230,90);
+    CreateLableWithImage(listItemMeinWidget,imageIndex,5,5);
+    CreateButtonImage(listItemMeinWidget,imageIndex);
+    CreateButtonFullSize(listItemMeinWidget,imageIndex);
+    CreateButtonDelete(listItemMeinWidget,imageIndex,25,25,230,90);
     CreateButtonInfo(listItemMeinWidget);
 
-
+    return listItemMeinWidget;
 }
-void InterfaceAddition::CreateRandomListOfImageItem(int index)
+QWidget *InterfaceAddition::CreateRandomListOfImageItem(int imageIndex)
 {
     QWidget* RandomListItemMeinWidget = new QWidget();
     RandomListItemMeinWidget->setStyleSheet(Style::getImageListStyle());
     RandomListItemMeinWidget->setFixedSize(310, 120);
     //RandomListItemMeinWidget->move(100,0);
 
-
-
-
     RandomListItemMeinWidget->setStyleSheet(Style::getIterfaceAdditionStyle());
-    setWidgetIntoScrollArea(containerWidgetRandomImageListCreate,RandomListItemMeinWidget);
-    CreateLableWithImage(RandomListItemMeinWidget,index,10,5);
-    CreateButtonFullSize(RandomListItemMeinWidget,index);
-    CreateButtonDelete(RandomListItemMeinWidget,index,25,25,230,90);
+    //setWidgetIntoScrollArea(containerWidgetRandomImageListCreate,RandomListItemMeinWidget);
+    CreateLableWithImage(RandomListItemMeinWidget,imageIndex,10,5);
+    CreateButtonFullSize(RandomListItemMeinWidget,imageIndex);
+    CreateButtonDelete(RandomListItemMeinWidget,imageIndex,25,25,230,90);
     CreateButtonInfo(RandomListItemMeinWidget);
+
+    return RandomListItemMeinWidget;
 }
 
-void InterfaceAddition::CreateRandomListOfImageView(int index, int id, QString name, QString time)
+QWidget *InterfaceAddition::CreateRandomListOfImageView(const RandomImageList *randomImageList)
 {
     QWidget* RandomListViewItemMeinWidget = new QWidget();
     RandomListViewItemMeinWidget->setStyleSheet(Style::getIterfaceAdditionStyle());
     RandomListViewItemMeinWidget->setFixedSize(560, 120);
-    setWidgetIntoScrollArea(containerWidgetRandomImageListShow,RandomListViewItemMeinWidget);
-    RandomListViewItemMeinWidget->show();
-    CreateLableWithImage(RandomListViewItemMeinWidget,index,15,5);
+    //setWidgetIntoScrollArea(containerWidgetRandomImageListShow,RandomListViewItemMeinWidget);
+    //RandomListViewItemMeinWidget->show();
+    CreateLableWithImage(RandomListViewItemMeinWidget,imageManager->findImageById(randomImageList->imageIds[0]),15,5);
     CreateButtonTurnOnTurnOff(RandomListViewItemMeinWidget);
-    CreateLableWithText(RandomListViewItemMeinWidget,name,290,65);
-    CreateLableWithText(RandomListViewItemMeinWidget,time,290,95);
-    CreateButtonDelete(RandomListViewItemMeinWidget,index,35,35,500,70);
-    CreateButtonEdit(RandomListViewItemMeinWidget,id,35,35,500,20);
+    CreateLableWithText(RandomListViewItemMeinWidget,randomImageList->getName(),290,65);
+    CreateLableWithText(RandomListViewItemMeinWidget,randomImageList->getTimeInterval().toString(),290,95);
+    CreateButtonDelete(RandomListViewItemMeinWidget,randomImageList->getId(),35,35,500,70);
+    CreateButtonEdit(RandomListViewItemMeinWidget,randomImageList->getId(),35,35,500,20);
+
+    return RandomListViewItemMeinWidget;
 
 }
 
-void InterfaceAddition::CreateWeekListOfImageItem(int index,QString DayOfWeek)
+QWidget *InterfaceAddition::CreateWeekListOfImageItem(int imageIndex, QString DayOfWeek)
 {
     QWidget* WeekListDayItemMeinWidget = new QWidget();
     WeekListDayItemMeinWidget->setStyleSheet(Style::getIterfaceAdditionStyle());
     WeekListDayItemMeinWidget->setFixedSize(560, 120);
-    setWidgetIntoScrollArea(containerWidgetWeekImageListCreate,WeekListDayItemMeinWidget);
-     CreateLableWithImage(WeekListDayItemMeinWidget,index,5,5);
+    //setWidgetIntoScrollArea(containerWidgetWeekImageListCreate,WeekListDayItemMeinWidget);
+    CreateLableWithImage(WeekListDayItemMeinWidget,imageIndex,5,5);
     CreateButtonSetImage(WeekListDayItemMeinWidget,DayOfWeek,220,110,5,5);
     CreateLableWithText(WeekListDayItemMeinWidget,DayOfWeek,290,95);
 
-
+ return WeekListDayItemMeinWidget;
 }
 
-void InterfaceAddition::CreateWeekListOfImageView(int index,int id,QString name)
+QWidget *InterfaceAddition::CreateWeekListOfImageView(const WeekImageList* weekImageList)
 {
 
     QWidget* WeekListViewItemMeinWidget = new QWidget();
     WeekListViewItemMeinWidget->setStyleSheet(Style::getIterfaceAdditionStyle());
     WeekListViewItemMeinWidget->setFixedSize(560, 120);
-    setWidgetIntoScrollArea(containerWidgetWeekImageListShow,WeekListViewItemMeinWidget);
-    CreateLableWithImage(WeekListViewItemMeinWidget,index,15,5);
-    CreateLableWithText(WeekListViewItemMeinWidget,name,290,65);
-     CreateButtonTurnOnTurnOff(WeekListViewItemMeinWidget);
-     CreateButtonDelete(WeekListViewItemMeinWidget,index,35,35,500,70);
-     CreateButtonEdit(WeekListViewItemMeinWidget,id,35,35,500,20);
+    //setWidgetIntoScrollArea(containerWidgetWeekImageListShow,WeekListViewItemMeinWidget);
+    CreateLableWithImage(WeekListViewItemMeinWidget,weekImageList->images["Other days"],15,5);
+    CreateLableWithText(WeekListViewItemMeinWidget,weekImageList->getName(),290,65);
+    CreateButtonTurnOnTurnOff(WeekListViewItemMeinWidget);
+    CreateButtonDelete(WeekListViewItemMeinWidget,weekImageList->getId(),35,35,500,70);
+    CreateButtonEdit(WeekListViewItemMeinWidget,weekImageList->getId(),35,35,500,20);
 
+    return WeekListViewItemMeinWidget;
 }
 
-void InterfaceAddition::CreateDayListOfImageItem(int id,int index)
+QWidget *InterfaceAddition::CreateDayListOfImageItem(const TimeRangeImage* item)
 {
-QWidget* DayListDayItemMeinWidget = new QWidget();
-DayListDayItemMeinWidget->setStyleSheet(Style::getIterfaceAdditionStyle());
-DayListDayItemMeinWidget->setFixedSize(560, 120);
-setWidgetIntoScrollArea(containerWidgetDayImageListCreate,DayListDayItemMeinWidget);
- CreateLableWithImage(DayListDayItemMeinWidget,index,15,5);
- QTimeEdit* startTimeEdit = CreateTimeEditor(DayListDayItemMeinWidget,id,290,10);
- QTimeEdit* endTimeEdit = CreateTimeEditor(DayListDayItemMeinWidget,id,390,10);
- CreateLableWithText(DayListDayItemMeinWidget,"from",245,10);
- CreateLableWithText(DayListDayItemMeinWidget,"to",370,10);
+    QWidget* DayListDayItemMeinWidget = new QWidget();
+    DayListDayItemMeinWidget->setStyleSheet(Style::getIterfaceAdditionStyle());
+    DayListDayItemMeinWidget->setFixedSize(560, 120);
+    //setWidgetIntoScrollArea(containerWidgetDayImageListCreate,DayListDayItemMeinWidget);
+    CreateLableWithImage(DayListDayItemMeinWidget,item->imageId,15,5);
+    QTimeEdit* startTimeEdit = CreateTimeEditor(DayListDayItemMeinWidget,item->id,290,10);
+    QTimeEdit* endTimeEdit = CreateTimeEditor(DayListDayItemMeinWidget,item->id,390,10);
+    CreateLableWithText(DayListDayItemMeinWidget,"from",245,10);
+    CreateLableWithText(DayListDayItemMeinWidget,"to",370,10);
 
- connect(startTimeEdit, &QTimeEdit::timeChanged, this, [=](const QTime& time) {
-        updateTimeEdit(id, time, endTimeEdit->time());
+    connect(startTimeEdit, &QTimeEdit::timeChanged, this, [=](const QTime& time) {
+        updateTimeEdit(item->id, time, endTimeEdit->time());
     });
 
-   connect(endTimeEdit, &QTimeEdit::timeChanged, this, [=](const QTime& time) {
-       updateTimeEdit(id, startTimeEdit->time(), time);
-   });
+    connect(endTimeEdit, &QTimeEdit::timeChanged, this, [=](const QTime& time) {
+        updateTimeEdit(item->id, startTimeEdit->time(), time);
+    });
+
+    return DayListDayItemMeinWidget;
 }
 
-void InterfaceAddition::CreateDayListOfImage(int index, int id,QString name, QString time)
+QWidget *InterfaceAddition::CreateDayListOfImage(const DayImageList *dayImageList)
 {
-QWidget* DayListViewMeinWidget = new QWidget();
-DayListViewMeinWidget->setStyleSheet(Style::getIterfaceAdditionStyle());
-DayListViewMeinWidget->setFixedSize(560, 120);
-setWidgetIntoScrollArea(containerWidgetDayImageListShow,DayListViewMeinWidget);
-CreateLableWithImage(DayListViewMeinWidget,index,15,5);
- CreateLableWithText(DayListViewMeinWidget,name,290,25);
-  CreateLableWithText(DayListViewMeinWidget,time,290,65);
- CreateButtonEdit(DayListViewMeinWidget,id,35,35,500,20);
-  CreateButtonDelete(DayListViewMeinWidget,index,35,35,500,70);
-  CreateButtonTurnOnTurnOff(DayListViewMeinWidget);
 
+    QWidget* DayListViewMeinWidget = new QWidget();
+    DayListViewMeinWidget->setStyleSheet(Style::getIterfaceAdditionStyle());
+    DayListViewMeinWidget->setFixedSize(560, 120);
+    //setWidgetIntoScrollArea(containerWidgetDayImageListShow,DayListViewMeinWidget);
+    CreateLableWithImage(DayListViewMeinWidget,dayImageList->images[0].imageId,15,5);
+    CreateLableWithText(DayListViewMeinWidget,dayImageList->getName(),290,25);
+    CreateLableWithText(DayListViewMeinWidget,dayImageList->images[0].startTime + dayImageList->images[0].endTime,290,65);
+    CreateButtonEdit(DayListViewMeinWidget,dayImageList->getId(),35,35,500,20);
+    CreateButtonDelete(DayListViewMeinWidget,dayImageList->getId(),35,35,500,70);
+    CreateButtonTurnOnTurnOff(DayListViewMeinWidget);
+    return DayListViewMeinWidget;
 }
 void InterfaceAddition::CreateLableWithImage(QWidget *listItemMeinWidget, int index, int cordinate_x, int cordinate_y)
 {
@@ -214,10 +214,15 @@ void InterfaceAddition::CreateButtonImage(QWidget *listItemMeinWidget, int index
     connect(buttonImage, &QPushButton::clicked, this, &InterfaceAddition::on_buttonImage_clicked);
 }
 
-void InterfaceAddition::setWidgetIntoScrollArea(QWidget *conteinerWidget, QWidget *childWidget)
-{
-    QVBoxLayout *layout = qobject_cast<QVBoxLayout*>(conteinerWidget->layout());
+void InterfaceAddition::setWidgetIntoScrollArea(QWidget* containerWidget, QWidget* childWidget) {
+    QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(containerWidget->layout()); // на цьому рядку падає програма
+
+    if (!layout) {
+        layout = new QVBoxLayout(containerWidget);
+    }
+
     layout->addWidget(childWidget);
+
 }
 
 void InterfaceAddition::CreateButtonTurnOnTurnOff(QWidget *conteinerWidget)
@@ -277,61 +282,61 @@ void InterfaceAddition::CreateButtonSetImage(QWidget *listItemMeinWidget,  QStri
 
 QTimeEdit* InterfaceAddition::CreateTimeEditor(QWidget *listItemMeinWidget,int id,int cordinate_x,int cordinate_y)
 {
-QTimeEdit* TimeEdit = new QTimeEdit(listItemMeinWidget);
-TimeEdit->setFixedSize(70,30);
-TimeEdit->move(cordinate_x, cordinate_y);
-TimeEdit->setProperty("id",id);
-TimeEdit->show();
-return TimeEdit;
+    QTimeEdit* TimeEdit = new QTimeEdit(listItemMeinWidget);
+    TimeEdit->setFixedSize(70,30);
+    TimeEdit->move(cordinate_x, cordinate_y);
+    TimeEdit->setProperty("id",id);
+    TimeEdit->show();
+    return TimeEdit;
 }
 
 
 
-QWidget* InterfaceAddition::getContainerWidgetDWindowImageOfList() const
-{
-    return containerWidgetDWindowImageOfList;
-}
+//QWidget* InterfaceAddition::getContainerWidgetDWindowImageOfList() const
+//{
+//    return containerWidgetDWindowImageOfList;
+//}
 
-void InterfaceAddition::CreateContainerWidgetDWindowImageOfList()
-{
-    containerWidgetDWindowImageOfList =  new QWidget();
-}
+//void InterfaceAddition::CreateContainerWidgetDWindowImageOfList()
+//{
+//    containerWidgetDWindowImageOfList =  new QWidget();
+//}
 
-void InterfaceAddition::DeleteContainerWidgetDWindowImageOfList()
-{
-    delete containerWidgetDWindowImageOfList;
-    containerWidgetDWindowImageOfList = nullptr;
-}
+//void InterfaceAddition::DeleteContainerWidgetDWindowImageOfList()
+//{
+//    delete containerWidgetDWindowImageOfList;
+//    containerWidgetDWindowImageOfList = nullptr;
+//}
 
-QWidget *InterfaceAddition::getContainerWidgetRandomImageListCreate() const
-{
-    return containerWidgetRandomImageListCreate;
-}
+//QWidget *InterfaceAddition::getContainerWidgetRandomImageListCreate() const
+//{
+//    return containerWidgetRandomImageListCreate;
+//}
 
-QWidget *InterfaceAddition::getcontainerWidgetRandomImageListShow() const
-{
-    return containerWidgetRandomImageListShow;
-}
+//QWidget *InterfaceAddition::getcontainerWidgetRandomImageListShow() const
+//{
+//    return containerWidgetRandomImageListShow;
+//}
 
-QWidget *InterfaceAddition::getcontainerWidgetWeekImageListCreate() const
-{
-    return containerWidgetWeekImageListCreate;
-}
+//QWidget *InterfaceAddition::getcontainerWidgetWeekImageListCreate() const
+//{
+//    return containerWidgetWeekImageListCreate;
+//}
 
-QWidget *InterfaceAddition::getcontainerWidgetWeekImageListShow() const
-{
-    return containerWidgetWeekImageListShow;
-}
+//QWidget *InterfaceAddition::getcontainerWidgetWeekImageListShow() const
+//{
+//    return containerWidgetWeekImageListShow;
+//}
 
-QWidget *InterfaceAddition::getcontainerWidgetDayImageListCreate() const
-{
-   return containerWidgetDayImageListCreate;
-}
+//QWidget *InterfaceAddition::getcontainerWidgetDayImageListCreate() const
+//{
+//    return containerWidgetDayImageListCreate;
+//}
 
-QWidget *InterfaceAddition::getcontainerWidgetDayImageListShow() const
-{
-    return containerWidgetDayImageListShow;
-}
+//QWidget *InterfaceAddition::getcontainerWidgetDayImageListShow() const
+//{
+//    return containerWidgetDayImageListShow;
+//}
 
 void InterfaceAddition::CreateScrollArea(QWidget *parent, QWidget *child,int width,int hight,int cordinate_X, int cordinate_Y)
 {
@@ -369,23 +374,23 @@ void InterfaceAddition::on_buttonFullSize_clicked()
 
 void InterfaceAddition::on_buttonImage_clicked() {
     int index = sender()->property("imageIndex").toInt();
-   emit imageSelected(index);  // Сигнал передає індекс зображення
+    emit imageSelected(index);  // Сигнал передає індекс зображення
     //qDebug()<<4545;
 }
 
 void InterfaceAddition::on_buttonEdit_clicked()
 {
     int elementId = sender()->property("ListId").toInt();
-//    emit randomImageListEditSignal(elementId);
-//    emit weekImageListEditSignal(elementId);
+    //    emit randomImageListEditSignal(elementId);
+    //    emit weekImageListEditSignal(elementId);
     emit sendEditSignalToItem(elementId);
 
 }
 
 void InterfaceAddition::on_ButtonSetImage_clicked()
 {
-   // qDebug()<<"here";
-   QString day = sender()->property("DayOfButton").toString();
-   emit setImageIntoWeekListItem(day);  // Сигнал передає індекс зображення
+    // qDebug()<<"here";
+    QString day = sender()->property("DayOfButton").toString();
+    emit setImageIntoWeekListItem(day);  // Сигнал передає індекс зображення
 }
 

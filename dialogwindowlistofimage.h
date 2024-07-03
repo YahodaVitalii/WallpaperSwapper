@@ -44,9 +44,7 @@ private:
     ImageManager* imageManager;
     InterfaceAddition* interfaceAddition;
 
-
-    // QScrollArea* scrollArea =new QScrollArea(this);
-     //QWidget *containerWidget = new QWidget();
+     QWidget *scrollAreaConterinerWidget;
 };
 
 #endif // DIALOGWINDOWLISTOFIMAGE_H

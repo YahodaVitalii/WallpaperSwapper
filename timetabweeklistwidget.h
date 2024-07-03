@@ -24,6 +24,7 @@ public:
     void CreateTabViewListOfWidgets();
     void AddNewWeekImageList();
    void  UpdateViewTabItem();
+   void SetScrollAreaAndConteinerForItems();
      QMap<QString, int> fillCurrentImageIds(const QStringList& keys);
 private slots:
 
@@ -40,6 +41,9 @@ public slots:
 private:
     Ui::TimeTabWeekListWidget *ui;
     DialogWindowListOfImage* dialogWindowListOfImage;
+    QWidget *scrollAreaConterinerCreateTab;
+    QWidget *scrollAreaConterinerViewTab;
+
     DBManager* dbManager;
     ImageManager *imageManager;
     InterfaceAddition* interfaceAddition;

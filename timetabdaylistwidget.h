@@ -26,6 +26,7 @@ public:
     void CreatInterfaceCreateTab();
      void UpdateViewTabItem();
      void AddNewDayList();
+     void SetScrollAreaAndConteinerForItems();
 public slots:
     void AddDayListItem();
     void addImageInList(int index);
@@ -41,6 +42,8 @@ private slots:
 private:
     Ui::TimeTabDayListWidget *ui;
     DialogWindowListOfImage* dialogWindowListOfImage;
+    QWidget *scrollAreaConterinerCreateTab;
+    QWidget *scrollAreaConterinerViewTab;
 
     DBManager* dbManager;
     ImageManager *imageManager;
@@ -49,6 +52,8 @@ private:
     DayImageList* currentDayImageList;
     QVector<DayImageList> DayImageLists;
     QVector<TimeRangeImage> currentImageIds;
+
+
 };
 
 #endif // TIMETABDAYLISTWIDGET_H

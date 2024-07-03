@@ -24,6 +24,7 @@ public:
     void CreatInterfaceCreateTab();
     void CreateViewTabItem();
     void UpdateViewTabItem();
+     void SetScrollAreaAndConteinerForItems();
 private slots:
 
     void on_ButtonAddNewItemOfRandomList_clicked();
@@ -42,6 +43,8 @@ public slots:
 private:
     Ui::TimeTabRandomListWidget *ui;
     DialogWindowListOfImage* dialogWindowListOfImage;
+    QWidget *scrollAreaConterinerCreateTab;
+    QWidget *scrollAreaConterinerViewTab;
 
     DBManager* dbManager;
     ImageManager *imageManager;

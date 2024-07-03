@@ -21,7 +21,7 @@ public:
     RandomImageList();
     RandomImageList(QString name, const QDateTime& interval, const QVector<int>& ids);
 
-    QString getName();
+    QString getName() const;
     void setName(QString name);
 
     // Геттери та сеттери

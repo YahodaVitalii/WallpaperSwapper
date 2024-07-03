@@ -5,7 +5,7 @@ RandomImageList::RandomImageList() : id(-1) {}
 RandomImageList::RandomImageList(QString name,const QDateTime& interval, const QVector<int>& ids)
     : id(-1), name(name),timeInterval(interval), imageIds(ids) {}
 
-QString RandomImageList::getName()
+QString RandomImageList::getName() const
 {
     return name;
 }

@@ -8,15 +8,15 @@ DialogWindowListOfImage::DialogWindowListOfImage(DBManager* dbManager, ImageMana
 {
     ui->setupUi(this);
     ui->ListOfImageMenuBar->setStyleSheet(Style::getMenuBarStyle());
-
-interfaceAddition->CreateScrollArea(this, interfaceAddition->getContainerWidgetDWindowImageOfList(),300,420,0,80);
+    scrollAreaConterinerWidget = new QWidget(this);
+    interfaceAddition->CreateScrollArea(this, scrollAreaConterinerWidget,300,420,0,80);
     CreateListOfImageIntarface();
 }
 
 void DialogWindowListOfImage::CreateListOfImageIntarface()
 {
     for(int i = 0; i<imageManager->getsizeOfImages();i++){
-        interfaceAddition->CreateListOfImageItem(i);
+       interfaceAddition->setWidgetIntoScrollArea(scrollAreaConterinerWidget, interfaceAddition->CreateListOfImageItem(i));
     }
 }
 void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
@@ -24,7 +24,7 @@ void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
     if (imageId != -1) {  // Перевірте, що ID є дійсним
         int imageIndex = imageManager->findImageById(imageId);
         if (imageIndex != -1) { // Перевірте, чи знайдено зображення з таким індексом
-            interfaceAddition->CreateListOfImageItem(imageIndex);
+           interfaceAddition->setWidgetIntoScrollArea(scrollAreaConterinerWidget, interfaceAddition->CreateListOfImageItem(imageIndex));
         } else {
             qDebug() << "Image not found for ID:" << imageId;
             // Обробити помилку, якщо зображення не знайдено
@@ -34,10 +34,6 @@ void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
         // Обробити помилку, якщо не вдалося вибрати зображення
     }
 }
-//void DialogWindowListOfImage::on_buttonFullSize_clicked() {
-//    QString imageUrl = imageManager->GetImageByIndex(sender()->property("imageIndex").toInt()).getUrl();
-//    QDesktopServices::openUrl(QUrl("file:///" + imageUrl));
-//}
 
 //void DialogWindowListOfImage::on_buttonInfo_clicked() {
 //    qDebug() << "Info button clicked";
@@ -55,11 +51,6 @@ void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
 //    CreateListOfImageIntarface();
 //}
 
-//void DialogWindowListOfImage::on_buttonImage_clicked()
-//{
-//    int index = sender()->property("imageIndex").toInt();
-//    emit imageSelected(index);
-//}
 DialogWindowListOfImage::~DialogWindowListOfImage()
 {
  delete ui;

@@ -8,9 +8,9 @@ TimeTab::TimeTab(DBManager *dbManager,ImageManager* imageManager,QWidget *parent
     ui->setupUi(this);
     ui->TimeTabWidget->setStyleSheet(Style::getTabsStyle());
     ui->TimeTabMenuBar->setStyleSheet(Style::getMenuBarStyle());
-    //CreateimeTabRandomListWidget();
-   //CreateTimeTabWeekListWidget();
-    CreateTimeTabDayListWidget();
+    CreateimeTabRandomListWidget();
+     //CreateTimeTabWeekListWidget();
+    //CreateTimeTabDayListWidget();
 }
 
 TimeTab::~TimeTab()

@@ -11,14 +11,12 @@ MainWindow::MainWindow(DBManager* dbManager,QWidget *parent)
     ui->setupUi(this);
 
     setInterfaceStyle();
-    imageManager = new ImageManager(dbManager);
+   imageManager = new ImageManager(dbManager);
     standartTab = new StandartTab(this->dbManager,imageManager,this);
-    //standartTab ->show();
     standartTab ->move(165, 0);
    // standartTab->setStyleSheet(Style::getTabsStyle());
 
     timeTab = new TimeTab(this->dbManager,imageManager,this);
-   // timeTab->show();
     timeTab->move(165, 0);
 
 }
