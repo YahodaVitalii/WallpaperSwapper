@@ -166,7 +166,31 @@ QString Style::getIterfaceAdditionStyle()
            "}"
            "QPushButton::hover {"
            "background-color: rgb(182, 184, 186);"
-           "}";
+           "}"
+           "QCheckBox {"
+                   "    spacing: 0px;"
+                   "    padding: 0px;"
+                   "    margin: 0px;"
+           "border:none;"
+
+                  "}"
+                  "QCheckBox::indicator {"
+                  "    width: 160px;"
+                  "    height: 60px;"
+
+                  "}"
+                  "QCheckBox::indicator:unchecked {"
+                  "    image: url(:/resource/off-button.png);"
+                  "}"
+//                  "QCheckBox::indicator:unchecked:hover {"
+//                  "    image: url(:/resource/checkbox_unchecked_hover.png);"
+//                  "}"
+                  "QCheckBox::indicator:checked {"
+                  "    image: url(:/resource/on-button.png);"
+                  "}";
+//                  "QCheckBox::indicator:checked:hover {"
+//                  "    image: url(:/resource/checkbox_checked_hover.png);"
+//                  "}";
 }
 
 QString Style::getOnOffButtonStyle()

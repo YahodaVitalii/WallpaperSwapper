@@ -21,7 +21,6 @@ QMap<QString, int> WeekImageList::getImages() const { return images; }
 
 void WeekImageList::setImages(const QMap<QString, int>& newImages) { images = newImages; }
 
-// Методи серіалізації та десеріалізації у формат JSON
 QString WeekImageList::toJsonString() const {
     QJsonObject jsonObj;
     for (auto it = images.begin(); it != images.end(); ++it) {

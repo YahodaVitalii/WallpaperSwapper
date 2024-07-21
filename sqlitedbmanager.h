@@ -31,6 +31,7 @@ public:
     static SqliteDBManager* getInstance();
     void connectToDataBase() override;
     QSqlDatabase getDB() override;
+
     bool insertIntoImageTable(const WlapperImage& wlapperImage) override;
     QVector<WlapperImage> getAllImages() override;
     bool deleteImageById(int imageId) override;

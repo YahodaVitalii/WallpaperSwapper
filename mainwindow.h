@@ -36,8 +36,7 @@ private:
     TimeTab* timeTab;
 
     DBManager* dbManager;
-    ImageManager* imageManager;
-    QSqlTableModel* model;
+    ImagesList* imagesList;
 
     void setInterfaceStyle();
 };

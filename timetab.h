@@ -6,7 +6,7 @@
 #include <QStyleOption>
 #include <QFileDialog>
 #include "sqlitedbmanager.h"
-#include "imagemanager.h"
+#include "imageslist.h"
 #include "style.h"
 #include "timetabrandomlistwidget.h"
 #include "timetabweeklistwidget.h"
@@ -20,17 +20,21 @@ class TimeTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit TimeTab(DBManager* dbManager,ImageManager* imageManager,QWidget *parent = nullptr);
+    explicit TimeTab(DBManager* dbManager,ImagesList* imageManager,QWidget *parent = nullptr);
     ~TimeTab();
-    void CreateimeTabRandomListWidget();
-    void CreateTimeTabWeekListWidget();
-    void CreateTimeTabDayListWidget();
+
 
 private slots:
 
 
     void on_TimeTabMenuBarPlusButton_clicked();
 
+
+    void on_TimeTabMenuBarRandomButton_clicked();
+
+    void on_TimeTabMenuBarWeekButton_clicked();
+
+    void on_TimeTabMenuBarDayButton_clicked();
 
 signals:
     void SendSignalForRandomListWidget();
@@ -39,12 +43,17 @@ signals:
 private:
     Ui::TimeTab *ui;
     DBManager* dbManager;
-    ImageManager* imageManager;
+    ImagesList* imageManager;
 
     TimeTabRandomListWidget* timeTabRandomListWidget;
     TimeTabWeekListWidget* timeTabWeekListWidget;
     TimeTabDayListWidget*  timeTabDayListWidget;
 
+    void CreateimeTabRandomListWidget();
+    void CreateTimeTabWeekListWidget();
+    void CreateTimeTabDayListWidget();
+
+    void showTab(QWidget* tab);
 };
 
 #endif // TIMETAB_H

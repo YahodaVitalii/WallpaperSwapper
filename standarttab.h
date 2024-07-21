@@ -9,8 +9,9 @@
 #include <QMessageBox>
 #include "sqlitedbmanager.h"
 #include "dialogwindowlistofimage.h"
+#include "wlappersetter.h"
 
-#include "imagemanager.h"
+#include "imageslist.h"
 namespace Ui {
 class StandartTab;
 }
@@ -20,7 +21,7 @@ class StandartTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit StandartTab(DBManager* dbManager, ImageManager* imageManager,QWidget *parent = nullptr);
+    explicit StandartTab(DBManager* dbManager, ImagesList* imageManager,QWidget *parent = nullptr);
     ~StandartTab();
 
     void showImage(int index);
@@ -48,10 +49,12 @@ private:
     Ui::StandartTab *ui;
 
     DBManager* dbManager;
-    ImageManager* imageManager;
+    ImagesList* imageManager;
+    ImageLoader* imageLoader;
+    WlapperSetter* wlapperSetter;
 
     DialogWindowListOfImage* dialogWindowListOfImage;
-   InterfaceAddition* interfaceAddition;
+    InterfaceAddition* interfaceAddition;
     int currentIndex = 0;
 };
 

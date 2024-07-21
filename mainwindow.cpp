@@ -11,17 +11,15 @@ MainWindow::MainWindow(DBManager* dbManager,QWidget *parent)
     ui->setupUi(this);
 
     setInterfaceStyle();
-   imageManager = new ImageManager(dbManager);
-    standartTab = new StandartTab(this->dbManager,imageManager,this);
-    standartTab ->move(165, 0);
-   // standartTab->setStyleSheet(Style::getTabsStyle());
+   imagesList = new ImagesList(dbManager);
 
-    timeTab = new TimeTab(this->dbManager,imageManager,this);
+   standartTab = new StandartTab(this->dbManager,imagesList,this);
+    standartTab ->move(165, 0);
+
+    timeTab = new TimeTab(this->dbManager,imagesList,this);
     timeTab->move(165, 0);
 
 }
-
-
 
 MainWindow::~MainWindow()
 {
@@ -63,6 +61,5 @@ void MainWindow::on_mainMenuTimeButton_clicked()
 {
     timeTab->show();
     standartTab ->hide();
-
 }
 

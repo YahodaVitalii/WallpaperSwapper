@@ -13,10 +13,8 @@ struct TimeRangeImage {
     int imageId;
     int id; // Нове поле
 
-    // Конструктор за замовчуванням, ініціалізація полів
     TimeRangeImage() : startTime(""), endTime(""), imageId(-1), id(-1) {}
 
-    // Конструктор з параметрами, ініціалізація всіх полів
     TimeRangeImage(const QString& start, const QString& end, int imageId, int id)
         : startTime(start), endTime(end), imageId(imageId), id(id) {}
 };

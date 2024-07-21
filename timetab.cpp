@@ -1,7 +1,7 @@
 #include "timetab.h"
 #include "ui_timetab.h"
 
-TimeTab::TimeTab(DBManager *dbManager,ImageManager* imageManager,QWidget *parent) :
+TimeTab::TimeTab(DBManager *dbManager, ImagesList *imageManager, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TimeTab), dbManager(dbManager),imageManager(imageManager)
 {
@@ -9,8 +9,10 @@ TimeTab::TimeTab(DBManager *dbManager,ImageManager* imageManager,QWidget *parent
     ui->TimeTabWidget->setStyleSheet(Style::getTabsStyle());
     ui->TimeTabMenuBar->setStyleSheet(Style::getMenuBarStyle());
     CreateimeTabRandomListWidget();
-     //CreateTimeTabWeekListWidget();
-    //CreateTimeTabDayListWidget();
+    CreateTimeTabWeekListWidget();
+    CreateTimeTabDayListWidget();
+
+    showTab(timeTabRandomListWidget);
 }
 
 TimeTab::~TimeTab()
@@ -23,16 +25,16 @@ void TimeTab::CreateimeTabRandomListWidget()
     timeTabRandomListWidget = new TimeTabRandomListWidget(dbManager,imageManager,this);
     timeTabRandomListWidget->move(10,100);
     timeTabRandomListWidget->setStyleSheet(Style::getTimeTabStyle());
-    timeTabRandomListWidget ->show();
+    //timeTabRandomListWidget ->show();
     connect(this, &TimeTab::SendSignalForRandomListWidget, timeTabRandomListWidget, &TimeTabRandomListWidget::AddRandomListItem);
 }
 
 void TimeTab::CreateTimeTabWeekListWidget()
 {
-    timeTabWeekListWidget = new TimeTabWeekListWidget(dbManager,imageManager,this);
+    timeTabWeekListWidget = new TimeTabWeekListWidget(dbManager,imageManager, this);
     timeTabWeekListWidget->move(10,100);
     timeTabWeekListWidget->setStyleSheet(Style::getTimeTabStyle());
-    timeTabWeekListWidget ->show();
+   // timeTabWeekListWidget ->show();
     connect(this, &TimeTab::SendSignalForWeekListWidget, timeTabWeekListWidget, &TimeTabWeekListWidget::AddWeekListItem);
 }
 
@@ -41,8 +43,17 @@ void TimeTab::CreateTimeTabDayListWidget()
     timeTabDayListWidget = new TimeTabDayListWidget(dbManager,imageManager,this);
     timeTabDayListWidget->move(10,100);
     timeTabDayListWidget->setStyleSheet(Style::getTimeTabStyle());
-    timeTabDayListWidget ->show();
+    //timeTabDayListWidget ->show();
     connect(this, &TimeTab::SendSignalForDayListWidget, timeTabDayListWidget, &TimeTabDayListWidget::AddDayListItem);
+}
+
+void TimeTab::showTab(QWidget *tab)
+{
+timeTabRandomListWidget->hide();
+timeTabWeekListWidget->hide();
+timeTabDayListWidget->hide();
+
+tab->show();
 }
 
 void TimeTab::on_TimeTabMenuBarPlusButton_clicked()
@@ -52,4 +63,22 @@ void TimeTab::on_TimeTabMenuBarPlusButton_clicked()
     emit SendSignalForDayListWidget();
 }
 
+
+
+void TimeTab::on_TimeTabMenuBarRandomButton_clicked()
+{
+    showTab(timeTabRandomListWidget);
+}
+
+
+void TimeTab::on_TimeTabMenuBarWeekButton_clicked()
+{
+    showTab(timeTabWeekListWidget);
+}
+
+
+void TimeTab::on_TimeTabMenuBarDayButton_clicked()
+{
+    showTab(timeTabDayListWidget);
+}
 

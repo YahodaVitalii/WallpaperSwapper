@@ -1,6 +1,6 @@
 #include "dialogwindowlistofimage.h"
 #include "ui_dialogwindowlistofimage.h"
-DialogWindowListOfImage::DialogWindowListOfImage(DBManager* dbManager, ImageManager *imageManager, InterfaceAddition *interfaceAddition, QWidget *parent) :
+DialogWindowListOfImage::DialogWindowListOfImage(DBManager* dbManager, ImagesList *imageManager, InterfaceAddition *interfaceAddition, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogWindowListOfImage),
     dbManager(dbManager),interfaceAddition(interfaceAddition),imageManager(imageManager)
@@ -9,31 +9,45 @@ DialogWindowListOfImage::DialogWindowListOfImage(DBManager* dbManager, ImageMana
     ui->setupUi(this);
     ui->ListOfImageMenuBar->setStyleSheet(Style::getMenuBarStyle());
     scrollAreaConterinerWidget = new QWidget(this);
-    interfaceAddition->CreateScrollArea(this, scrollAreaConterinerWidget,300,420,0,80);
+    scrollAreaManager = new ScrollAreaManager();
+    imageLoader = new ImageLoader(dbManager);
+    scrollAreaManager->CreateScrollArea(this, scrollAreaConterinerWidget,300,420,0,80);
     CreateListOfImageIntarface();
+
 }
 
 void DialogWindowListOfImage::CreateListOfImageIntarface()
 {
     for(int i = 0; i<imageManager->getsizeOfImages();i++){
-       interfaceAddition->setWidgetIntoScrollArea(scrollAreaConterinerWidget, interfaceAddition->CreateListOfImageItem(i));
+       scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerWidget, interfaceAddition->CreateListOfImageItem(i));
     }
 }
 void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
-    int imageId = imageManager->ChooseImageFromFiles();
-    if (imageId != -1) {  // Перевірте, що ID є дійсним
-        int imageIndex = imageManager->findImageById(imageId);
-        if (imageIndex != -1) { // Перевірте, чи знайдено зображення з таким індексом
-           interfaceAddition->setWidgetIntoScrollArea(scrollAreaConterinerWidget, interfaceAddition->CreateListOfImageItem(imageIndex));
+    try {
+        if (imageLoader->ChooseImageFromFiles()) {
+            imageManager->getImagesFromTable();
+
+            int imageId = imageManager->getImages().last().getId();
+            if (imageId != -1) {
+                int imageIndex = imageManager->findImageById(imageId);
+                if (imageIndex != -1) {
+                    scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerWidget, interfaceAddition->CreateListOfImageItem(imageIndex));
+                } else {
+                    throw WSExeptions("Image not found for ID: " + QString::number(imageId));
+                }
+            } else {
+                throw WSExeptions("Failed to choose image.");
+            }
         } else {
-            qDebug() << "Image not found for ID:" << imageId;
-            // Обробити помилку, якщо зображення не знайдено
+            throw WSExeptions("Image not loaded!");
         }
-    } else {
-        qDebug() << "Failed to choose image.";
-        // Обробити помилку, якщо не вдалося вибрати зображення
+    } catch (const WSExeptions& ex) {
+        qDebug() << "Error:" << ex.getMessage();
+    } catch (const QException& ex) {
+        qDebug() << "Unexpected error:" << ex.what();
     }
 }
+
 
 //void DialogWindowListOfImage::on_buttonInfo_clicked() {
 //    qDebug() << "Info button clicked";
@@ -56,5 +70,12 @@ DialogWindowListOfImage::~DialogWindowListOfImage()
  delete ui;
 }
 void DialogWindowListOfImage::closeEvent() {
-       QDialog::hide();
+    QDialog::hide();
+}
+
+void DialogWindowListOfImage::showDialogWindow()
+{
+    scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerWidget);
+    CreateListOfImageIntarface();
+    this->show();
 }

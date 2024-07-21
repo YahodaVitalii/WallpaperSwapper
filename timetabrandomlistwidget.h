@@ -5,7 +5,7 @@
 #include "sqlitedbmanager.h"
 #include <QWidget>
 #include <QDebug>
-#include "imagemanager.h"
+#include "imageslist.h"
 #include "dialogwindowlistofimage.h"
 namespace Ui {
 class TimeTabRandomListWidget;
@@ -16,7 +16,7 @@ class TimeTabRandomListWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit TimeTabRandomListWidget(DBManager* dbManager, ImageManager *imageManager, QWidget *parent = nullptr);
+    explicit TimeTabRandomListWidget(DBManager* dbManager, ImagesList *imagesList, QWidget *parent = nullptr);
     ~TimeTabRandomListWidget();
     void setStyleIntoPage();
     void CreateDialogWindowListOfImage();
@@ -47,8 +47,9 @@ private:
     QWidget *scrollAreaConterinerViewTab;
 
     DBManager* dbManager;
-    ImageManager *imageManager;
+    ImagesList *imagesList;
     InterfaceAddition* interfaceAddition;
+    ScrollAreaManager* scrollAreaManager;
 
     RandomImageList*  CurrentRandomImageList;
        QVector<RandomImageList>  RandomImageLists;

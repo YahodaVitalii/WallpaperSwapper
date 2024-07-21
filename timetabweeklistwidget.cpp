@@ -1,13 +1,14 @@
 #include "timetabweeklistwidget.h"
 #include "ui_timetabweeklistwidget.h"
 
-TimeTabWeekListWidget::TimeTabWeekListWidget(DBManager *dbManager, ImageManager *imageManager, QWidget *parent) :
+TimeTabWeekListWidget::TimeTabWeekListWidget(DBManager* dbManager, ImagesList *imagesList, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TimeTabWeekListWidget),dbManager(dbManager),imageManager(imageManager)
+    ui(new Ui::TimeTabWeekListWidget),dbManager(dbManager),imagesList(imagesList)
 {
     ui->setupUi(this);
-    interfaceAddition = new InterfaceAddition(this, dbManager, imageManager);
-
+    imagesList  = new ImagesList(dbManager);
+    interfaceAddition = new InterfaceAddition(this, imagesList);
+    scrollAreaManager = new ScrollAreaManager();
 
     SetTimeTabWeekListWidgetStyle();
     CreateDialogWindowListOfImage();
@@ -35,7 +36,7 @@ void TimeTabWeekListWidget::SetTimeTabWeekListWidgetStyle()
 
 void TimeTabWeekListWidget::CreateDialogWindowListOfImage()
 {
-    dialogWindowListOfImage = new DialogWindowListOfImage(this->dbManager,imageManager,interfaceAddition, this);
+    dialogWindowListOfImage = new DialogWindowListOfImage(this->dbManager,imagesList,interfaceAddition, this);
     connect(interfaceAddition, &InterfaceAddition::imageSelected, this, &TimeTabWeekListWidget::addImageInItem);
     dialogWindowListOfImage->setStyleSheet(Style::getTabsStyle());
 }
@@ -45,7 +46,7 @@ void TimeTabWeekListWidget::CreateTabCreateListOfWidgets()
     for (const QString& day : days) {
         // Перевірка, чи ключ day існує у QMap currentImageIds
         if (currentImageIds.contains(day)) {
-           interfaceAddition->setWidgetIntoScrollArea(scrollAreaConterinerCreateTab ,interfaceAddition->CreateWeekListOfImageItem(currentImageIds[day], day));
+           scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerCreateTab ,interfaceAddition->CreateWeekListOfImageItem(currentImageIds[day], day));
         } else {
             // Якщо ключ не знайдено, вивести повідомлення про помилку або додати новий елемент
             qDebug() << "Key" << day << "not found in currentImageIds";
@@ -58,7 +59,7 @@ void TimeTabWeekListWidget::CreateTabViewListOfWidgets()
 {
     WeekImageLists = dbManager->getAllWeekImageLists();
     for (const auto& list :  WeekImageLists)
-    interfaceAddition->setWidgetIntoScrollArea(scrollAreaConterinerViewTab,interfaceAddition->CreateWeekListOfImageView(&list));
+    scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab,interfaceAddition->CreateWeekListOfImageView(&list));
 }
 
 void TimeTabWeekListWidget::AddNewWeekImageList()
@@ -74,7 +75,7 @@ void TimeTabWeekListWidget::AddNewWeekImageList()
     }
     currentWeekImageList = new WeekImageList(ui->lineEditNameWeekList->text(),currentImageIds);
     dbManager->insertWeekImageList(currentWeekImageList);
-    interfaceAddition->setWidgetIntoScrollArea(scrollAreaConterinerViewTab,interfaceAddition->CreateWeekListOfImageView(currentWeekImageList));
+    scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab,interfaceAddition->CreateWeekListOfImageView(currentWeekImageList));
 }
 
 void TimeTabWeekListWidget::UpdateViewTabItem()
@@ -92,8 +93,8 @@ void TimeTabWeekListWidget::SetScrollAreaAndConteinerForItems()
     scrollAreaConterinerCreateTab->setLayout(layoutCreateTab);
     QVBoxLayout *layoutViewTab = new QVBoxLayout(scrollAreaConterinerViewTab);
     scrollAreaConterinerViewTab->setLayout(layoutViewTab);
-    interfaceAddition->CreateScrollArea(ui->CreateTab, scrollAreaConterinerCreateTab,600,300,0,40);
-    interfaceAddition->CreateScrollArea(ui->ViewTab,scrollAreaConterinerViewTab,600,340,0,0);
+    scrollAreaManager->CreateScrollArea(ui->CreateTab, scrollAreaConterinerCreateTab,600,300,0,40);
+    scrollAreaManager->CreateScrollArea(ui->ViewTab,scrollAreaConterinerViewTab,600,340,0,0);
 }
 
 QMap<QString, int> TimeTabWeekListWidget::fillCurrentImageIds(const QStringList &keys)
@@ -113,7 +114,7 @@ void TimeTabWeekListWidget::on_CreateTabButtonBox_accepted()
 } else if (currentWeekImageList->getId() > 0)
     {
         UpdateViewTabItem();
-        interfaceAddition->ClearConteinerWidget(scrollAreaConterinerViewTab);
+        scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerViewTab);
         CreateTabViewListOfWidgets();
 
     }
@@ -129,14 +130,14 @@ void TimeTabWeekListWidget::AddWeekListItem()
 {
     currentWeekImageList = new WeekImageList();
     currentImageIds = fillCurrentImageIds(days);
-    interfaceAddition->ClearConteinerWidget(scrollAreaConterinerCreateTab);
+    scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
     CreateTabCreateListOfWidgets();
     ui->TimeTabWeekListTabWidget->setCurrentIndex(1);
 }
 
 void TimeTabWeekListWidget::ShowDialogWindow(QString day)
 {
-    dialogWindowListOfImage->show();
+    dialogWindowListOfImage->showDialogWindow();
     currentDay = day;
 }
 
@@ -152,7 +153,7 @@ void TimeTabWeekListWidget::addImageInItem(int index)
         qDebug() << "Key" << currentDay << "not found in currentImageIds";
     }
 
-    interfaceAddition->ClearConteinerWidget(scrollAreaConterinerCreateTab);
+    scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
     CreateTabCreateListOfWidgets();
     dialogWindowListOfImage->hide();
 }
@@ -160,7 +161,7 @@ void TimeTabWeekListWidget::addImageInItem(int index)
 void TimeTabWeekListWidget::receiveWeekImageListEditSignal(int id)
 {
     ui->TimeTabWeekListTabWidget->setCurrentIndex(1);
-interfaceAddition->ClearConteinerWidget(scrollAreaConterinerCreateTab);
+scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
 currentWeekImageList = new WeekImageList(dbManager->findWeekImageListById(id));
 ui->lineEditNameWeekList->setText(currentWeekImageList->getName());
 currentImageIds = currentWeekImageList->getImages();

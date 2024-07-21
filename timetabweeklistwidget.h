@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "sqlitedbmanager.h"
-#include "imagemanager.h"
+#include "imageslist.h"
 #include "interfaceaddition.h"
 #include "dialogwindowlistofimage.h"
 #include "weekimagelist.h"
@@ -14,9 +14,26 @@ class TimeTabWeekListWidget;
 class TimeTabWeekListWidget : public QWidget
 {
     Q_OBJECT
+private:
+    Ui::TimeTabWeekListWidget *ui;
+    DialogWindowListOfImage* dialogWindowListOfImage;
+    QWidget *scrollAreaConterinerCreateTab;
+    QWidget *scrollAreaConterinerViewTab;
+
+    DBManager* dbManager;
+    ImagesList *imagesList;
+    InterfaceAddition* interfaceAddition;
+    ScrollAreaManager* scrollAreaManager;
+
+     QVector<WeekImageList>  WeekImageLists;
+    WeekImageList* currentWeekImageList;
+    QMap<QString, int> currentImageIds;
+     QStringList days = {"Other days","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+
+     QString currentDay;
 
 public:
-    explicit TimeTabWeekListWidget(DBManager* dbManager, ImageManager *imageManager,QWidget *parent = nullptr);
+    explicit TimeTabWeekListWidget(DBManager* dbManager, ImagesList *imagesList, QWidget *parent = nullptr);
     ~TimeTabWeekListWidget();
     void SetTimeTabWeekListWidgetStyle();
     void CreateDialogWindowListOfImage();
@@ -38,22 +55,7 @@ public slots:
     void ShowDialogWindow(QString day);
     void addImageInItem(int index);
     void  receiveWeekImageListEditSignal(int id);
-private:
-    Ui::TimeTabWeekListWidget *ui;
-    DialogWindowListOfImage* dialogWindowListOfImage;
-    QWidget *scrollAreaConterinerCreateTab;
-    QWidget *scrollAreaConterinerViewTab;
 
-    DBManager* dbManager;
-    ImageManager *imageManager;
-    InterfaceAddition* interfaceAddition;
-
-     QVector<WeekImageList>  WeekImageLists;
-    WeekImageList* currentWeekImageList;
-    QMap<QString, int> currentImageIds;
-     QStringList days = {"Other days","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-
-     QString currentDay;
 };
 
 #endif // TIMETABWEEKLISTWIDGET_H

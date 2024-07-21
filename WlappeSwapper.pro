@@ -13,11 +13,13 @@ CONFIG += c++17
 SOURCES += \
     dayimagelist.cpp \
     dialogwindowlistofimage.cpp \
-    imagemanager.cpp \
+    imageloader.cpp \
+    imageslist.cpp \
     interfaceaddition.cpp \
     main.cpp \
     mainwindow.cpp \
     randomimagelist.cpp \
+    scrollareamanager.cpp \
     sqlitedbmanager.cpp \
     standarttab.cpp \
     style.cpp \
@@ -26,16 +28,20 @@ SOURCES += \
     timetabrandomlistwidget.cpp \
     timetabweeklistwidget.cpp \
     weekimagelist.cpp \
-    wlapperimage.cpp
+    wlapperimage.cpp \
+    wlappersetter.cpp \
+    wsexeptions.cpp
 
 HEADERS += \
     dayimagelist.h \
     dbmanager.h \
     dialogwindowlistofimage.h \
-    imagemanager.h \
+    imageloader.h \
+    imageslist.h \
     interfaceaddition.h \
     mainwindow.h \
     randomimagelist.h \
+    scrollareamanager.h \
     sqlitedbmanager.h \
     standarttab.h \
     style.h \
@@ -44,7 +50,9 @@ HEADERS += \
     timetabrandomlistwidget.h \
     timetabweeklistwidget.h \
     weekimagelist.h \
-    wlapperimage.h
+    wlapperimage.h \
+    wlappersetter.h \
+    wsexeptions.h
 
 FORMS += \
     dialogwindowlistofimage.ui \

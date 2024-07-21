@@ -9,13 +9,31 @@
 #include <QTimeEdit>
 #include <QDesktopServices>
 #include <QScrollArea>
+#include <QCheckBox>
 #include "style.h"
-#include "imagemanager.h"
+#include "imageslist.h"
 #include "sqlitedbmanager.h"
+
+struct WidgetGeometry {
+    int width;
+    int height;
+    int xPos;
+    int yPos;
+
+    WidgetGeometry() : width(0), height(0), xPos(0), yPos(0) {}
+
+    WidgetGeometry(int w, int h, int x, int y)
+        : width(w), height(h), xPos(x), yPos(y) {}
+};
+
 class InterfaceAddition : public QWidget{
     Q_OBJECT
+    private:
+    ImagesList* imageManager;
+
+    WidgetGeometry standartImageSize={220,110,10,5};
 public:
-    InterfaceAddition(QWidget *parent, DBManager* dbManageer, ImageManager* imageManager);
+    InterfaceAddition(QWidget *parent, ImagesList* imageManager);
     ~InterfaceAddition();
     QWidget* CreateListOfImageItem(int imageIndex);
     QWidget*  CreateRandomListOfImageItem(int imageIndex);
@@ -23,28 +41,13 @@ public:
     QWidget* CreateWeekListOfImageItem(int imageIndex, QString DayOfWeek);
     QWidget* CreateWeekListOfImageView(const WeekImageList* weekImageList);
     QWidget* CreateDayListOfImageItem(const TimeRangeImage* item);
-    QWidget* CreateDayListOfImage(const DayImageList* dayImageList);
+    QWidget* CreateDayListOfImageView(const DayImageList* dayImageList);
 
 
-
-    //QWidget* getContainerWidgetDWindowImageOfList() const;
-    void CreateContainerWidgetDWindowImageOfList();
-    void DeleteContainerWidgetDWindowImageOfList();
-//    QWidget *getContainerWidgetRandomImageListCreate() const;
-//    QWidget *getcontainerWidgetRandomImageListShow() const;
-//    QWidget *getcontainerWidgetWeekImageListCreate() const;
-//    QWidget *getcontainerWidgetWeekImageListShow() const;
-//    QWidget *getcontainerWidgetDayImageListCreate()const;
-//    QWidget *getcontainerWidgetDayImageListShow() const;
-    void CreateScrollArea(QWidget* parent, QWidget* child, int width, int hight, int cordinate_X, int cordinate_Y);
-    void ClearConteinerWidget(QWidget* containerWidget);
-
-    //void setTargetContainer(QWidget *container);
- void setWidgetIntoScrollArea(QWidget* conteinerWidget,QWidget* childWidget);
 
 signals:
-    void imageSelected(int index);
-    void sendEditSignalToItem(int id);
+    void imageSelected(int imageIndex);
+    void sendEditSignalToItem(int elemantId);
     void setImageIntoWeekListItem(QString day);
     void updateTimeEdit(int id,QTime startTime,QTime endTime);
 private slots:
@@ -53,29 +56,21 @@ private slots:
     void on_buttonEdit_clicked();
     void on_ButtonSetImage_clicked();
 private:
-    void CreateLableWithImage(QWidget* listItemMeinWidget, int index, int cordinate_x, int cordinate_y);
-    void CreateButtonInfo(QWidget* listItemMeinWidget);
-    void CreateButtonDelete(QWidget* listItemMeinWidget, int index, int width, int hight, int cordinate_x, int cordinate_y);
-    void CreateButtonFullSize(QWidget* listItemMeinWidget, int index);
-    void CreateButtonImage(QWidget* listItemMeinWidget,int index);
+    void CreateLableWithImage(QWidget* conteinerWidget, int imageIndex, const WidgetGeometry& geometry);
+    void CreateButtonImage(QWidget* conteinerWidget, int index, const WidgetGeometry& geometry);
+    void CreateButtonSetImage(QWidget *conteinerWidget, QString day, const WidgetGeometry& geometry);
 
-    void CreateButtonTurnOnTurnOff(QWidget* conteinerWidget);
-    void CreateLableWithText(QWidget* conteinerWidget, QString TextOfLabel, int Cordinate_x, int Cordinate_y);
+    void CreateButtonInfo(QWidget* conteinerWidget);
+    void CreateButtonDelete(QWidget* conteinerWidget, int index, int width, int hight, int cordinate_x, int cordinate_y);
+    void CreateButtonFullSize(QWidget* conteinerWidget, int index);
     void CreateButtonEdit(QWidget* conteinerWidget, int id, int width, int hight, int cordinate_x, int cordinate_y);
-    void CreateButtonSetImage(QWidget *listItemMeinWidget, QString day,int width, int hight, int cordinate_x, int cordinate_y);
-    QTimeEdit* CreateTimeEditor(QWidget *listItemMeinWidget, int id, int cordinate_x, int cordinate_y);
+
+    void CreateLableWithText(QWidget* conteinerWidget, QString TextOfLabel, int Cordinate_x, int Cordinate_y);
+    void CreateToggleButton(QWidget *containerWidget, int id);
 
 
-//    QWidget *containerWidgetDWindowImageOfList = nullptr;
-//    QWidget *containerWidgetRandomImageListCreate = nullptr;
-//    QWidget *containerWidgetRandomImageListShow = nullptr;
-//    QWidget *containerWidgetWeekImageListCreate = nullptr;
-//    QWidget *containerWidgetWeekImageListShow = nullptr;
-//    QWidget* containerWidgetDayImageListCreate =nullptr ;
-//    QWidget* containerWidgetDayImageListShow =nullptr ;
-    QWidget *parentWidget;
-    ImageManager* imageManager;
-    DBManager* dbManager;
+    QTimeEdit* CreateTimeEditor(QWidget *conteinerWidget, int id, int cordinate_x, int cordinate_y);
+
 
 };
 

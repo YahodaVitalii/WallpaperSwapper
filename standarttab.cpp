@@ -1,14 +1,16 @@
 #include "standarttab.h"
 #include "ui_standarttab.h"
 #include "style.h"
-StandartTab::StandartTab(DBManager *dbManager,ImageManager* imageManager, QWidget *parent) :
+StandartTab::StandartTab(DBManager *dbManager, ImagesList *imageManager, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::StandartTab), dbManager(dbManager),imageManager(imageManager)
 {
     ui->setupUi(this);
    // imageManager = new ImageManager(dbManager);
     setStandartTabStyle();
-    interfaceAddition = new InterfaceAddition(parent,dbManager,imageManager);
+    interfaceAddition = new InterfaceAddition(parent,imageManager);
+    imageLoader = new ImageLoader(dbManager);
+    wlapperSetter = new WlapperSetter();
 
     CreateDialogWindowListOfImage();
 }
@@ -31,7 +33,11 @@ void StandartTab::nextImage()
     currentIndex = (currentIndex + 1) % imageManager->getsizeOfImages();
     showImage(currentIndex);
 }
-
+void StandartTab::previousImage()
+{
+    currentIndex = (currentIndex - 1 + imageManager->getsizeOfImages()) % imageManager->getsizeOfImages();
+    showImage(currentIndex);
+}
 void StandartTab::setStandartTabStyle()
 {
     ui->StandartTabWidget->setStyleSheet(Style::getTabsStyle());
@@ -69,17 +75,15 @@ void StandartTab::displayImageInLabel(QLabel *label, const QString &filePath)
     }
 }
 
-void StandartTab::previousImage()
-{
-    currentIndex = (currentIndex - 1 + imageManager->getsizeOfImages()) % imageManager->getsizeOfImages();
-    showImage(currentIndex);
-}
+
 void StandartTab::on_StandartTabChooseButton_clicked(){
-    dialogWindowListOfImage ->show();
+    dialogWindowListOfImage ->showDialogWindow();
 }
 void StandartTab::on_StandartTabAddButton_clicked() {
+    if(imageLoader->ChooseImageFromFiles()){
+        imageManager ->getImagesFromTable();
 
-    int imageId = imageManager->ChooseImageFromFiles(this);
+    int imageId = imageManager->getImages().last().getId();
        if (imageId != -1) {  // Перевірте, що ID є дійсним
            currentIndex = imageManager->findImageById(imageId); // Вам потрібно написати цю функцію
            if (currentIndex != -1) { // Переконайтеся, що індекс існує
@@ -87,7 +91,9 @@ void StandartTab::on_StandartTabAddButton_clicked() {
                showImage(currentIndex);
            }
        }
-
+}else{
+        qDebug() << "Image not loadet!";
+      }
 }
 void StandartTab::on_SliderLeftArrow_clicked()
 {
@@ -102,7 +108,7 @@ void StandartTab::on_SliderRightArrow_clicked()
 
 void StandartTab::on_StandartTabSetButton_clicked()
 {
-    imageManager-> setWallpaper(imageManager->GetImageByIndex(currentIndex).getUrl());
+    wlapperSetter-> setWallpaper(imageManager->GetImageByIndex(currentIndex).getUrl());
 }
 
 void StandartTab::on_StandartTabDeleteButton_clicked()
