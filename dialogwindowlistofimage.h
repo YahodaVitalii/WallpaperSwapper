@@ -13,6 +13,7 @@
 #include "style.h"
 #include "imageslist.h"
 #include "interfaceaddition.h"
+#include "dbimagetablemanager.h"
 namespace Ui {
 class DialogWindowListOfImage;
 }
@@ -29,6 +30,7 @@ private:
     ScrollAreaManager* scrollAreaManager;
 
     QWidget *scrollAreaConterinerWidget;
+
 public:
     explicit DialogWindowListOfImage(DBManager* dbManager,ImagesList* imageManager, InterfaceAddition* interfaceAddition,QWidget *parent = nullptr);
 
@@ -36,14 +38,9 @@ public:
     void CreateListOfImageIntarface();
     void CreateListOfImageItem(int listItemCordinate_y, int index);
     void closeEvent();
-    void showDialogWindow();
 
 private slots:
     void on_ListOfImageMenuBarPlusButton_clicked();
-    //    void on_buttonFullSize_clicked();
-    //    void on_buttonInfo_clicked();
-    //    void on_buttonDelete_clicked();
-    //    void on_buttonImage_clicked();
 
 signals:
     void imageSelected(int index);

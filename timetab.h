@@ -20,10 +20,12 @@ class TimeTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit TimeTab(DBManager* dbManager,ImagesList* imageManager,QWidget *parent = nullptr);
+    explicit TimeTab(DBManager* dbManager, ImagesList* imageManager, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
     ~TimeTab();
 
-
+    TimeTabRandomListWidget* getTimeTabRandomListWidget() const;
+    TimeTabWeekListWidget* getTimeTabWeekListWidget() const;
+    TimeTabDayListWidget* getTimeTabDayListWidget() const;
 private slots:
 
 
@@ -44,6 +46,7 @@ private:
     Ui::TimeTab *ui;
     DBManager* dbManager;
     ImagesList* imageManager;
+    DialogWindowListOfImage *dialogWindowListOfImage;
 
     TimeTabRandomListWidget* timeTabRandomListWidget;
     TimeTabWeekListWidget* timeTabWeekListWidget;

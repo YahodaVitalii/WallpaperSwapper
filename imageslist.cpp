@@ -2,9 +2,10 @@
 
 QVector<WlapperImage> ImagesList::images;
 
-ImagesList::ImagesList(DBManager *dbManager):dbManager(dbManager)
+ImagesList::ImagesList()
 {
    getImagesFromTable();
+   dbImageTableManager = new DBImageTableManager();
 }
 
 QVector<WlapperImage> ImagesList::getImages(){
@@ -14,7 +15,7 @@ return images;
 void ImagesList::getImagesFromTable()
 {
        images.clear(); // Очистка поточного списку перед оновленням
-        images = dbManager->getAllImages();
+        images = dbImageTableManager->getAllImages();
         qDebug() << "Loaded images count: " << images.size();
 }
 

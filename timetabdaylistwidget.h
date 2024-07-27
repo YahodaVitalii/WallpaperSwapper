@@ -7,7 +7,7 @@
 #include <QDebug>
 #include "imageslist.h"
 #include "dialogwindowlistofimage.h"
-
+#include "dbdaylisttablemanager.h"
 namespace Ui {
 class TimeTabDayListWidget;
 }
@@ -25,22 +25,22 @@ private:
     ImagesList *imagesList;
     InterfaceAddition* interfaceAddition;
     ScrollAreaManager* scrollAreaManager;
+    DBDayListTableManager dbDayListTableManager;
 
     DayImageList* currentDayImageList;
     QVector<DayImageList> DayImageLists;
     QVector<TimeRangeImage> currentImageIds;
 
 public:
-    explicit TimeTabDayListWidget(DBManager* dbManager, ImagesList *imagesList, QWidget *parent = nullptr);
+    explicit TimeTabDayListWidget(DBManager* dbManager, ImagesList *imagesList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
     ~TimeTabDayListWidget();
 
     void SetTimeTabDayListWidgetStyle();
-    void CreateDialogWindowListOfImage();
     void CreateViewTabInterface();
     void CreatInterfaceCreateTab();
-     void UpdateViewTabItem();
-     void AddNewDayList();
-     void SetScrollAreaAndConteinerForItems();
+    void UpdateViewTabItem();
+    void AddNewDayList();
+    void SetScrollAreaAndConteinerForItems();
 public slots:
     void AddDayListItem();
     void addImageInList(int index);

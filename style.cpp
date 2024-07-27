@@ -193,21 +193,6 @@ QString Style::getIterfaceAdditionStyle()
 //                  "}";
 }
 
-QString Style::getOnOffButtonStyle()
-{
-    return "QWidget{"
-           "background-color: rgb(255, 255, 255);"
-           "border:none;"
-           "border:1px solid rgb(182, 184, 186);"
-           "}"
-           "QPushButton{"
-           "background-color: rgb(83, 190, 120);"
-           "border:none;"
-           "color:rgb(255, 255, 255);"
-            //"border:2px solid rgb(182, 184, 186);"
-            "}";
-}
-
 QString Style::getCreateTabStyle()
 {
     return "QWidget{"

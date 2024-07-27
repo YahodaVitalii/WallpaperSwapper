@@ -7,6 +7,7 @@
 #include <QDebug>
 #include "imageslist.h"
 #include "dialogwindowlistofimage.h"
+#include "dbrandomlisttablemanager.h"
 namespace Ui {
 class TimeTabRandomListWidget;
 }
@@ -16,10 +17,9 @@ class TimeTabRandomListWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit TimeTabRandomListWidget(DBManager* dbManager, ImagesList *imagesList, QWidget *parent = nullptr);
+    explicit TimeTabRandomListWidget(DBManager* dbManager, ImagesList *imagesList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
     ~TimeTabRandomListWidget();
     void setStyleIntoPage();
-    void CreateDialogWindowListOfImage();
     void CreateViewTabInterface();
     void CreatInterfaceCreateTab();
     void CreateViewTabItem();
@@ -50,6 +50,7 @@ private:
     ImagesList *imagesList;
     InterfaceAddition* interfaceAddition;
     ScrollAreaManager* scrollAreaManager;
+    DBRandomListTableManager dbRandomListTableManager;
 
     RandomImageList*  CurrentRandomImageList;
        QVector<RandomImageList>  RandomImageLists;

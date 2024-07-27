@@ -1,18 +1,15 @@
 #include "standarttab.h"
 #include "ui_standarttab.h"
 #include "style.h"
-StandartTab::StandartTab(DBManager *dbManager, ImagesList *imageManager, QWidget *parent) :
+StandartTab::StandartTab(DBManager *dbManager, ImagesList *imageManager,DialogWindowListOfImage* dialogWindowListOfImage, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::StandartTab), dbManager(dbManager),imageManager(imageManager)
+    ui(new Ui::StandartTab), dbManager(dbManager),imageManager(imageManager),dialogWindowListOfImage(dialogWindowListOfImage)
 {
     ui->setupUi(this);
-   // imageManager = new ImageManager(dbManager);
     setStandartTabStyle();
     interfaceAddition = new InterfaceAddition(parent,imageManager);
-    imageLoader = new ImageLoader(dbManager);
+    imageLoader = new ImageLoader();
     wlapperSetter = new WlapperSetter();
-
-    CreateDialogWindowListOfImage();
 }
 
 StandartTab::~StandartTab()
@@ -56,13 +53,6 @@ void StandartTab::setSliderButtonIcon()
     ui->SliderLeftArrow->setIconSize(QSize(65, 65));
 }
 
-void StandartTab::CreateDialogWindowListOfImage()
-{
-    dialogWindowListOfImage = new DialogWindowListOfImage(this->dbManager,imageManager,interfaceAddition,this);
-    connect(interfaceAddition, &InterfaceAddition::imageSelected, this, &StandartTab::updateImage);
-    dialogWindowListOfImage->setStyleSheet(Style::getTabsStyle());
-}
-
 void StandartTab::displayImageInLabel(QLabel *label, const QString &filePath)
 {
     QPixmap pixmap(filePath);
@@ -77,23 +67,23 @@ void StandartTab::displayImageInLabel(QLabel *label, const QString &filePath)
 
 
 void StandartTab::on_StandartTabChooseButton_clicked(){
-    dialogWindowListOfImage ->showDialogWindow();
+    dialogWindowListOfImage ->show();
 }
 void StandartTab::on_StandartTabAddButton_clicked() {
     if(imageLoader->ChooseImageFromFiles()){
         imageManager ->getImagesFromTable();
 
-    int imageId = imageManager->getImages().last().getId();
-       if (imageId != -1) {  // Перевірте, що ID є дійсним
-           currentIndex = imageManager->findImageById(imageId); // Вам потрібно написати цю функцію
-           if (currentIndex != -1) { // Переконайтеся, що індекс існує
-               displayImageInLabel(ui->SliderImage, imageManager->GetImageByIndex(currentIndex).getUrl());
-               showImage(currentIndex);
-           }
-       }
-}else{
+        int imageId = imageManager->getImages().last().getId();
+        if (imageId != -1) {  // Перевірте, що ID є дійсним
+            currentIndex = imageManager->findImageById(imageId); // Вам потрібно написати цю функцію
+            if (currentIndex != -1) { // Переконайтеся, що індекс існує
+                displayImageInLabel(ui->SliderImage, imageManager->GetImageByIndex(currentIndex).getUrl());
+                showImage(currentIndex);
+            }
+        }
+    }else{
         qDebug() << "Image not loadet!";
-      }
+    }
 }
 void StandartTab::on_SliderLeftArrow_clicked()
 {

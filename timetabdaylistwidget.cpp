@@ -1,16 +1,16 @@
 #include "timetabdaylistwidget.h"
 #include "ui_timetabdaylistwidget.h"
 
-TimeTabDayListWidget::TimeTabDayListWidget(DBManager *dbManager, ImagesList *imagesList, QWidget *parent) :
+TimeTabDayListWidget::TimeTabDayListWidget(DBManager *dbManager, ImagesList *imagesList,DialogWindowListOfImage* dialogWindowListOfImage, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TimeTabDayListWidget),dbManager(dbManager),imagesList(imagesList)
+    ui(new Ui::TimeTabDayListWidget),dbManager(dbManager),imagesList(imagesList),dialogWindowListOfImage(dialogWindowListOfImage)
 {
     ui->setupUi(this);
     interfaceAddition = new InterfaceAddition(this,imagesList);
     scrollAreaManager = new ScrollAreaManager();
 
     SetTimeTabDayListWidgetStyle();
-    CreateDialogWindowListOfImage();
+
 
     SetScrollAreaAndConteinerForItems();
 
@@ -19,7 +19,7 @@ TimeTabDayListWidget::TimeTabDayListWidget(DBManager *dbManager, ImagesList *ima
     currentDayImageList = new DayImageList();
 
     connect(interfaceAddition, &InterfaceAddition::updateTimeEdit, this,&TimeTabDayListWidget::getTimeEditUpdatetData);
-    connect(interfaceAddition, &InterfaceAddition::sendEditSignalToItem, this, &TimeTabDayListWidget::receiveDayImageListEditSignal);
+    connect(interfaceAddition->getUiElementFactory(), &UIElementFactory::sendEditSignalToItem, this, &TimeTabDayListWidget::receiveDayImageListEditSignal);
 }
 
 TimeTabDayListWidget::~TimeTabDayListWidget()
@@ -35,18 +35,9 @@ void TimeTabDayListWidget::SetTimeTabDayListWidgetStyle()
     ui->CreateTab->setStyleSheet(Style::getCreateTabStyle());
 }
 
-void TimeTabDayListWidget::CreateDialogWindowListOfImage()
-{
-    dialogWindowListOfImage = new DialogWindowListOfImage(this->dbManager,imagesList,interfaceAddition, this);
-    connect(interfaceAddition, &InterfaceAddition::imageSelected, this, &TimeTabDayListWidget::addImageInList);
-    dialogWindowListOfImage->setStyleSheet(Style::getTabsStyle());
-}
-
-
-
 void TimeTabDayListWidget::CreateViewTabInterface()
 {
-    DayImageLists = dbManager->getAllDayImageLists();
+    DayImageLists = dbDayListTableManager.getAllDayImageLists();
     for(auto& list : DayImageLists){
        scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->CreateDayListOfImageView(&list));
     }
@@ -64,13 +55,13 @@ void TimeTabDayListWidget::UpdateViewTabItem()
 {
     currentDayImageList->setName(ui->lineEditName->text());
     currentDayImageList->setImages(currentImageIds);
-    dbManager->updateDayImageList(currentDayImageList);
+    dbDayListTableManager.updateDayImageList(currentDayImageList);
 }
 
 void TimeTabDayListWidget::AddNewDayList()
 {
     currentDayImageList = new DayImageList(ui->lineEditName->text(),currentImageIds);
-    dbManager->insertDayImageList(currentDayImageList);
+    dbDayListTableManager.insertDayImageList(currentDayImageList);
     scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab,interfaceAddition->CreateDayListOfImageView(currentDayImageList));
 }
 
@@ -142,7 +133,7 @@ void TimeTabDayListWidget::receiveDayImageListEditSignal(int id)
 {
     ui->TimeTabDayListTabWidget->setCurrentIndex(1);
     scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
-    currentDayImageList = new DayImageList(dbManager->findDayImageListById(id));
+    currentDayImageList = new DayImageList(dbDayListTableManager.findDayImageListById(id));
     ui->lineEditName->setText(currentDayImageList->getName());
     currentImageIds = currentDayImageList->getImages();
     CreatInterfaceCreateTab();
@@ -150,7 +141,7 @@ void TimeTabDayListWidget::receiveDayImageListEditSignal(int id)
 
 void TimeTabDayListWidget::on_ButtonAddNewItemOfDayList_clicked()
 {
-    dialogWindowListOfImage->showDialogWindow();
+    dialogWindowListOfImage->show();
 }
 
 

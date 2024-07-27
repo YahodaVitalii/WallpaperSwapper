@@ -7,6 +7,7 @@
 #include "interfaceaddition.h"
 #include "dialogwindowlistofimage.h"
 #include "weekimagelist.h"
+#include "dbweeklisttablemanager.h"
 namespace Ui {
 class TimeTabWeekListWidget;
 }
@@ -24,6 +25,7 @@ private:
     ImagesList *imagesList;
     InterfaceAddition* interfaceAddition;
     ScrollAreaManager* scrollAreaManager;
+    DBWeekListTableManager dbWeekListTableManager;
 
      QVector<WeekImageList>  WeekImageLists;
     WeekImageList* currentWeekImageList;
@@ -33,10 +35,9 @@ private:
      QString currentDay;
 
 public:
-    explicit TimeTabWeekListWidget(DBManager* dbManager, ImagesList *imagesList, QWidget *parent = nullptr);
+    explicit TimeTabWeekListWidget(DBManager* dbManager, ImagesList *imagesList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
     ~TimeTabWeekListWidget();
     void SetTimeTabWeekListWidgetStyle();
-    void CreateDialogWindowListOfImage();
     void CreateTabCreateListOfWidgets();
     void CreateTabViewListOfWidgets();
     void AddNewWeekImageList();
@@ -53,7 +54,7 @@ private slots:
 public slots:
     void AddWeekListItem();
     void ShowDialogWindow(QString day);
-    void addImageInItem(int index);
+    void addImageInList(int index);
     void  receiveWeekImageListEditSignal(int id);
 
 };

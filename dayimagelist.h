@@ -26,7 +26,7 @@ private:
 
 
 public:
-     QVector<TimeRangeImage> images;
+    QVector<TimeRangeImage> images;
     // Конструктори
     DayImageList();
     DayImageList(QString name, const QVector<TimeRangeImage>& images);

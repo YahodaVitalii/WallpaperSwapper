@@ -1,9 +1,9 @@
 #include "timetabrandomlistwidget.h"
 #include "ui_timetabrandomlistwidget.h"
 
-TimeTabRandomListWidget::TimeTabRandomListWidget(DBManager* dbManager, ImagesList *imagesList, QWidget *parent) :
+TimeTabRandomListWidget::TimeTabRandomListWidget(DBManager* dbManager, ImagesList *imagesList,DialogWindowListOfImage* dialogWindowListOfImage, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TimeTabRandomListWidget),dbManager(dbManager),imagesList(imagesList)
+    ui(new Ui::TimeTabRandomListWidget),dbManager(dbManager),imagesList(imagesList),dialogWindowListOfImage(dialogWindowListOfImage)
 {
     ui->setupUi(this);
     interfaceAddition = new InterfaceAddition(this,imagesList);
@@ -11,11 +11,10 @@ TimeTabRandomListWidget::TimeTabRandomListWidget(DBManager* dbManager, ImagesLis
 
     CurrentRandomImageList = new RandomImageList();
     setStyleIntoPage();
-    CreateDialogWindowListOfImage();
     SetScrollAreaAndConteinerForItems();
     CreateViewTabInterface();
 
-    connect(interfaceAddition, &InterfaceAddition::sendEditSignalToItem, this, &TimeTabRandomListWidget::receiveRandomImageListEditSignal);
+    connect(interfaceAddition->getUiElementFactory(), &UIElementFactory::sendEditSignalToItem, this, &TimeTabRandomListWidget::receiveRandomImageListEditSignal);
 
 }
 
@@ -32,16 +31,9 @@ void TimeTabRandomListWidget::setStyleIntoPage()
     ui->CreateTab->setStyleSheet(Style::getCreateTabStyle());
 }
 
-void TimeTabRandomListWidget::CreateDialogWindowListOfImage()
-{
-    dialogWindowListOfImage = new DialogWindowListOfImage(this->dbManager,imagesList,interfaceAddition, this);
-    connect(interfaceAddition, &InterfaceAddition::imageSelected, this, &TimeTabRandomListWidget::addImageInList);
-    dialogWindowListOfImage->setStyleSheet(Style::getTabsStyle());
-}
-
 void TimeTabRandomListWidget::CreateViewTabInterface()
 {
-    RandomImageLists = dbManager->getAllRandomImageLists();
+    RandomImageLists = dbRandomListTableManager.getAllRandomImageLists();
     for (const auto& list : RandomImageLists)
         scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab,interfaceAddition->CreateRandomListOfImageView(&list));
 }
@@ -57,7 +49,7 @@ void TimeTabRandomListWidget::CreatInterfaceCreateTab()
 void TimeTabRandomListWidget::CreateViewTabItem()
 {
     CurrentRandomImageList = new RandomImageList(ui->lineEditNameRandoList->text(), ui->timeEditTimeInterval->dateTime(), currentImageIds);
-    dbManager->insertImageList(CurrentRandomImageList);
+    dbRandomListTableManager.insertImageList(CurrentRandomImageList);
 }
 
 void TimeTabRandomListWidget::UpdateViewTabItem()
@@ -65,7 +57,7 @@ void TimeTabRandomListWidget::UpdateViewTabItem()
     CurrentRandomImageList->setName(ui->lineEditNameRandoList->text());
     CurrentRandomImageList->setTimeInterval(ui->timeEditTimeInterval->dateTime());
     CurrentRandomImageList->setImageIds(currentImageIds);
-    dbManager->updateRandomImageList(CurrentRandomImageList);
+    dbRandomListTableManager.updateRandomImageList(CurrentRandomImageList);
 }
 
 void TimeTabRandomListWidget::SetScrollAreaAndConteinerForItems()
@@ -100,7 +92,7 @@ void TimeTabRandomListWidget::receiveRandomImageListEditSignal(int id)
 {
     ui->TimeTabRandomListTabWidget->setCurrentIndex(1);
     scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
-    CurrentRandomImageList = new RandomImageList(dbManager->FindRandomImageListById(id));
+    CurrentRandomImageList = new RandomImageList(dbRandomListTableManager.FindRandomImageListById(id));
     currentImageIds = CurrentRandomImageList->getImageIds();
     qDebug() << currentImageIds.size();
     ui->lineEditNameRandoList->setText(CurrentRandomImageList->getName());
@@ -110,7 +102,7 @@ void TimeTabRandomListWidget::receiveRandomImageListEditSignal(int id)
 
 void TimeTabRandomListWidget::on_ButtonAddNewItemOfRandomList_clicked()
 {
-    dialogWindowListOfImage->showDialogWindow();
+    dialogWindowListOfImage->show();
 }
 
 void TimeTabRandomListWidget::on_TimeTabRandomListTabButtonBox_accepted()
@@ -119,7 +111,7 @@ void TimeTabRandomListWidget::on_TimeTabRandomListTabButtonBox_accepted()
     if (CurrentRandomImageList->getId() == -1)
     {
         CreateViewTabItem();
-        RandomImageLists = dbManager->getAllRandomImageLists();
+        RandomImageLists = dbRandomListTableManager.getAllRandomImageLists();
         scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab ,interfaceAddition->CreateRandomListOfImageView(&RandomImageLists.last()));
     }
     else if (CurrentRandomImageList->getId() > 0)

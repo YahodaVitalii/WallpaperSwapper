@@ -36,7 +36,7 @@ public:
 
     // Методи серіалізації та десеріалізації у формат JSON
     QString toJsonString() const;
-     void fromJsonString(const QString& jsonString);
+    void fromJsonString(const QString& jsonString);
 };
 
 #endif // RANDOMIMAGELIST_H

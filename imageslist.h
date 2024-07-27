@@ -11,6 +11,7 @@
 #include "wlapperimage.h"
 #include "scrollareamanager.h"
 #include "imageloader.h"
+#include "dbimagetablemanager.h"
 
 class ImagesList : public QObject
 {
@@ -19,21 +20,18 @@ private:
     DBManager* dbManager;
     static  QVector<WlapperImage> images;
     ImageLoader* imageLoader;
+    DBImageTableManager* dbImageTableManager;
 
 public:
-    explicit ImagesList(DBManager *dbManager);
+    explicit ImagesList();
     void getImagesFromTable();
     QVector<WlapperImage> getImages();
     WlapperImage GetImageByIndex(int index);
     int findImageById(int imageId);
     void deleteImageByIndex(int index);
     int getsizeOfImages();
-//    QImage loadImage(const QString& fileName);
-//    std::unique_ptr<WlapperImage> createWlapperImage(const QString& fileName, const QImage& image);
 
-  // int ChooseImageFromFiles(QWidget* parent = nullptr);
-
-    signals:
+signals:
     void imagesUpdated();
 private slots:
     void updateImageList();

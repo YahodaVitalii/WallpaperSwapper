@@ -20,7 +20,6 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(DBManager* dbManrage, QWidget *parent = nullptr);
-   // void addNewImage();
     ~MainWindow();
 
 protected:
@@ -36,7 +35,9 @@ private:
     TimeTab* timeTab;
 
     DBManager* dbManager;
+    InterfaceAddition* interfaceAddition;
     ImagesList* imagesList;
+    DialogWindowListOfImage* dialogWindowListOfImage;
 
     void setInterfaceStyle();
 };

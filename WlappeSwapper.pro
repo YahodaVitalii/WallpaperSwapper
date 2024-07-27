@@ -12,6 +12,11 @@ CONFIG += c++17
 
 SOURCES += \
     dayimagelist.cpp \
+    dbdaylisttablemanager.cpp \
+    dbimagetablemanager.cpp \
+    dbrandomlisttablemanager.cpp \
+    dbtablescreator.cpp \
+    dbweeklisttablemanager.cpp \
     dialogwindowlistofimage.cpp \
     imageloader.cpp \
     imageslist.cpp \
@@ -27,6 +32,7 @@ SOURCES += \
     timetabdaylistwidget.cpp \
     timetabrandomlistwidget.cpp \
     timetabweeklistwidget.cpp \
+    uielementfactory.cpp \
     weekimagelist.cpp \
     wlapperimage.cpp \
     wlappersetter.cpp \
@@ -34,7 +40,12 @@ SOURCES += \
 
 HEADERS += \
     dayimagelist.h \
+    dbdaylisttablemanager.h \
+    dbimagetablemanager.h \
     dbmanager.h \
+    dbrandomlisttablemanager.h \
+    dbtablescreator.h \
+    dbweeklisttablemanager.h \
     dialogwindowlistofimage.h \
     imageloader.h \
     imageslist.h \
@@ -49,6 +60,7 @@ HEADERS += \
     timetabdaylistwidget.h \
     timetabrandomlistwidget.h \
     timetabweeklistwidget.h \
+    uielementfactory.h \
     weekimagelist.h \
     wlapperimage.h \
     wlappersetter.h \

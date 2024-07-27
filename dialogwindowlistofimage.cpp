@@ -7,12 +7,14 @@ DialogWindowListOfImage::DialogWindowListOfImage(DBManager* dbManager, ImagesLis
     //scrollArea(new QScrollArea(this))
 {
     ui->setupUi(this);
+    this->setStyleSheet(Style::getTabsStyle());
     ui->ListOfImageMenuBar->setStyleSheet(Style::getMenuBarStyle());
     scrollAreaConterinerWidget = new QWidget(this);
     scrollAreaManager = new ScrollAreaManager();
-    imageLoader = new ImageLoader(dbManager);
+    imageLoader = new ImageLoader();
     scrollAreaManager->CreateScrollArea(this, scrollAreaConterinerWidget,300,420,0,80);
     CreateListOfImageIntarface();
+
 
 }
 
@@ -73,9 +75,4 @@ void DialogWindowListOfImage::closeEvent() {
     QDialog::hide();
 }
 
-void DialogWindowListOfImage::showDialogWindow()
-{
-    scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerWidget);
-    CreateListOfImageIntarface();
-    this->show();
-}
+

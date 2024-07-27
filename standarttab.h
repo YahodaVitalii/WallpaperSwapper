@@ -21,7 +21,7 @@ class StandartTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit StandartTab(DBManager* dbManager, ImagesList* imageManager,QWidget *parent = nullptr);
+    explicit StandartTab(DBManager* dbManager, ImagesList* imageManager, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
     ~StandartTab();
 
     void showImage(int index);
@@ -31,10 +31,9 @@ public:
     void setStandartTabStyle();
     void setSliderButtonIcon();
 
-     void CreateDialogWindowListOfImage();
-   void displayImageInLabel(QLabel* label, const QString& filePath);
+    void displayImageInLabel(QLabel* label, const QString& filePath);
 
-   bool setWallpaper(const QString &imagePath);
+    bool setWallpaper(const QString &imagePath);
 private slots:
     void on_StandartTabChooseButton_clicked();
     void on_StandartTabAddButton_clicked();
@@ -52,8 +51,8 @@ private:
     ImagesList* imageManager;
     ImageLoader* imageLoader;
     WlapperSetter* wlapperSetter;
+    DialogWindowListOfImage *dialogWindowListOfImage;
 
-    DialogWindowListOfImage* dialogWindowListOfImage;
     InterfaceAddition* interfaceAddition;
     int currentIndex = 0;
 };

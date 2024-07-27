@@ -11,13 +11,21 @@ MainWindow::MainWindow(DBManager* dbManager,QWidget *parent)
     ui->setupUi(this);
 
     setInterfaceStyle();
-   imagesList = new ImagesList(dbManager);
+    imagesList = new ImagesList();
+    interfaceAddition = new InterfaceAddition(this,imagesList);
+    dialogWindowListOfImage = new DialogWindowListOfImage(dbManager,imagesList,interfaceAddition,this);
 
-   standartTab = new StandartTab(this->dbManager,imagesList,this);
+
+    standartTab = new StandartTab(dbManager,imagesList,dialogWindowListOfImage,this);
     standartTab ->move(165, 0);
 
-    timeTab = new TimeTab(this->dbManager,imagesList,this);
+    timeTab = new TimeTab(dbManager,imagesList,dialogWindowListOfImage,this);
     timeTab->move(165, 0);
+
+    connect(interfaceAddition->getUiElementFactory(), &UIElementFactory::imageSelected, standartTab, &StandartTab::updateImage);
+    connect(interfaceAddition->getUiElementFactory(), &UIElementFactory::imageSelected, timeTab->getTimeTabRandomListWidget(), &TimeTabRandomListWidget::addImageInList);
+    connect(interfaceAddition->getUiElementFactory(), &UIElementFactory::imageSelected, timeTab->getTimeTabWeekListWidget(), &TimeTabWeekListWidget::addImageInList);
+    connect(interfaceAddition->getUiElementFactory(), &UIElementFactory::imageSelected, timeTab->getTimeTabDayListWidget(), &TimeTabDayListWidget::addImageInList);
 
 }
 

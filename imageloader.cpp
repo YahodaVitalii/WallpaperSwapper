@@ -1,6 +1,7 @@
 #include "imageloader.h"
 
-ImageLoader::ImageLoader(DBManager *dbManager):dbManager(dbManager){
+ImageLoader::ImageLoader(){
+     dbImageTableManager = new DBImageTableManager();
 }
 
 bool ImageLoader::ChooseImageFromFiles(QWidget* parent) {
@@ -18,7 +19,7 @@ bool ImageLoader::ChooseImageFromFiles(QWidget* parent) {
         }
 
         auto wlapperImage = createWlapperImage(fileName, image);
-        if (!dbManager->insertIntoImageTable(*wlapperImage)) {
+        if (!dbImageTableManager->insertIntoImageTable(*wlapperImage)) {
             throw WSExeptions("Error inserting data into the database.");
         }
 

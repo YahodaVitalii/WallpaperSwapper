@@ -12,18 +12,20 @@
 #include "wlapperimage.h"
 #include "wsexeptions.h"
 #include "sqlitedbmanager.h"
+#include "dbimagetablemanager.h"
 
 class ImageLoader : public QObject
 {
     Q_OBJECT
 private:
 
-     DBManager* dbManager;
+    DBManager* dbManager;
+    DBImageTableManager* dbImageTableManager;
 
     QImage loadImage(const QString& fileName);
     std::unique_ptr<WlapperImage> createWlapperImage(const QString& fileName, const QImage& image);
 public:
-    ImageLoader(DBManager *dbManager);
+    ImageLoader();
     bool ChooseImageFromFiles(QWidget* parent = nullptr);
 
 };
