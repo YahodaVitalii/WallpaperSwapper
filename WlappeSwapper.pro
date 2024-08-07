@@ -11,6 +11,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    baselistwidget.cpp \
     dayimagelist.cpp \
     dbdaylisttablemanager.cpp \
     dbimagetablemanager.cpp \
@@ -26,8 +27,10 @@ SOURCES += \
     randomimagelist.cpp \
     scrollareamanager.cpp \
     sqlitedbmanager.cpp \
+    sqltableimagelist.cpp \
     standarttab.cpp \
     style.cpp \
+    tabinterfacebuilder.cpp \
     timetab.cpp \
     timetabdaylistwidget.cpp \
     timetabrandomlistwidget.cpp \
@@ -39,6 +42,7 @@ SOURCES += \
     wsexeptions.cpp
 
 HEADERS += \
+    baselistwidget.h \
     dayimagelist.h \
     dbdaylisttablemanager.h \
     dbimagetablemanager.h \
@@ -54,8 +58,10 @@ HEADERS += \
     randomimagelist.h \
     scrollareamanager.h \
     sqlitedbmanager.h \
+    sqltableimagelist.h \
     standarttab.h \
     style.h \
+    tabinterfacebuilder.h \
     timetab.h \
     timetabdaylistwidget.h \
     timetabrandomlistwidget.h \

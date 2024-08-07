@@ -1,15 +1,17 @@
 #include "standarttab.h"
 #include "ui_standarttab.h"
 #include "style.h"
-StandartTab::StandartTab(DBManager *dbManager, ImagesList *imageManager,DialogWindowListOfImage* dialogWindowListOfImage, QWidget *parent) :
+StandartTab::StandartTab(DBManager *dbManager, ImageList *imageList, DialogWindowListOfImage* dialogWindowListOfImage, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::StandartTab), dbManager(dbManager),imageManager(imageManager),dialogWindowListOfImage(dialogWindowListOfImage)
+    ui(new Ui::StandartTab), dbManager(dbManager),imageList(imageList),dialogWindowListOfImage(dialogWindowListOfImage)
 {
     ui->setupUi(this);
     setStandartTabStyle();
-    interfaceAddition = new InterfaceAddition(parent,imageManager);
+    uiElementFactory = new UIElementFactory(imageList);
+    interfaceAddition = new InterfaceAddition(parent,uiElementFactory);
     imageLoader = new ImageLoader();
     wlapperSetter = new WlapperSetter();
+
 }
 
 StandartTab::~StandartTab()
@@ -19,20 +21,20 @@ StandartTab::~StandartTab()
 
 void StandartTab::showImage(int index)
 {
-    if (index >= 0 && index < imageManager->getsizeOfImages()) {
-        QPixmap pixmap(imageManager->GetImageByIndex(index).getUrl());
+    if (index >= 0 && index < imageList->getsizeOfImages()) {
+        QPixmap pixmap(imageList->GetImageByIndex(index).getUrl());
         ui->SliderImage->setPixmap(pixmap.scaled(ui->SliderImage->size(), Qt::KeepAspectRatio));
     }
 }
 
 void StandartTab::nextImage()
 {
-    currentIndex = (currentIndex + 1) % imageManager->getsizeOfImages();
+    currentIndex = (currentIndex + 1) % imageList->getsizeOfImages();
     showImage(currentIndex);
 }
 void StandartTab::previousImage()
 {
-    currentIndex = (currentIndex - 1 + imageManager->getsizeOfImages()) % imageManager->getsizeOfImages();
+    currentIndex = (currentIndex - 1 + imageList->getsizeOfImages()) % imageList->getsizeOfImages();
     showImage(currentIndex);
 }
 void StandartTab::setStandartTabStyle()
@@ -71,13 +73,13 @@ void StandartTab::on_StandartTabChooseButton_clicked(){
 }
 void StandartTab::on_StandartTabAddButton_clicked() {
     if(imageLoader->ChooseImageFromFiles()){
-        imageManager ->getImagesFromTable();
+        imageList ->getImagesFromTable();
 
-        int imageId = imageManager->getImages().last().getId();
+        int imageId = imageList->getImages().last().getId();
         if (imageId != -1) {  // Перевірте, що ID є дійсним
-            currentIndex = imageManager->findImageById(imageId); // Вам потрібно написати цю функцію
+            currentIndex = imageList->findImageById(imageId); // Вам потрібно написати цю функцію
             if (currentIndex != -1) { // Переконайтеся, що індекс існує
-                displayImageInLabel(ui->SliderImage, imageManager->GetImageByIndex(currentIndex).getUrl());
+                displayImageInLabel(ui->SliderImage, imageList->GetImageByIndex(currentIndex).getUrl());
                 showImage(currentIndex);
             }
         }
@@ -98,12 +100,12 @@ void StandartTab::on_SliderRightArrow_clicked()
 
 void StandartTab::on_StandartTabSetButton_clicked()
 {
-    wlapperSetter-> setWallpaper(imageManager->GetImageByIndex(currentIndex).getUrl());
+    wlapperSetter-> setWallpaper(imageList->GetImageByIndex(currentIndex).getUrl());
 }
 
 void StandartTab::on_StandartTabDeleteButton_clicked()
 {
-    imageManager->deleteImageByIndex(currentIndex);
+    imageList->deleteImageByIndex(currentIndex);
 
     nextImage();
 }

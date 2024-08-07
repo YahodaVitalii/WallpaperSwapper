@@ -1,5 +1,5 @@
-#ifndef IMAGESLIST_H
-#define IMAGESLIST_H
+#ifndef ImageList_H
+#define ImageList_H
 
 #include <QWidget>
 #include <QPainter>
@@ -13,27 +13,25 @@
 #include "imageloader.h"
 #include "dbimagetablemanager.h"
 
-class ImagesList : public QObject
+class ImageList : public QObject
 {
     Q_OBJECT
-private:
-    DBManager* dbManager;
-    static  QVector<WlapperImage> images;
-    ImageLoader* imageLoader;
-    DBImageTableManager* dbImageTableManager;
-
 public:
-    explicit ImagesList();
-    void getImagesFromTable();
-    QVector<WlapperImage> getImages();
-    WlapperImage GetImageByIndex(int index);
-    int findImageById(int imageId);
-    void deleteImageByIndex(int index);
-    int getsizeOfImages();
+    explicit ImageList(QObject* parent = nullptr) : QObject(parent) {}
+
+    // Віртуальні методи, які повинні бути реалізовані в похідних класах
+    virtual void getImagesFromTable() = 0;
+    virtual QVector<WlapperImage> getImages()  = 0;
+    virtual WlapperImage GetImageByIndex(int index)  = 0;
+    virtual int findImageById(int imageId)  = 0;
+    virtual void deleteImageByIndex(int index) = 0;
+    virtual int getsizeOfImages()  = 0;
 
 signals:
     void imagesUpdated();
-private slots:
-    void updateImageList();
+
+public slots:
+    virtual void updateImageList() = 0;
 };
-#endif // IMAGESLIST_H
+
+#endif // ImageList_H

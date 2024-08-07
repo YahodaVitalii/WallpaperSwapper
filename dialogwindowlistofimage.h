@@ -24,7 +24,7 @@ class DialogWindowListOfImage : public QDialog
 private:
     Ui::DialogWindowListOfImage *ui;
     DBManager* dbManager;
-    ImagesList* imageManager;
+    ImageList* imageList;
     ImageLoader* imageLoader;
     InterfaceAddition* interfaceAddition;
     ScrollAreaManager* scrollAreaManager;
@@ -32,7 +32,7 @@ private:
     QWidget *scrollAreaConterinerWidget;
 
 public:
-    explicit DialogWindowListOfImage(DBManager* dbManager,ImagesList* imageManager, InterfaceAddition* interfaceAddition,QWidget *parent = nullptr);
+    explicit DialogWindowListOfImage(DBManager* dbManager,ImageList* imageList, InterfaceAddition* interfaceAddition,QWidget *parent = nullptr);
 
     ~DialogWindowListOfImage();
     void CreateListOfImageIntarface();

@@ -1,6 +1,6 @@
 #include "uielementfactory.h"
 
-UIElementFactory::UIElementFactory(ImagesList *imagesList): imagesList(imagesList)
+UIElementFactory::UIElementFactory(ImageList *imageList): imageList(imageList)
 {
 
 }
@@ -10,9 +10,9 @@ void UIElementFactory::CreateLableWithImage(QWidget *containerWidget, int imageI
     QLabel* label = new QLabel(containerWidget);
     label->setFixedSize(geometry.width, geometry.height);
     label->move(geometry.xPos, geometry.yPos);
-    if (imageIndex >= 0 && imageIndex < imagesList->getsizeOfImages()) // Check for valid index range
+    if (imageIndex >= 0 && imageIndex < imageList->getsizeOfImages()) // Check for valid index range
     {
-        QPixmap pixmap(imagesList->GetImageByIndex(imageIndex).getUrl());
+        QPixmap pixmap(imageList->GetImageByIndex(imageIndex).getUrl());
         label->setPixmap(pixmap.scaled(label->size(), Qt::KeepAspectRatio));
     }
     label->setScaledContents(true);
@@ -97,7 +97,26 @@ void UIElementFactory::CreateButtonEdit(QWidget *conteinerWidget, int id, int wi
     buttonEdit->setProperty("ListId", id);
     connect(buttonEdit, &QPushButton::clicked, this, &UIElementFactory::on_buttonEdit_clicked);
 }
+QTimeEdit* UIElementFactory::CreateTimeEditor(QWidget *conteinerWidget, int id, int cordinate_x, int cordinate_y)
+{
+    QTimeEdit* TimeEdit = new QTimeEdit(conteinerWidget);
+    TimeEdit->setFixedSize(70,30);
+    TimeEdit->move(cordinate_x, cordinate_y);
+    TimeEdit->setProperty("id",id);
+    TimeEdit->show();
+    return TimeEdit;
+}
 
+
+
+QLineEdit* UIElementFactory::CreateLineEdit(QWidget *containerWidget, const WidgetGeometry &geometry)
+{
+    QLineEdit* lineEdit = new QLineEdit(containerWidget);
+    lineEdit->setFixedSize(geometry.width, geometry.height);
+    lineEdit->move(geometry.xPos, geometry.yPos);
+    lineEdit->show();
+    return lineEdit;
+}
 void UIElementFactory::CreateButtonSetImage(QWidget *conteinerWidget, QString day, const WidgetGeometry& geometry)
 {
     QPushButton* ButtonSetImage = new QPushButton(conteinerWidget);
@@ -110,19 +129,36 @@ void UIElementFactory::CreateButtonSetImage(QWidget *conteinerWidget, QString da
     ButtonSetImage->setProperty("DayOfButton", day);
     connect(ButtonSetImage, &QPushButton::clicked, this, &UIElementFactory::on_ButtonSetImage_clicked);
 }
-
-QTimeEdit* UIElementFactory::CreateTimeEditor(QWidget *conteinerWidget, int id, int cordinate_x, int cordinate_y)
+void UIElementFactory::CreateButtonAddImage(QWidget *containerWidget, const WidgetGeometry &geometry)
 {
-    QTimeEdit* TimeEdit = new QTimeEdit(conteinerWidget);
-    TimeEdit->setFixedSize(70,30);
-    TimeEdit->move(cordinate_x, cordinate_y);
-    TimeEdit->setProperty("id",id);
-    TimeEdit->show();
-    return TimeEdit;
+    QPushButton* addButton = new QPushButton("Add Image", containerWidget);
+    addButton->setFixedSize(geometry.width, geometry.height);
+    addButton->move(geometry.xPos, geometry.yPos);
+    addButton->show();
+     connect(addButton, &QPushButton::clicked, this, &UIElementFactory::on_ButtonAddImage_clicked); // Connect to appropriate slot if needed
 }
+
+void UIElementFactory::CreateButtonBox(QWidget *containerWidget, int cordinate_x, int cordinate_y)
+{
+
+    QDialogButtonBox* buttonBox = new QDialogButtonBox(containerWidget);
+
+      // Add Save and Cancel buttons
+      buttonBox->addButton(tr("Save"), QDialogButtonBox::AcceptRole);
+      buttonBox->addButton(tr("Cancel"), QDialogButtonBox::RejectRole);
+
+      // Move the button box to the specified coordinates
+      buttonBox->move(cordinate_x, cordinate_y);
+    // Connect the accepted and rejected signals to the respective slots
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &UIElementFactory::onButtonBoxAccepted);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &UIElementFactory::onButtonBoxRejected);
+}
+
+
+
 void UIElementFactory::on_buttonFullSize_clicked()
 {
-    QString imageUrl = imagesList->GetImageByIndex(sender()->property("imageIndex").toInt()).getUrl();
+    QString imageUrl = imageList->GetImageByIndex(sender()->property("imageIndex").toInt()).getUrl();
     QDesktopServices::openUrl(QUrl("file:///" + imageUrl));
 }
 
@@ -141,4 +177,19 @@ void UIElementFactory::on_ButtonSetImage_clicked()
 {
     QString day = sender()->property("DayOfButton").toString();
     emit setImageIntoWeekListItem(day);  // Сигнал передає індекс зображення
+}
+
+void UIElementFactory::on_ButtonAddImage_clicked()
+{
+    emit ButtonAddImageClicked();
+}
+
+void UIElementFactory::onButtonBoxAccepted()
+{
+    emit ButtonBoxAccepted();
+}
+
+void UIElementFactory::onButtonBoxRejected()
+{
+    emit ButtonBoxRejected();
 }

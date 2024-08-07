@@ -1,9 +1,9 @@
 #include "timetab.h"
 #include "ui_timetab.h"
 
-TimeTab::TimeTab(DBManager *dbManager, ImagesList *imageManager,DialogWindowListOfImage* dialogWindowListOfImage, QWidget *parent) :
+TimeTab::TimeTab(DBManager *dbManager, ImageList *imageList,DialogWindowListOfImage* dialogWindowListOfImage, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TimeTab), dbManager(dbManager),imageManager(imageManager),dialogWindowListOfImage(dialogWindowListOfImage)
+    ui(new Ui::TimeTab), dbManager(dbManager),imageList(imageList),dialogWindowListOfImage(dialogWindowListOfImage)
 {
     ui->setupUi(this);
     ui->TimeTabWidget->setStyleSheet(Style::getTabsStyle());
@@ -37,30 +37,27 @@ TimeTabDayListWidget *TimeTab::getTimeTabDayListWidget() const
 
 void TimeTab::CreateimeTabRandomListWidget()
 {
-    timeTabRandomListWidget = new TimeTabRandomListWidget(dbManager,imageManager,dialogWindowListOfImage,this);
+    timeTabRandomListWidget = new TimeTabRandomListWidget(imageList,dialogWindowListOfImage,this);
     timeTabRandomListWidget->move(10,100);
     timeTabRandomListWidget->setStyleSheet(Style::getTimeTabStyle());
-    //timeTabRandomListWidget ->show();
-    connect(this, &TimeTab::SendSignalForRandomListWidget, timeTabRandomListWidget, &TimeTabRandomListWidget::AddRandomListItem);
+    connect(this, &TimeTab::SendSignalForRandomListWidget, timeTabRandomListWidget, &TimeTabRandomListWidget::CreateViewListItem);
 
 }
 
 void TimeTab::CreateTimeTabWeekListWidget()
 {
-    timeTabWeekListWidget = new TimeTabWeekListWidget(dbManager,imageManager,dialogWindowListOfImage, this);
+    timeTabWeekListWidget = new TimeTabWeekListWidget(imageList,dialogWindowListOfImage, this);
     timeTabWeekListWidget->move(10,100);
     timeTabWeekListWidget->setStyleSheet(Style::getTimeTabStyle());
-    // timeTabWeekListWidget ->show();
-    connect(this, &TimeTab::SendSignalForWeekListWidget, timeTabWeekListWidget, &TimeTabWeekListWidget::AddWeekListItem);
+    connect(this, &TimeTab::SendSignalForWeekListWidget, timeTabWeekListWidget, &TimeTabWeekListWidget::CreateViewListItem);
 }
 
 void TimeTab::CreateTimeTabDayListWidget()
 {
-    timeTabDayListWidget = new TimeTabDayListWidget(dbManager,imageManager,dialogWindowListOfImage,this);
+    timeTabDayListWidget = new TimeTabDayListWidget(imageList,dialogWindowListOfImage,this);
     timeTabDayListWidget->move(10,100);
     timeTabDayListWidget->setStyleSheet(Style::getTimeTabStyle());
-    //timeTabDayListWidget ->show();
-    connect(this, &TimeTab::SendSignalForDayListWidget, timeTabDayListWidget, &TimeTabDayListWidget::AddDayListItem);
+    connect(this, &TimeTab::SendSignalForDayListWidget, timeTabDayListWidget, &TimeTabDayListWidget::CreateViewListItem);
 }
 
 void TimeTab::showTab(QWidget *tab)

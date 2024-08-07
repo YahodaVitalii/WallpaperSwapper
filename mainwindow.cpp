@@ -11,22 +11,21 @@ MainWindow::MainWindow(DBManager* dbManager,QWidget *parent)
     ui->setupUi(this);
 
     setInterfaceStyle();
-    imagesList = new ImagesList();
-    interfaceAddition = new InterfaceAddition(this,imagesList);
-    dialogWindowListOfImage = new DialogWindowListOfImage(dbManager,imagesList,interfaceAddition,this);
+    imageList = SQLTableImageList::getInstance();
+    uiElementFactory = new UIElementFactory(imageList);
+    interfaceAddition = new InterfaceAddition(this,uiElementFactory);
+    dialogWindowListOfImage = new DialogWindowListOfImage(dbManager,imageList,interfaceAddition,this);
 
-
-    standartTab = new StandartTab(dbManager,imagesList,dialogWindowListOfImage,this);
+    standartTab = new StandartTab(dbManager,imageList,dialogWindowListOfImage,this);
     standartTab ->move(165, 0);
 
-    timeTab = new TimeTab(dbManager,imagesList,dialogWindowListOfImage,this);
+    timeTab = new TimeTab(dbManager,imageList,dialogWindowListOfImage,this);
     timeTab->move(165, 0);
 
-    connect(interfaceAddition->getUiElementFactory(), &UIElementFactory::imageSelected, standartTab, &StandartTab::updateImage);
-    connect(interfaceAddition->getUiElementFactory(), &UIElementFactory::imageSelected, timeTab->getTimeTabRandomListWidget(), &TimeTabRandomListWidget::addImageInList);
-    connect(interfaceAddition->getUiElementFactory(), &UIElementFactory::imageSelected, timeTab->getTimeTabWeekListWidget(), &TimeTabWeekListWidget::addImageInList);
-    connect(interfaceAddition->getUiElementFactory(), &UIElementFactory::imageSelected, timeTab->getTimeTabDayListWidget(), &TimeTabDayListWidget::addImageInList);
-
+    connect(uiElementFactory, &UIElementFactory::imageSelected, standartTab, &StandartTab::updateImage);
+    connect(uiElementFactory, &UIElementFactory::imageSelected, timeTab->getTimeTabRandomListWidget(), &TimeTabRandomListWidget::addImageInList);
+    connect(uiElementFactory, &UIElementFactory::imageSelected, timeTab->getTimeTabWeekListWidget(), &TimeTabWeekListWidget::addImageInList);
+    connect(uiElementFactory, &UIElementFactory::imageSelected, timeTab->getTimeTabDayListWidget(), &TimeTabDayListWidget::addImageInList);
 }
 
 MainWindow::~MainWindow()

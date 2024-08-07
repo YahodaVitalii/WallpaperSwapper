@@ -8,54 +8,45 @@
 #include "imageslist.h"
 #include "dialogwindowlistofimage.h"
 #include "dbrandomlisttablemanager.h"
+#include "baselistwidget.h"
 namespace Ui {
 class TimeTabRandomListWidget;
 }
 
-class TimeTabRandomListWidget : public QWidget
+class TimeTabRandomListWidget :  public BaseListWidget
 {
     Q_OBJECT
 
 public:
-    explicit TimeTabRandomListWidget(DBManager* dbManager, ImagesList *imagesList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
+    explicit TimeTabRandomListWidget(ImageList *imageList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
     ~TimeTabRandomListWidget();
-    void setStyleIntoPage();
-    void CreateViewTabInterface();
+    void CreateInterfaceViewTab();
     void CreatInterfaceCreateTab();
     void CreateViewTabItem();
     void UpdateViewTabItem();
-     void SetScrollAreaAndConteinerForItems();
-private slots:
-
-    void on_ButtonAddNewItemOfRandomList_clicked();
-
-
-
-    void on_TimeTabRandomListTabButtonBox_accepted();
-
-    void on_TimeTabRandomListTabButtonBox_rejected();
+    void PrepareTabForEditingItem(int ListId);
+    void PrepareTabForCreatingItem();
 
 public slots:
-    void addImageInList(int index);
-    void AddRandomListItem();
-    void receiveRandomImageListEditSignal(int id);
+    void AcceptSavingOfList() override;
+    void RejectSavingOfList() override;
+    void ReceiveEditSignalForListView(int id) override;
+    void addImageInList(int index); /*override;*/
+
+    void ShowDialogWindowListOfImage();
+    void CreateViewListItem();
+
 
 private:
     Ui::TimeTabRandomListWidget *ui;
-    DialogWindowListOfImage* dialogWindowListOfImage;
-    QWidget *scrollAreaConterinerCreateTab;
-    QWidget *scrollAreaConterinerViewTab;
-
-    DBManager* dbManager;
-    ImagesList *imagesList;
-    InterfaceAddition* interfaceAddition;
-    ScrollAreaManager* scrollAreaManager;
     DBRandomListTableManager dbRandomListTableManager;
 
-    RandomImageList*  CurrentRandomImageList;
-       QVector<RandomImageList>  RandomImageLists;
-    //QScrollArea* scrollArea ;
+    QScopedPointer<RandomImageList> CurrentRandomImageList;
+    QVector<RandomImageList>  RandomImageLists;
     QVector<int> currentImageIds;
+
+    QTimeEdit* timeEdit;
+
 };
 
 #endif // TIMETABRANDOMLISTWIDGET_H

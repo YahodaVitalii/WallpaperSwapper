@@ -8,51 +8,42 @@
 #include "imageslist.h"
 #include "dialogwindowlistofimage.h"
 #include "dbdaylisttablemanager.h"
+#include "baselistwidget.h"
 namespace Ui {
 class TimeTabDayListWidget;
 }
 
-class TimeTabDayListWidget : public QWidget
+class TimeTabDayListWidget : public BaseListWidget
 {
     Q_OBJECT
 private:
     Ui::TimeTabDayListWidget *ui;
-    DialogWindowListOfImage* dialogWindowListOfImage;
-    QWidget *scrollAreaConterinerCreateTab;
-    QWidget *scrollAreaConterinerViewTab;
-
-    DBManager* dbManager;
-    ImagesList *imagesList;
-    InterfaceAddition* interfaceAddition;
-    ScrollAreaManager* scrollAreaManager;
     DBDayListTableManager dbDayListTableManager;
 
-    DayImageList* currentDayImageList;
+    QScopedPointer<DayImageList> currentDayImageList;
     QVector<DayImageList> DayImageLists;
     QVector<TimeRangeImage> currentImageIds;
 
 public:
-    explicit TimeTabDayListWidget(DBManager* dbManager, ImagesList *imagesList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
+    explicit TimeTabDayListWidget(ImageList *imageList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
     ~TimeTabDayListWidget();
-
-    void SetTimeTabDayListWidgetStyle();
-    void CreateViewTabInterface();
+    void CreateInterfaceViewTab();
     void CreatInterfaceCreateTab();
     void UpdateViewTabItem();
-    void AddNewDayList();
-    void SetScrollAreaAndConteinerForItems();
+    void CreateViewTabItem();
+    void PrepareTabForEditingItem(int ListId);
+    void PrepareTabForCreatingItem();
 public slots:
-    void AddDayListItem();
-    void addImageInList(int index);
+    void AcceptSavingOfList() override;
+    void RejectSavingOfList() override;
+    void ReceiveEditSignalForListView(int id) override;
+     void addImageInList(int index); /*override;*/
+
+    void ShowDialogWindowListOfImage();
+    void CreateViewListItem();
+
+
     void getTimeEditUpdatetData(int id,QTime startTime,QTime endTime);
-    void receiveDayImageListEditSignal(int id);
-private slots:
-    void on_ButtonAddNewItemOfDayList_clicked();
-
-    void on_TimeTabDayListTabButtonBox_accepted();
-
-    void on_TimeTabDayListTabButtonBox_rejected();
-
 
 
 

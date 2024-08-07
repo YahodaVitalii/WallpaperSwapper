@@ -20,7 +20,7 @@ class TimeTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit TimeTab(DBManager* dbManager, ImagesList* imageManager, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
+    explicit TimeTab(DBManager* dbManager, ImageList* imageList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
     ~TimeTab();
 
     TimeTabRandomListWidget* getTimeTabRandomListWidget() const;
@@ -45,7 +45,7 @@ signals:
 private:
     Ui::TimeTab *ui;
     DBManager* dbManager;
-    ImagesList* imageManager;
+    ImageList* imageList;
     DialogWindowListOfImage *dialogWindowListOfImage;
 
     TimeTabRandomListWidget* timeTabRandomListWidget;

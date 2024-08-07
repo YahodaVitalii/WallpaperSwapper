@@ -21,7 +21,7 @@ class StandartTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit StandartTab(DBManager* dbManager, ImagesList* imageManager, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
+    explicit StandartTab(DBManager* dbManager, ImageList* imageList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
     ~StandartTab();
 
     void showImage(int index);
@@ -48,12 +48,13 @@ private:
     Ui::StandartTab *ui;
 
     DBManager* dbManager;
-    ImagesList* imageManager;
+    ImageList* imageList;
     ImageLoader* imageLoader;
     WlapperSetter* wlapperSetter;
     DialogWindowListOfImage *dialogWindowListOfImage;
 
     InterfaceAddition* interfaceAddition;
+    UIElementFactory* uiElementFactory;
     int currentIndex = 0;
 };
 

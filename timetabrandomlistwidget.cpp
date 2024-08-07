@@ -1,21 +1,19 @@
 #include "timetabrandomlistwidget.h"
 #include "ui_timetabrandomlistwidget.h"
 
-TimeTabRandomListWidget::TimeTabRandomListWidget(DBManager* dbManager, ImagesList *imagesList,DialogWindowListOfImage* dialogWindowListOfImage, QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::TimeTabRandomListWidget),dbManager(dbManager),imagesList(imagesList),dialogWindowListOfImage(dialogWindowListOfImage)
+TimeTabRandomListWidget::TimeTabRandomListWidget(ImageList *imageList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget* parent)
+    : BaseListWidget(imageList, dialogWindowListOfImage, parent), ui(new Ui::TimeTabRandomListWidget)
 {
     ui->setupUi(this);
-    interfaceAddition = new InterfaceAddition(this,imagesList);
-    scrollAreaManager = new ScrollAreaManager();
+    CurrentRandomImageList.reset(new RandomImageList());
+    connect(uiElementFactory, &UIElementFactory::ButtonAddImageClicked, this, &TimeTabRandomListWidget::ShowDialogWindowListOfImage);
 
-    CurrentRandomImageList = new RandomImageList();
-    setStyleIntoPage();
-    SetScrollAreaAndConteinerForItems();
-    CreateViewTabInterface();
+    tabCreateList = tabInterfaceBuilder->buildTabCreateListForRandomList(tabWidget,scrollAreaConterinerCreateTab);
+    tabWidget->addTab(tabCreateList, "Craete List");
 
-    connect(interfaceAddition->getUiElementFactory(), &UIElementFactory::sendEditSignalToItem, this, &TimeTabRandomListWidget::receiveRandomImageListEditSignal);
-
+    nameLineEdit = tabInterfaceBuilder->CreateLineEdit(tabCreateList,WidgetGeometry(110,30,90,10));
+    timeEdit = tabInterfaceBuilder->CreateTimeEdit(tabCreateList,WidgetGeometry(70,30,410,10));
+    CreateInterfaceViewTab();
 }
 
 TimeTabRandomListWidget::~TimeTabRandomListWidget()
@@ -23,109 +21,100 @@ TimeTabRandomListWidget::~TimeTabRandomListWidget()
     delete ui;
 }
 
-void TimeTabRandomListWidget::setStyleIntoPage()
-{
-    ui->TimeTabRandomListTabWidget->tabBar()->hide();
-    ui->TimeTabRandomListTabWidget->setCurrentIndex(0);
-    ui->TimeTabRandomListTabWidget->setStyleSheet(Style::getTabWidgetStyle());
-    ui->CreateTab->setStyleSheet(Style::getCreateTabStyle());
-}
-
-void TimeTabRandomListWidget::CreateViewTabInterface()
+void TimeTabRandomListWidget::CreateInterfaceViewTab()
 {
     RandomImageLists = dbRandomListTableManager.getAllRandomImageLists();
     for (const auto& list : RandomImageLists)
-        scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab,interfaceAddition->CreateRandomListOfImageView(&list));
+        scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildRandomListOfImageView(&list));
 }
 
 void TimeTabRandomListWidget::CreatInterfaceCreateTab()
 {
     for (int i = 0; i < currentImageIds.size(); i++){
-      QWidget* itemWidget = interfaceAddition->CreateRandomListOfImageItem(imagesList->findImageById(currentImageIds[i]));
-      scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerCreateTab,itemWidget);
+        QWidget* itemWidget = interfaceAddition->BuildRandomListOfImageItem(imageList->findImageById(currentImageIds[i]));
+        scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerCreateTab, itemWidget);
     }
 }
 
 void TimeTabRandomListWidget::CreateViewTabItem()
 {
-    CurrentRandomImageList = new RandomImageList(ui->lineEditNameRandoList->text(), ui->timeEditTimeInterval->dateTime(), currentImageIds);
-    dbRandomListTableManager.insertImageList(CurrentRandomImageList);
+    CurrentRandomImageList.reset(new RandomImageList(nameLineEdit->text(), timeEdit->dateTime(), currentImageIds));
+    dbRandomListTableManager.insertImageList(CurrentRandomImageList.data());
 }
 
 void TimeTabRandomListWidget::UpdateViewTabItem()
 {
-    CurrentRandomImageList->setName(ui->lineEditNameRandoList->text());
-    CurrentRandomImageList->setTimeInterval(ui->timeEditTimeInterval->dateTime());
+    CurrentRandomImageList->setName(nameLineEdit->text());
+    CurrentRandomImageList->setTimeInterval(timeEdit->dateTime());
     CurrentRandomImageList->setImageIds(currentImageIds);
-    dbRandomListTableManager.updateRandomImageList(CurrentRandomImageList);
+    dbRandomListTableManager.updateRandomImageList(CurrentRandomImageList.data());
 }
 
-void TimeTabRandomListWidget::SetScrollAreaAndConteinerForItems()
+void TimeTabRandomListWidget::PrepareTabForCreatingItem()
 {
-    scrollAreaConterinerCreateTab = new QWidget(this);
-    scrollAreaConterinerViewTab = new QWidget(this);
-    QVBoxLayout *layoutCreateTab = new QVBoxLayout(scrollAreaConterinerCreateTab);
-    scrollAreaConterinerCreateTab->setLayout(layoutCreateTab);
-    QVBoxLayout *layoutViewTab = new QVBoxLayout(scrollAreaConterinerViewTab);
-    scrollAreaConterinerViewTab->setLayout(layoutViewTab);
-    scrollAreaManager->CreateScrollArea(ui->CreateTab, scrollAreaConterinerCreateTab,600,280,0,60);
-    scrollAreaManager->CreateScrollArea(ui->ViewTab,scrollAreaConterinerViewTab,600,360,0,10);
+    CurrentRandomImageList.reset(new RandomImageList());
+    timeEdit->setTime(QTime(0, 0));
+    currentImageIds.clear();
+    scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
+    tabWidget->setCurrentIndex(1);
+}
+
+void TimeTabRandomListWidget::PrepareTabForEditingItem(int ListId)
+{
+    tabWidget->setCurrentIndex(1);
+    scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
+    CurrentRandomImageList.reset(new RandomImageList(dbRandomListTableManager.FindRandomImageListById(ListId)));
+    currentImageIds = CurrentRandomImageList->getImageIds();
+    nameLineEdit->setText(CurrentRandomImageList->getName());
+    timeEdit->setTime(CurrentRandomImageList->getTimeInterval().time());
+    CreatInterfaceCreateTab();
 }
 
 void TimeTabRandomListWidget::addImageInList(int index)
 {
-    scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerCreateTab,interfaceAddition->CreateRandomListOfImageItem(index));
-    currentImageIds.append(imagesList->GetImageByIndex(index).getId());
-    dialogWindowListOfImage ->hide();
+    scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerCreateTab, interfaceAddition->BuildRandomListOfImageItem(index));
+    currentImageIds.append(imageList->GetImageByIndex(index).getId());
+    dialogWindowListOfImage->hide();
 }
 
-void TimeTabRandomListWidget::AddRandomListItem()
+void TimeTabRandomListWidget::CreateViewListItem()
 {
-    CurrentRandomImageList = new RandomImageList();
-    ui->timeEditTimeInterval->setTime(QTime(0, 0));
-    currentImageIds.clear();
-    scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
-    ui->TimeTabRandomListTabWidget->setCurrentIndex(1);
+   PrepareTabForCreatingItem();
 }
 
-void TimeTabRandomListWidget::receiveRandomImageListEditSignal(int id)
+void TimeTabRandomListWidget::ReceiveEditSignalForListView(int id)
 {
-    ui->TimeTabRandomListTabWidget->setCurrentIndex(1);
-    scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
-    CurrentRandomImageList = new RandomImageList(dbRandomListTableManager.FindRandomImageListById(id));
-    currentImageIds = CurrentRandomImageList->getImageIds();
-    qDebug() << currentImageIds.size();
-    ui->lineEditNameRandoList->setText(CurrentRandomImageList->getName());
-    ui->timeEditTimeInterval->setTime(CurrentRandomImageList->getTimeInterval().time());
-    CreatInterfaceCreateTab();
+    PrepareTabForEditingItem(id);
 }
 
-void TimeTabRandomListWidget::on_ButtonAddNewItemOfRandomList_clicked()
+void TimeTabRandomListWidget::ShowDialogWindowListOfImage()
 {
     dialogWindowListOfImage->show();
 }
 
-void TimeTabRandomListWidget::on_TimeTabRandomListTabButtonBox_accepted()
+void TimeTabRandomListWidget::AcceptSavingOfList()
 {
-    ui->TimeTabRandomListTabWidget->setCurrentIndex(0);
-    if (CurrentRandomImageList->getId() == -1)
-    {
-        CreateViewTabItem();
-        RandomImageLists = dbRandomListTableManager.getAllRandomImageLists();
-        scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab ,interfaceAddition->CreateRandomListOfImageView(&RandomImageLists.last()));
+    try {
+        int CurrentRandomListId = CurrentRandomImageList->getId();
+        if (CurrentRandomListId == -1) {
+            CreateViewTabItem();
+            RandomImageLists = dbRandomListTableManager.getAllRandomImageLists();
+            scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildRandomListOfImageView(&RandomImageLists.last()));
+        } else if (CurrentRandomListId > 0) {
+            UpdateViewTabItem();
+            scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerViewTab);
+            CreateInterfaceViewTab();
+        } else {
+            throw WSExeptions("Error: Random List has incorrect index: " + CurrentRandomListId);
+        }
+    } catch (const WSExeptions& e) {
+        qDebug() << "Caught WSExeptions: " << e.what();
     }
-    else if (CurrentRandomImageList->getId() > 0)
-    {
-        UpdateViewTabItem();
-        scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerViewTab);
-        CreateViewTabInterface();
 
-    }
+    tabWidget->setCurrentIndex(0);
 }
 
-
-void TimeTabRandomListWidget::on_TimeTabRandomListTabButtonBox_rejected()
+void TimeTabRandomListWidget::RejectSavingOfList()
 {
-    ui->TimeTabRandomListTabWidget->setCurrentIndex(0);
+    tabWidget->setCurrentIndex(0);
 }
-

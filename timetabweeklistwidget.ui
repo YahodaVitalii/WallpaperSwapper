@@ -13,65 +13,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QTabWidget" name="TimeTabWeekListTabWidget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>600</width>
-     <height>380</height>
-    </rect>
-   </property>
-   <property name="currentIndex">
-    <number>1</number>
-   </property>
-   <widget class="QWidget" name="ViewTab">
-    <attribute name="title">
-     <string>Tab 1</string>
-    </attribute>
-   </widget>
-   <widget class="QWidget" name="CreateTab">
-    <attribute name="title">
-     <string>Tab 2</string>
-    </attribute>
-    <widget class="QDialogButtonBox" name="CreateTabButtonBox">
-     <property name="geometry">
-      <rect>
-       <x>380</x>
-       <y>340</y>
-       <width>190</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEditNameWeekList">
-     <property name="geometry">
-      <rect>
-       <x>140</x>
-       <y>10</y>
-       <width>130</width>
-       <height>30</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="labelName">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>10</y>
-       <width>50</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Name:</string>
-     </property>
-    </widget>
-   </widget>
-  </widget>
  </widget>
  <resources/>
  <connections/>

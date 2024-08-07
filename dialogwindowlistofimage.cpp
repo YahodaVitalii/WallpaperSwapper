@@ -1,9 +1,9 @@
 #include "dialogwindowlistofimage.h"
 #include "ui_dialogwindowlistofimage.h"
-DialogWindowListOfImage::DialogWindowListOfImage(DBManager* dbManager, ImagesList *imageManager, InterfaceAddition *interfaceAddition, QWidget *parent) :
+DialogWindowListOfImage::DialogWindowListOfImage(DBManager* dbManager, ImageList *imageList, InterfaceAddition *interfaceAddition, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogWindowListOfImage),
-    dbManager(dbManager),interfaceAddition(interfaceAddition),imageManager(imageManager)
+    dbManager(dbManager),interfaceAddition(interfaceAddition),imageList(imageList)
     //scrollArea(new QScrollArea(this))
 {
     ui->setupUi(this);
@@ -20,20 +20,20 @@ DialogWindowListOfImage::DialogWindowListOfImage(DBManager* dbManager, ImagesLis
 
 void DialogWindowListOfImage::CreateListOfImageIntarface()
 {
-    for(int i = 0; i<imageManager->getsizeOfImages();i++){
-       scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerWidget, interfaceAddition->CreateListOfImageItem(i));
+    for(int i = 0; i<imageList->getsizeOfImages();i++){
+       scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerWidget, interfaceAddition->BuildListOfImageItem(i));
     }
 }
 void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
     try {
         if (imageLoader->ChooseImageFromFiles()) {
-            imageManager->getImagesFromTable();
+            imageList->getImagesFromTable();
 
-            int imageId = imageManager->getImages().last().getId();
+            int imageId = imageList->getImages().last().getId();
             if (imageId != -1) {
-                int imageIndex = imageManager->findImageById(imageId);
+                int imageIndex = imageList->findImageById(imageId);
                 if (imageIndex != -1) {
-                    scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerWidget, interfaceAddition->CreateListOfImageItem(imageIndex));
+                    scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerWidget, interfaceAddition->BuildListOfImageItem(imageIndex));
                 } else {
                     throw WSExeptions("Image not found for ID: " + QString::number(imageId));
                 }
@@ -50,10 +50,6 @@ void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
     }
 }
 
-
-//void DialogWindowListOfImage::on_buttonInfo_clicked() {
-//    qDebug() << "Info button clicked";
-//}
 
 //void DialogWindowListOfImage::on_buttonDelete_clicked() {
 //    int index = sender()->property("imageIndex").toInt();

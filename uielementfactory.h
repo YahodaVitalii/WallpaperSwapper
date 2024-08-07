@@ -10,6 +10,8 @@
 #include <QDesktopServices>
 #include <QScrollArea>
 #include <QCheckBox>
+#include <QLineEdit>
+#include <QDialogButtonBox>
 #include "imageslist.h"
 struct WidgetGeometry {
     int width;
@@ -27,7 +29,7 @@ class UIElementFactory: public QWidget
 {
     Q_OBJECT
 public:
-    UIElementFactory(ImagesList *imagesList);
+    UIElementFactory(ImageList *imageList);
     void CreateLableWithImage(QWidget* conteinerWidget, int imageIndex, const WidgetGeometry& geometry);
     void CreateButtonImage(QWidget* conteinerWidget, int index, const WidgetGeometry& geometry);
     void CreateButtonSetImage(QWidget *conteinerWidget, QString day, const WidgetGeometry& geometry);
@@ -42,18 +44,28 @@ public:
 
 
     QTimeEdit* CreateTimeEditor(QWidget *conteinerWidget, int id, int cordinate_x, int cordinate_y);
+
+    void CreateButtonAddImage(QWidget *containerWidget, const WidgetGeometry &geometry);
+    void CreateButtonBox(QWidget *containerWidget, int cordinate_x, int cordinate_y);
+    QLineEdit* CreateLineEdit(QWidget *containerWidget, const WidgetGeometry &geometry);
 private slots:
     void on_buttonFullSize_clicked();
     void on_buttonImage_clicked();
     void on_buttonEdit_clicked();
     void on_ButtonSetImage_clicked();
+    void on_ButtonAddImage_clicked();
+    void onButtonBoxAccepted();
+    void onButtonBoxRejected();
 signals:
     void imageSelected(int imageIndex);
     void sendEditSignalToItem(int elemantId);
     void setImageIntoWeekListItem(QString day);
+    void ButtonAddImageClicked();
+    void ButtonBoxAccepted();
+    void ButtonBoxRejected();
 
 private:
-     ImagesList* imagesList;
+    ImageList* imageList;
 };
 
 #endif // UIELEMENTFACTORY_H

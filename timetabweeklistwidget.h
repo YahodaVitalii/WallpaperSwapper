@@ -4,58 +4,49 @@
 #include <QWidget>
 #include "sqlitedbmanager.h"
 #include "imageslist.h"
-#include "interfaceaddition.h"
 #include "dialogwindowlistofimage.h"
 #include "weekimagelist.h"
 #include "dbweeklisttablemanager.h"
+#include "baselistwidget.h"
+#include <QScopedPointer>
 namespace Ui {
 class TimeTabWeekListWidget;
 }
 
-class TimeTabWeekListWidget : public QWidget
+class TimeTabWeekListWidget : public BaseListWidget
 {
     Q_OBJECT
 private:
     Ui::TimeTabWeekListWidget *ui;
-    DialogWindowListOfImage* dialogWindowListOfImage;
-    QWidget *scrollAreaConterinerCreateTab;
-    QWidget *scrollAreaConterinerViewTab;
-
-    DBManager* dbManager;
-    ImagesList *imagesList;
-    InterfaceAddition* interfaceAddition;
-    ScrollAreaManager* scrollAreaManager;
     DBWeekListTableManager dbWeekListTableManager;
 
-     QVector<WeekImageList>  WeekImageLists;
-    WeekImageList* currentWeekImageList;
+    const QStringList days = {"Other days","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+    QVector<WeekImageList>  WeekImageLists;
+    QScopedPointer<WeekImageList> currentWeekImageList;
     QMap<QString, int> currentImageIds;
-     QStringList days = {"Other days","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-
-     QString currentDay;
+    QString currentDay;
 
 public:
-    explicit TimeTabWeekListWidget(DBManager* dbManager, ImagesList *imagesList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
+    explicit TimeTabWeekListWidget(ImageList *imageList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
     ~TimeTabWeekListWidget();
-    void SetTimeTabWeekListWidgetStyle();
-    void CreateTabCreateListOfWidgets();
-    void CreateTabViewListOfWidgets();
-    void AddNewWeekImageList();
-   void  UpdateViewTabItem();
-   void SetScrollAreaAndConteinerForItems();
-     QMap<QString, int> fillCurrentImageIds(const QStringList& keys);
-private slots:
+    void CreatInterfaceCreateTab();
+    void CreateInterfaceViewTab();
+    void CreateViewTabItem();
+    void  UpdateViewTabItem();
+    void PrepareTabForEditingItem(int ListId);
+    void PrepareTabForCreatingItem();
 
-
-    void on_CreateTabButtonBox_accepted();
-
-    void on_CreateTabButtonBox_rejected();
-
+    QMap<QString, int> fillCurrentImageIds(const QStringList& keys);
 public slots:
-    void AddWeekListItem();
-    void ShowDialogWindow(QString day);
-    void addImageInList(int index);
-    void  receiveWeekImageListEditSignal(int id);
+    void  ReceiveEditSignalForListView(int id) override;
+    void AcceptSavingOfList() override;
+    void RejectSavingOfList() override;
+    void addImageInList(int index); /*override;*/
+
+    void ShowDialogWindowListOfImage(QString day);
+    void CreateViewListItem();
+
+
 
 };
 

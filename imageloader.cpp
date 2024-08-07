@@ -22,12 +22,6 @@ bool ImageLoader::ChooseImageFromFiles(QWidget* parent) {
         if (!dbImageTableManager->insertIntoImageTable(*wlapperImage)) {
             throw WSExeptions("Error inserting data into the database.");
         }
-
-//        getImagesFromTable();
-//        if (images.isEmpty()) {
-//            throw WSExeptions("No images found in the table after insertion.");
-//        }
-
         return true; // Return the ID of the last element
     } catch (const WSExeptions& ex) {
         qDebug() << "Error:" << ex.getMessage();

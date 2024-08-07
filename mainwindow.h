@@ -36,7 +36,8 @@ private:
 
     DBManager* dbManager;
     InterfaceAddition* interfaceAddition;
-    ImagesList* imagesList;
+    UIElementFactory* uiElementFactory;
+    ImageList* imageList;
     DialogWindowListOfImage* dialogWindowListOfImage;
 
     void setInterfaceStyle();
