@@ -1,8 +1,8 @@
-#include "wlappersetter.h"
-WlapperSetter::WlapperSetter(){
+#include "wallpapersetter.h"
+WallpaperSetter::WallpaperSetter(){
 
 }
-bool WlapperSetter::setWallpaper(const QString &imagePath) {
+bool WallpaperSetter::setWallpaper(const QString &imagePath) {
     try {
         std::wstring path = imagePath.toStdWString();
 

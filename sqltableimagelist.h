@@ -1,6 +1,6 @@
 #ifndef SQLTABLEIMAGELIST_H
 #define SQLTABLEIMAGELIST_H
-#include "imageslist.h"
+#include "imagelist.h"
 
 class SQLTableImageList : public ImageList
 {
@@ -9,7 +9,7 @@ private:
     DBManager* dbManager;
     ImageLoader* imageLoader;
     DBImageTableManager* dbImageTableManager;
-    QVector<WlapperImage> images;
+    QVector<WallpaperImage> images;
 
     explicit SQLTableImageList(QObject* parent = nullptr); // Приватний конструктор для Singleton
 
@@ -24,8 +24,8 @@ public:
 
     // Реалізація абстрактних методів
     void getImagesFromTable() override;
-    QVector<WlapperImage> getImages() override;
-    WlapperImage GetImageByIndex(int index) override;
+    QVector<WallpaperImage> getImages() override;
+    WallpaperImage GetImageByIndex(int index) override;
     int findImageById(int imageId) override;
     void deleteImageByIndex(int index) override;
     int getsizeOfImages() override;

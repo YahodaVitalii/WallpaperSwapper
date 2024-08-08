@@ -19,8 +19,8 @@ SOURCES += \
     dbtablescreator.cpp \
     dbweeklisttablemanager.cpp \
     dialogwindowlistofimage.cpp \
+    imagelist.cpp \
     imageloader.cpp \
-    imageslist.cpp \
     interfaceaddition.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -36,9 +36,9 @@ SOURCES += \
     timetabrandomlistwidget.cpp \
     timetabweeklistwidget.cpp \
     uielementfactory.cpp \
+    wallpaperimage.cpp \
+    wallpapersetter.cpp \
     weekimagelist.cpp \
-    wlapperimage.cpp \
-    wlappersetter.cpp \
     wsexeptions.cpp
 
 HEADERS += \
@@ -51,8 +51,8 @@ HEADERS += \
     dbtablescreator.h \
     dbweeklisttablemanager.h \
     dialogwindowlistofimage.h \
+    imagelist.h \
     imageloader.h \
-    imageslist.h \
     interfaceaddition.h \
     mainwindow.h \
     randomimagelist.h \
@@ -67,9 +67,9 @@ HEADERS += \
     timetabrandomlistwidget.h \
     timetabweeklistwidget.h \
     uielementfactory.h \
+    wallpaperimage.h \
+    wallpapersetter.h \
     weekimagelist.h \
-    wlapperimage.h \
-    wlappersetter.h \
     wsexeptions.h
 
 FORMS += \

@@ -20,7 +20,7 @@ bool DBImageTableManager::checkDatabaseConnection() {
     return true;
 }
 
-bool DBImageTableManager::insertIntoImageTable(const WlapperImage& wlapperImage) {
+bool DBImageTableManager::insertIntoImageTable(const WallpaperImage& wallpaperImage) {
     if (!checkDatabaseConnection()) {
         qDebug() << "Database connection is not available.";
         return false;
@@ -30,10 +30,10 @@ bool DBImageTableManager::insertIntoImageTable(const WlapperImage& wlapperImage)
         QSqlQuery query;
         query.prepare("INSERT INTO Images (name, url, height, width) VALUES (:Name, :Url, :Height, :Width)");
 
-        query.bindValue(":Name", wlapperImage.getName());
-        query.bindValue(":Url", wlapperImage.getUrl());
-        query.bindValue(":Height", wlapperImage.getHeight());
-        query.bindValue(":Width", wlapperImage.getWidth());
+        query.bindValue(":Name", wallpaperImage.getName());
+        query.bindValue(":Url", wallpaperImage.getUrl());
+        query.bindValue(":Height", wallpaperImage.getHeight());
+        query.bindValue(":Width", wallpaperImage.getWidth());
 
         if (!query.exec()) {
             throw WSExeptions("Error inserting into Images: " + query.lastError().text());
@@ -45,8 +45,8 @@ bool DBImageTableManager::insertIntoImageTable(const WlapperImage& wlapperImage)
     }
 }
 
-QVector<WlapperImage> DBImageTableManager::getAllImages() {
-    QVector<WlapperImage> images;
+QVector<WallpaperImage> DBImageTableManager::getAllImages() {
+    QVector<WallpaperImage> images;
 
     if (!checkDatabaseConnection()) {
         qDebug() << "Database connection is not available.";
@@ -69,7 +69,7 @@ QVector<WlapperImage> DBImageTableManager::getAllImages() {
       //  qDebug() << "Query executed successfully";
 
         while (query.next()) {
-            WlapperImage image;
+            WallpaperImage image;
             image.setId(query.value(0).toInt());
             image.setName(query.value(1).toString());
             image.setUrl(query.value(2).toString());

@@ -17,7 +17,7 @@ SQLTableImageList* SQLTableImageList::getInstance()
     return instance;
 }
 
-QVector<WlapperImage> SQLTableImageList::getImages() {
+QVector<WallpaperImage> SQLTableImageList::getImages() {
     return images;
 }
 
@@ -29,7 +29,7 @@ void SQLTableImageList::getImagesFromTable()
     emit imagesUpdated(); // Відправлення сигналу про оновлення зображень
 }
 
-WlapperImage SQLTableImageList::GetImageByIndex(int index)
+WallpaperImage SQLTableImageList::GetImageByIndex(int index)
 {
     return images.at(index);
 }

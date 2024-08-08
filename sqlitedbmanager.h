@@ -34,8 +34,8 @@ public:
     void connectToDataBase() override;
     QSqlDatabase getDB() override;
 
-    bool insertIntoImageTable(const WlapperImage& wlapperImage) override;
-    QVector<WlapperImage> getAllImages() override;
+    bool insertIntoImageTable(const WallpaperImage& wallpaperImage) override;
+    QVector<WallpaperImage> getAllImages() override;
     bool deleteImageById(int imageId) override;
 
 private:

@@ -9,9 +9,9 @@
 #include <QMessageBox>
 #include "sqlitedbmanager.h"
 #include "dialogwindowlistofimage.h"
-#include "wlappersetter.h"
+#include "wallpapersetter.h"
 
-#include "imageslist.h"
+#include "imagelist.h"
 namespace Ui {
 class StandartTab;
 }
@@ -50,7 +50,7 @@ private:
     DBManager* dbManager;
     ImageList* imageList;
     ImageLoader* imageLoader;
-    WlapperSetter* wlapperSetter;
+    WallpaperSetter* wallpaperSetter;
     DialogWindowListOfImage *dialogWindowListOfImage;
 
     InterfaceAddition* interfaceAddition;

@@ -9,7 +9,7 @@
 #include <QFileInfo>
 #include <QFileDialog>
 #include <Windows.h>
-#include "wlapperimage.h"
+#include "wallpaperimage.h"
 #include "wsexeptions.h"
 #include "sqlitedbmanager.h"
 #include "dbimagetablemanager.h"
@@ -23,7 +23,7 @@ private:
     DBImageTableManager* dbImageTableManager;
 
     QImage loadImage(const QString& fileName);
-    std::unique_ptr<WlapperImage> createWlapperImage(const QString& fileName, const QImage& image);
+    std::unique_ptr<WallpaperImage> createWlapperImage(const QString& fileName, const QImage& image);
 public:
     ImageLoader();
     bool ChooseImageFromFiles(QWidget* parent = nullptr);

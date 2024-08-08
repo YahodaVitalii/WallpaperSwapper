@@ -40,11 +40,11 @@ QImage ImageLoader::loadImage(const QString& fileName) {
     return image;
 }
 
-std::unique_ptr<WlapperImage> ImageLoader::createWlapperImage(const QString& fileName, const QImage& image) {
-    auto wlapperImage = std::make_unique<WlapperImage>();
-    wlapperImage->setName(QFileInfo(fileName).fileName());
-    wlapperImage->setUrl(fileName);
-    wlapperImage->setHeight(image.height());
-    wlapperImage->setWidth(image.width());
-    return wlapperImage;
+std::unique_ptr<WallpaperImage> ImageLoader::createWlapperImage(const QString& fileName, const QImage& image) {
+    auto wallpaperImage = std::make_unique<WallpaperImage>();
+    wallpaperImage->setName(QFileInfo(fileName).fileName());
+    wallpaperImage->setUrl(fileName);
+    wallpaperImage->setHeight(image.height());
+    wallpaperImage->setWidth(image.width());
+    return wallpaperImage;
 }

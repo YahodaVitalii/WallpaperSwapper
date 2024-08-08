@@ -1,15 +1,15 @@
-#ifndef WLAPPERSETTER_H
-#define WLAPPERSETTER_H
+#ifndef WALLPAPERSETTER_H
+#define WALLPAPERSETTER_H
 #include <QString>
 #include <Windows.h>
 #include "wsexeptions.h"
 #include <QDebug>
 
-class WlapperSetter
+class WallpaperSetter
 {
 public:
-    WlapperSetter();
+    WallpaperSetter();
     bool setWallpaper(const QString &imagePath);
 };
 
-#endif // WLAPPERSETTER_H
+#endif // WALLPAPERSETTER_H

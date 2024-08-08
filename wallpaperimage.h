@@ -1,8 +1,8 @@
-#ifndef WLAPPERIMAGE_H
-#define WLAPPERIMAGE_H
+#ifndef WALLPAPERIMAGE_H
+#define WALLPAPERIMAGE_H
 #include <QString>
 
-class WlapperImage
+class WallpaperImage
 {
     int id;
     QString name;
@@ -10,7 +10,7 @@ class WlapperImage
     int height;
     int width;
 public:
-    WlapperImage();
+    WallpaperImage();
 
     int getId() const;
     QString getName() const;
@@ -25,4 +25,4 @@ public:
     void setWidth(int newWidth);
 };
 
-#endif // WLAPPERIMAGE_H
+#endif // WALLPAPERIMAGE_H

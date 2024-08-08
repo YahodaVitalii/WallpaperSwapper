@@ -76,7 +76,7 @@ void SqliteDBManager::closeDataBase() {
     db.close();
 }
 
-bool SqliteDBManager::insertIntoImageTable(const WlapperImage& wlapperImage) {
+bool SqliteDBManager::insertIntoImageTable(const WallpaperImage& wallpaperImage) {
     QSqlQuery query;
     query.prepare("INSERT INTO " TABLE_IMAGE " ("
                   TABLE_IMAGE_NAME ", "
@@ -85,10 +85,10 @@ bool SqliteDBManager::insertIntoImageTable(const WlapperImage& wlapperImage) {
                   TABLE_IMAGE_WIDTH ") "
                                     "VALUES (:Name, :Url, :Height, :Width)");
 
-    query.bindValue(":Name", wlapperImage.getName());
-    query.bindValue(":Url", wlapperImage.getUrl());
-    query.bindValue(":Height", wlapperImage.getHeight());
-    query.bindValue(":Width", wlapperImage.getWidth());
+    query.bindValue(":Name", wallpaperImage.getName());
+    query.bindValue(":Url", wallpaperImage.getUrl());
+    query.bindValue(":Height", wallpaperImage.getHeight());
+    query.bindValue(":Width", wallpaperImage.getWidth());
 
     if (!query.exec()) {
         qDebug() << "error insert into " << TABLE_IMAGE;
@@ -98,8 +98,8 @@ bool SqliteDBManager::insertIntoImageTable(const WlapperImage& wlapperImage) {
         return true;
 }
 
-QVector<WlapperImage> SqliteDBManager::getAllImages() {
-    QVector<WlapperImage> images;
+QVector<WallpaperImage> SqliteDBManager::getAllImages() {
+    QVector<WallpaperImage> images;
 
     if (!db.isOpen()) {
         if (!db.open()) {
@@ -125,7 +125,7 @@ QVector<WlapperImage> SqliteDBManager::getAllImages() {
     }
 
     while (query.next()) {
-        WlapperImage image;
+        WallpaperImage image;
         image.setId(query.value(0).toInt());
         image.setName(query.value(1).toString());
         image.setUrl(query.value(2).toString());

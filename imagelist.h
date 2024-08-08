@@ -8,7 +8,7 @@
 #include <Windows.h>
 #include <QMessageBox>
 #include "sqlitedbmanager.h"
-#include "wlapperimage.h"
+#include "wallpaperimage.h"
 #include "scrollareamanager.h"
 #include "imageloader.h"
 #include "dbimagetablemanager.h"
@@ -21,8 +21,8 @@ public:
 
     // Віртуальні методи, які повинні бути реалізовані в похідних класах
     virtual void getImagesFromTable() = 0;
-    virtual QVector<WlapperImage> getImages()  = 0;
-    virtual WlapperImage GetImageByIndex(int index)  = 0;
+    virtual QVector<WallpaperImage> getImages()  = 0;
+    virtual WallpaperImage GetImageByIndex(int index)  = 0;
     virtual int findImageById(int imageId)  = 0;
     virtual void deleteImageByIndex(int index) = 0;
     virtual int getsizeOfImages()  = 0;

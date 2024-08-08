@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "sqlitedbmanager.h"
-#include "imageslist.h"
+#include "imagelist.h"
 #include "dialogwindowlistofimage.h"
 #include "weekimagelist.h"
 #include "dbweeklisttablemanager.h"

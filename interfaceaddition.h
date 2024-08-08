@@ -12,7 +12,7 @@
 #include <QScrollArea>
 #include <QCheckBox>
 #include "style.h"
-#include "imageslist.h"
+#include "imagelist.h"
 #include "sqlitedbmanager.h"
 #include "uielementfactory.h"
 #include "sqltableimagelist.h"

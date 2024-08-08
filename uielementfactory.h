@@ -12,7 +12,7 @@
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QDialogButtonBox>
-#include "imageslist.h"
+#include "imagelist.h"
 struct WidgetGeometry {
     int width;
     int height;

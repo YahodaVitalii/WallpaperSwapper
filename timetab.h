@@ -6,7 +6,7 @@
 #include <QStyleOption>
 #include <QFileDialog>
 #include "sqlitedbmanager.h"
-#include "imageslist.h"
+#include "imagelist.h"
 #include "style.h"
 #include "timetabrandomlistwidget.h"
 #include "timetabweeklistwidget.h"

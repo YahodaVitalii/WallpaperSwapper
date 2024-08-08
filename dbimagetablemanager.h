@@ -6,7 +6,7 @@
 #include <QSqlError>
 #include"randomimagelist.h"
 #include "wsexeptions.h"
-#include "wlapperimage.h"
+#include "wallpaperimage.h"
 #include "sqlitedbmanager.h"
 
 class DBImageTableManager
@@ -14,8 +14,8 @@ class DBImageTableManager
 public:
     DBImageTableManager();
     bool checkDatabaseConnection();
-    bool insertIntoImageTable(const WlapperImage& wlapperImage);
-    QVector<WlapperImage> getAllImages();
+    bool insertIntoImageTable(const WallpaperImage& wallpaperImage);
+    QVector<WallpaperImage> getAllImages();
     bool deleteImageById(int imageId);
 };
 

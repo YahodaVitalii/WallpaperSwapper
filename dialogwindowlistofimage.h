@@ -11,7 +11,7 @@
 #include <QVBoxLayout>
 #include "sqlitedbmanager.h"
 #include "style.h"
-#include "imageslist.h"
+#include "imagelist.h"
 #include "interfaceaddition.h"
 #include "dbimagetablemanager.h"
 namespace Ui {

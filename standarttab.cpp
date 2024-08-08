@@ -10,7 +10,7 @@ StandartTab::StandartTab(DBManager *dbManager, ImageList *imageList, DialogWindo
     uiElementFactory = new UIElementFactory(imageList);
     interfaceAddition = new InterfaceAddition(parent,uiElementFactory);
     imageLoader = new ImageLoader();
-    wlapperSetter = new WlapperSetter();
+    wallpaperSetter = new WallpaperSetter();
 
 }
 
@@ -100,7 +100,7 @@ void StandartTab::on_SliderRightArrow_clicked()
 
 void StandartTab::on_StandartTabSetButton_clicked()
 {
-    wlapperSetter-> setWallpaper(imageList->GetImageByIndex(currentIndex).getUrl());
+    wallpaperSetter-> setWallpaper(imageList->GetImageByIndex(currentIndex).getUrl());
 }
 
 void StandartTab::on_StandartTabDeleteButton_clicked()
