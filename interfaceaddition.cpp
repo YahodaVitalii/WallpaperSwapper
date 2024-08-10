@@ -1,8 +1,10 @@
 #include "interfaceaddition.h"
 
-InterfaceAddition::InterfaceAddition(QWidget *parent, UIElementFactory *uiElementFactory): QWidget(parent),uiElementFactory(uiElementFactory)
+InterfaceAddition::InterfaceAddition(QWidget *parent, UIElementEventHandler* uiElementEventHandler): QWidget(parent),uiElementEventHandler(uiElementEventHandler)
 {
     imageList = SQLTableImageList::getInstance();
+    uiElementFactory = new UIElementFactory(uiElementEventHandler);
+
 }
 
 InterfaceAddition::~InterfaceAddition()

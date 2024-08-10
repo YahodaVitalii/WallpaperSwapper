@@ -1,8 +1,8 @@
 #include "tabinterfacebuilder.h"
 
-TabInterfaceBuilder::TabInterfaceBuilder(QWidget *parent, UIElementFactory* uiElementFactory): QWidget(parent),uiElementFactory(uiElementFactory)
+TabInterfaceBuilder::TabInterfaceBuilder(QWidget *parent, UIElementEventHandler *uiElementEventHandler): QWidget(parent),uiElementEventHandler(uiElementEventHandler)
 {
-
+    uiElementFactory = new UIElementFactory(uiElementEventHandler);
 }
 QTabWidget *TabInterfaceBuilder::CreateTabWidget(QWidget *conteinerWidget)
 {

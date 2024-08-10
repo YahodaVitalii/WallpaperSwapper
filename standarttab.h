@@ -10,6 +10,7 @@
 #include "sqlitedbmanager.h"
 #include "dialogwindowlistofimage.h"
 #include "wallpapersetter.h"
+#include "dialogwindowcontroller.h"
 
 #include "imagelist.h"
 namespace Ui {
@@ -21,7 +22,7 @@ class StandartTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit StandartTab(DBManager* dbManager, ImageList* imageList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
+    explicit StandartTab(DBManager* dbManager, ImageList* imageList, QWidget *parent = nullptr);
     ~StandartTab();
 
     void showImage(int index);
@@ -51,10 +52,11 @@ private:
     ImageList* imageList;
     ImageLoader* imageLoader;
     WallpaperSetter* wallpaperSetter;
-    DialogWindowListOfImage *dialogWindowListOfImage;
+    //DialogWindowListOfImage *dialogWindowListOfImage;
+     DialogWindowController* dialogWindowController;
 
     InterfaceAddition* interfaceAddition;
-    UIElementFactory* uiElementFactory;
+    UIElementEventHandler *uiElementEventHandler;
     int currentIndex = 0;
 };
 

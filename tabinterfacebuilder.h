@@ -8,7 +8,7 @@ class TabInterfaceBuilder : public QWidget{
     Q_OBJECT
 
 public:
-    TabInterfaceBuilder(QWidget *parent, UIElementFactory* uiElementFactory);
+    TabInterfaceBuilder(QWidget *parent, UIElementEventHandler *uiElementEventHandler);
 
     QTabWidget* CreateTabWidget(QWidget *conteinerWidget);
     QWidget* buildTabViewLists(QWidget *conteinerWidget, QWidget *scrollAreaConterinerViewTab);
@@ -20,6 +20,7 @@ public:
     QTimeEdit* CreateTimeEdit(QWidget *containerWidget, const WidgetGeometry &geometry);
     private:
     UIElementFactory* uiElementFactory;
+    UIElementEventHandler *uiElementEventHandler;
     ScrollAreaManager scrollAreaManager;
 };
 

@@ -1,12 +1,12 @@
 #include "timetabdaylistwidget.h"
 #include "ui_timetabdaylistwidget.h"
 
-TimeTabDayListWidget::TimeTabDayListWidget(ImageList *imageList, DialogWindowListOfImage* dialogWindowListOfImage, QWidget *parent)
-    : BaseListWidget(imageList, dialogWindowListOfImage, parent), ui(new Ui::TimeTabDayListWidget)
+TimeTabDayListWidget::TimeTabDayListWidget(ImageList *imageList, QWidget *parent)
+    : BaseListWidget(imageList, parent), ui(new Ui::TimeTabDayListWidget)
 {
     ui->setupUi(this);
     connect(interfaceAddition, &InterfaceAddition::updateTimeEdit, this, &TimeTabDayListWidget::getTimeEditUpdatetData);
-     connect(uiElementFactory, &UIElementFactory::ButtonAddImageClicked, this, &TimeTabDayListWidget::ShowDialogWindowListOfImage);
+     connect(uiElementEventHandler, &UIElementEventHandler::ButtonAddImageClicked, this, &TimeTabDayListWidget::ShowDialogWindowListOfImage);
     currentDayImageList.reset(new DayImageList());
 
     tabCreateList = tabInterfaceBuilder->buildTabCreateListForDayList(tabWidget,scrollAreaConterinerCreateTab);
@@ -63,7 +63,7 @@ void TimeTabDayListWidget::PrepareTabForEditingItem(int ListId)
     currentImageIds.push_back(newImage);
     scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerCreateTab, interfaceAddition->BuildDayListOfImageItem(&newImage));
 
-    dialogWindowListOfImage->hide();
+    dialogWindowController->Close();
 }
 
 void TimeTabDayListWidget::PrepareTabForCreatingItem()
@@ -116,7 +116,7 @@ void TimeTabDayListWidget::ReceiveEditSignalForListView(int id)
 
 void TimeTabDayListWidget::ShowDialogWindowListOfImage()
 {
-    dialogWindowListOfImage->show();
+    dialogWindowController->Open(this);
 }
 
 void TimeTabDayListWidget::AcceptSavingOfList()

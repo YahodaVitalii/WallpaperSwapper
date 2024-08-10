@@ -1,12 +1,12 @@
 #include "timetabrandomlistwidget.h"
 #include "ui_timetabrandomlistwidget.h"
 
-TimeTabRandomListWidget::TimeTabRandomListWidget(ImageList *imageList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget* parent)
-    : BaseListWidget(imageList, dialogWindowListOfImage, parent), ui(new Ui::TimeTabRandomListWidget)
+TimeTabRandomListWidget::TimeTabRandomListWidget(ImageList *imageList, QWidget* parent)
+    : BaseListWidget(imageList, parent), ui(new Ui::TimeTabRandomListWidget)
 {
     ui->setupUi(this);
     CurrentRandomImageList.reset(new RandomImageList());
-    connect(uiElementFactory, &UIElementFactory::ButtonAddImageClicked, this, &TimeTabRandomListWidget::ShowDialogWindowListOfImage);
+    connect(uiElementEventHandler, &UIElementEventHandler::ButtonAddImageClicked, this, &TimeTabRandomListWidget::ShowDialogWindowListOfImage);
 
     tabCreateList = tabInterfaceBuilder->buildTabCreateListForRandomList(tabWidget,scrollAreaConterinerCreateTab);
     tabWidget->addTab(tabCreateList, "Craete List");
@@ -74,7 +74,7 @@ void TimeTabRandomListWidget::addImageInList(int index)
 {
     scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerCreateTab, interfaceAddition->BuildRandomListOfImageItem(index));
     currentImageIds.append(imageList->GetImageByIndex(index).getId());
-    dialogWindowListOfImage->hide();
+    dialogWindowController->Close();
 }
 
 void TimeTabRandomListWidget::CreateViewListItem()
@@ -89,7 +89,7 @@ void TimeTabRandomListWidget::ReceiveEditSignalForListView(int id)
 
 void TimeTabRandomListWidget::ShowDialogWindowListOfImage()
 {
-    dialogWindowListOfImage->show();
+    dialogWindowController->Open(this);
 }
 
 void TimeTabRandomListWidget::AcceptSavingOfList()

@@ -18,6 +18,7 @@ SOURCES += \
     dbrandomlisttablemanager.cpp \
     dbtablescreator.cpp \
     dbweeklisttablemanager.cpp \
+    dialogwindowcontroller.cpp \
     dialogwindowlistofimage.cpp \
     imagelist.cpp \
     imageloader.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
     timetabdaylistwidget.cpp \
     timetabrandomlistwidget.cpp \
     timetabweeklistwidget.cpp \
+    uielementeventhandler.cpp \
     uielementfactory.cpp \
     wallpaperimage.cpp \
     wallpapersetter.cpp \
@@ -50,6 +52,7 @@ HEADERS += \
     dbrandomlisttablemanager.h \
     dbtablescreator.h \
     dbweeklisttablemanager.h \
+    dialogwindowcontroller.h \
     dialogwindowlistofimage.h \
     imagelist.h \
     imageloader.h \
@@ -66,6 +69,7 @@ HEADERS += \
     timetabdaylistwidget.h \
     timetabrandomlistwidget.h \
     timetabweeklistwidget.h \
+    uielementeventhandler.h \
     uielementfactory.h \
     wallpaperimage.h \
     wallpapersetter.h \

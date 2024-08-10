@@ -23,16 +23,16 @@ class DialogWindowListOfImage : public QDialog
     Q_OBJECT
 private:
     Ui::DialogWindowListOfImage *ui;
-    DBManager* dbManager;
     ImageList* imageList;
     ImageLoader* imageLoader;
     InterfaceAddition* interfaceAddition;
     ScrollAreaManager* scrollAreaManager;
+    UIElementEventHandler *uiElementEventHandler;
 
     QWidget *scrollAreaConterinerWidget;
 
 public:
-    explicit DialogWindowListOfImage(DBManager* dbManager,ImageList* imageList, InterfaceAddition* interfaceAddition,QWidget *parent = nullptr);
+    explicit DialogWindowListOfImage(QWidget *parent = nullptr, UIElementEventHandler *uiElementEventHandler = nullptr);
 
     ~DialogWindowListOfImage();
     void CreateListOfImageIntarface();

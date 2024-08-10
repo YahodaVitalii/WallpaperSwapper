@@ -1,29 +1,33 @@
 #include "dialogwindowlistofimage.h"
 #include "ui_dialogwindowlistofimage.h"
-DialogWindowListOfImage::DialogWindowListOfImage(DBManager* dbManager, ImageList *imageList, InterfaceAddition *interfaceAddition, QWidget *parent) :
+#include <QElapsedTimer>
+#include <QDebug>
+DialogWindowListOfImage::DialogWindowListOfImage(QWidget *parent, UIElementEventHandler *uiElementEventHandler) :
     QDialog(parent),
-    ui(new Ui::DialogWindowListOfImage),
-    dbManager(dbManager),interfaceAddition(interfaceAddition),imageList(imageList)
-    //scrollArea(new QScrollArea(this))
+    ui(new Ui::DialogWindowListOfImage),uiElementEventHandler(uiElementEventHandler)
 {
+
     ui->setupUi(this);
+    //this->setAttribute(Qt::WA_DeleteOnClose);
     this->setStyleSheet(Style::getTabsStyle());
     ui->ListOfImageMenuBar->setStyleSheet(Style::getMenuBarStyle());
+    imageList = SQLTableImageList::getInstance();
     scrollAreaConterinerWidget = new QWidget(this);
     scrollAreaManager = new ScrollAreaManager();
+    interfaceAddition = new InterfaceAddition(this,uiElementEventHandler);
     imageLoader = new ImageLoader();
     scrollAreaManager->CreateScrollArea(this, scrollAreaConterinerWidget,300,420,0,80);
-    CreateListOfImageIntarface();
-
+    CreateListOfImageIntarface(); // Кінець заміру часу
 
 }
 
 void DialogWindowListOfImage::CreateListOfImageIntarface()
 {
     for(int i = 0; i<imageList->getsizeOfImages();i++){
-       scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerWidget, interfaceAddition->BuildListOfImageItem(i));
+        scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerWidget, interfaceAddition->BuildListOfImageItem(i));
     }
 }
+
 void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
     try {
         if (imageLoader->ChooseImageFromFiles()) {
@@ -65,7 +69,16 @@ void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
 
 DialogWindowListOfImage::~DialogWindowListOfImage()
 {
- delete ui;
+
+    delete imageLoader;
+    delete interfaceAddition;
+    delete scrollAreaManager;
+    delete scrollAreaConterinerWidget;
+    delete ui;
+
+
+
+
 }
 void DialogWindowListOfImage::closeEvent() {
     QDialog::hide();

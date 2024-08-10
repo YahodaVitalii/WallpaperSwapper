@@ -1,11 +1,11 @@
 #include "timetabweeklistwidget.h"
 #include "ui_timetabweeklistwidget.h"
-TimeTabWeekListWidget::TimeTabWeekListWidget(ImageList *imageList, DialogWindowListOfImage* dialogWindowListOfImage, QWidget *parent)
-    : BaseListWidget(imageList, dialogWindowListOfImage, parent), ui(new Ui::TimeTabWeekListWidget)
+TimeTabWeekListWidget::TimeTabWeekListWidget(ImageList *imageList, QWidget *parent)
+    : BaseListWidget(imageList, parent), ui(new Ui::TimeTabWeekListWidget)
 {
     ui->setupUi(this);
 
-    connect(uiElementFactory, &UIElementFactory::setImageIntoWeekListItem, this, &TimeTabWeekListWidget::ShowDialogWindowListOfImage);
+    connect(uiElementEventHandler, &UIElementEventHandler::setImageIntoWeekListItem, this, &TimeTabWeekListWidget::ShowDialogWindowListOfImage);
     currentImageIds = fillCurrentImageIds(days);
 
     currentWeekImageList.reset(new WeekImageList());
@@ -125,7 +125,7 @@ void TimeTabWeekListWidget::CreateViewListItem()
 
 void TimeTabWeekListWidget::ShowDialogWindowListOfImage(QString day)
 {
-    dialogWindowListOfImage->show();
+    dialogWindowController->Open(this);
     currentDay = day;
 }
 
@@ -140,7 +140,7 @@ void TimeTabWeekListWidget::addImageInList(int index)
 
     scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
     CreatInterfaceCreateTab();
-    dialogWindowListOfImage->hide();
+    dialogWindowController->Close();
 }
 
 void TimeTabWeekListWidget::ReceiveEditSignalForListView(int id)

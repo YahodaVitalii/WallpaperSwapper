@@ -1,13 +1,16 @@
 #include "baselistwidget.h"
 
-BaseListWidget::BaseListWidget(ImageList* imageList, DialogWindowListOfImage* dialogWindowListOfImage, QWidget* parent)
-    : QWidget(parent), imageList(imageList), dialogWindowListOfImage(dialogWindowListOfImage)
+BaseListWidget::BaseListWidget(ImageList* imageList, QWidget* parent)
+    : QWidget(parent), imageList(imageList)
 {
     scrollAreaConterinerCreateTab =  new QWidget(this);
     scrollAreaConterinerViewTab =  new QWidget(this);
-    uiElementFactory = new UIElementFactory(imageList);
-    interfaceAddition = new InterfaceAddition(this,uiElementFactory);
-    tabInterfaceBuilder = new TabInterfaceBuilder(this,uiElementFactory);
+    uiElementEventHandler = new UIElementEventHandler();
+    interfaceAddition = new InterfaceAddition(this,uiElementEventHandler);
+    tabInterfaceBuilder = new TabInterfaceBuilder(this,uiElementEventHandler);
+    dialogWindowController = new DialogWindowController(uiElementEventHandler);
+
+
     tabWidget = tabInterfaceBuilder->CreateTabWidget(this);
     tabWidget->show();
 
@@ -15,12 +18,12 @@ BaseListWidget::BaseListWidget(ImageList* imageList, DialogWindowListOfImage* di
     tabWidget->addTab(tabViewLists, "View Lists");
 
 
-    tabWidget->setCurrentIndex(0);
 
-    connect(uiElementFactory, &UIElementFactory::sendEditSignalToItem, this, &BaseListWidget::ReceiveEditSignalForListView);
-    connect(uiElementFactory, &UIElementFactory::ButtonBoxAccepted, this, &BaseListWidget::AcceptSavingOfList);
-    connect(uiElementFactory, &UIElementFactory::ButtonBoxRejected, this, &BaseListWidget::RejectSavingOfList);
-    connect(uiElementFactory, &UIElementFactory::imageSelected, this, &BaseListWidget::addImageInList);
+
+    connect(uiElementEventHandler, &UIElementEventHandler::sendEditSignalToItem, this, &BaseListWidget::ReceiveEditSignalForListView);
+    connect(uiElementEventHandler, &UIElementEventHandler::ButtonBoxAccepted, this, &BaseListWidget::AcceptSavingOfList);
+    connect(uiElementEventHandler, &UIElementEventHandler::ButtonBoxRejected, this, &BaseListWidget::RejectSavingOfList);
+    connect(uiElementEventHandler, &UIElementEventHandler::imageSelected, this, &BaseListWidget::addImageInList);
 
 }
 
@@ -28,7 +31,6 @@ BaseListWidget::~BaseListWidget()
 {
     delete scrollAreaConterinerCreateTab;
     delete scrollAreaConterinerViewTab;
-    delete uiElementFactory;
     delete interfaceAddition;
     delete tabInterfaceBuilder;
     delete tabWidget;
@@ -36,7 +38,5 @@ BaseListWidget::~BaseListWidget()
     delete tabCreateList;
 }
 
-void BaseListWidget::addImageInList(int index)
-{
-    qDebug()<<index;
-}
+
+

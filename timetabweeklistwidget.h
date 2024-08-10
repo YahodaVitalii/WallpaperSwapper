@@ -27,7 +27,7 @@ private:
     QString currentDay;
 
 public:
-    explicit TimeTabWeekListWidget(ImageList *imageList, DialogWindowListOfImage *dialogWindowListOfImage, QWidget *parent = nullptr);
+    explicit TimeTabWeekListWidget(ImageList *imageList, QWidget *parent = nullptr);
     ~TimeTabWeekListWidget();
     void CreatInterfaceCreateTab();
     void CreateInterfaceViewTab();
@@ -41,7 +41,7 @@ public slots:
     void  ReceiveEditSignalForListView(int id) override;
     void AcceptSavingOfList() override;
     void RejectSavingOfList() override;
-    void addImageInList(int index); /*override;*/
+    void addImageInList(int index) override;
 
     void ShowDialogWindowListOfImage(QString day);
     void CreateViewListItem();

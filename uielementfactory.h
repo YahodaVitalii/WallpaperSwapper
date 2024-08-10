@@ -13,6 +13,8 @@
 #include <QLineEdit>
 #include <QDialogButtonBox>
 #include "imagelist.h"
+#include "uielementeventhandler.h"
+#include "sqltableimagelist.h"
 struct WidgetGeometry {
     int width;
     int height;
@@ -29,7 +31,7 @@ class UIElementFactory: public QWidget
 {
     Q_OBJECT
 public:
-    UIElementFactory(ImageList *imageList);
+    UIElementFactory(UIElementEventHandler* uiElementEventHandler);
     void CreateLableWithImage(QWidget* conteinerWidget, int imageIndex, const WidgetGeometry& geometry);
     void CreateButtonImage(QWidget* conteinerWidget, int index, const WidgetGeometry& geometry);
     void CreateButtonSetImage(QWidget *conteinerWidget, QString day, const WidgetGeometry& geometry);
@@ -42,30 +44,16 @@ public:
     void CreateLableWithText(QWidget* conteinerWidget, QString TextOfLabel, int Cordinate_x, int Cordinate_y);
     void CreateToggleButton(QWidget *containerWidget, int id);
 
-
     QTimeEdit* CreateTimeEditor(QWidget *conteinerWidget, int id, int cordinate_x, int cordinate_y);
 
     void CreateButtonAddImage(QWidget *containerWidget, const WidgetGeometry &geometry);
     void CreateButtonBox(QWidget *containerWidget, int cordinate_x, int cordinate_y);
     QLineEdit* CreateLineEdit(QWidget *containerWidget, const WidgetGeometry &geometry);
-private slots:
-    void on_buttonFullSize_clicked();
-    void on_buttonImage_clicked();
-    void on_buttonEdit_clicked();
-    void on_ButtonSetImage_clicked();
-    void on_ButtonAddImage_clicked();
-    void onButtonBoxAccepted();
-    void onButtonBoxRejected();
-signals:
-    void imageSelected(int imageIndex);
-    void sendEditSignalToItem(int elemantId);
-    void setImageIntoWeekListItem(QString day);
-    void ButtonAddImageClicked();
-    void ButtonBoxAccepted();
-    void ButtonBoxRejected();
+
 
 private:
-    ImageList* imageList;
+    UIElementEventHandler* uiElementEventHandler;
+    ImageList*  imageList;
 };
 
 #endif // UIELEMENTFACTORY_H

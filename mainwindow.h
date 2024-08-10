@@ -38,7 +38,7 @@ private:
     InterfaceAddition* interfaceAddition;
     UIElementFactory* uiElementFactory;
     ImageList* imageList;
-    DialogWindowListOfImage* dialogWindowListOfImage;
+    //DialogWindowListOfImage* dialogWindowListOfImage;
 
     void setInterfaceStyle();
 };

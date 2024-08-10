@@ -1,16 +1,19 @@
 #include "standarttab.h"
 #include "ui_standarttab.h"
 #include "style.h"
-StandartTab::StandartTab(DBManager *dbManager, ImageList *imageList, DialogWindowListOfImage* dialogWindowListOfImage, QWidget *parent) :
+StandartTab::StandartTab(DBManager *dbManager, ImageList *imageList, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::StandartTab), dbManager(dbManager),imageList(imageList),dialogWindowListOfImage(dialogWindowListOfImage)
+    ui(new Ui::StandartTab), dbManager(dbManager),imageList(imageList)
 {
     ui->setupUi(this);
     setStandartTabStyle();
-    uiElementFactory = new UIElementFactory(imageList);
-    interfaceAddition = new InterfaceAddition(parent,uiElementFactory);
+   uiElementEventHandler = new UIElementEventHandler();
+    interfaceAddition = new InterfaceAddition(parent,uiElementEventHandler);
     imageLoader = new ImageLoader();
     wallpaperSetter = new WallpaperSetter();
+    dialogWindowController = new DialogWindowController(uiElementEventHandler);
+
+    connect(uiElementEventHandler, &UIElementEventHandler::imageSelected, this, &StandartTab::updateImage);
 
 }
 
@@ -69,7 +72,7 @@ void StandartTab::displayImageInLabel(QLabel *label, const QString &filePath)
 
 
 void StandartTab::on_StandartTabChooseButton_clicked(){
-    dialogWindowListOfImage ->show();
+    dialogWindowController ->Open(this);
 }
 void StandartTab::on_StandartTabAddButton_clicked() {
     if(imageLoader->ChooseImageFromFiles()){
@@ -114,6 +117,6 @@ void StandartTab::updateImage(int index)
 {
     currentIndex = index;
     showImage(currentIndex);
-    dialogWindowListOfImage ->hide();
+    dialogWindowController ->Close();
 }
 

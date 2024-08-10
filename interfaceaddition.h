@@ -22,7 +22,7 @@ class InterfaceAddition : public QWidget{
     Q_OBJECT
 
 public:
-    InterfaceAddition(QWidget *parent,UIElementFactory* uiElementFactory);
+    InterfaceAddition(QWidget *parent, UIElementEventHandler *uiElementEventHandler);
     ~InterfaceAddition();
     QWidget* BuildListOfImageItem(int imageIndex);
     QWidget* BuildRandomListOfImageItem(int imageIndex);
@@ -39,6 +39,7 @@ signals:
 private:
     ImageList* imageList;
     UIElementFactory* uiElementFactory;
+    UIElementEventHandler *uiElementEventHandler;
     const WidgetGeometry standartImageSize={220,110,10,5};
 
 

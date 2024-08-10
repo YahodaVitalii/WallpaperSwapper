@@ -1,9 +1,9 @@
 #include "timetab.h"
 #include "ui_timetab.h"
 
-TimeTab::TimeTab(DBManager *dbManager, ImageList *imageList,DialogWindowListOfImage* dialogWindowListOfImage, QWidget *parent) :
+TimeTab::TimeTab(DBManager *dbManager, ImageList *imageList, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TimeTab), dbManager(dbManager),imageList(imageList),dialogWindowListOfImage(dialogWindowListOfImage)
+    ui(new Ui::TimeTab), dbManager(dbManager),imageList(imageList)
 {
     ui->setupUi(this);
     ui->TimeTabWidget->setStyleSheet(Style::getTabsStyle());
@@ -37,7 +37,7 @@ TimeTabDayListWidget *TimeTab::getTimeTabDayListWidget() const
 
 void TimeTab::CreateimeTabRandomListWidget()
 {
-    timeTabRandomListWidget = new TimeTabRandomListWidget(imageList,dialogWindowListOfImage,this);
+    timeTabRandomListWidget = new TimeTabRandomListWidget(imageList,this);
     timeTabRandomListWidget->move(10,100);
     timeTabRandomListWidget->setStyleSheet(Style::getTimeTabStyle());
     connect(this, &TimeTab::SendSignalForRandomListWidget, timeTabRandomListWidget, &TimeTabRandomListWidget::CreateViewListItem);
@@ -46,7 +46,7 @@ void TimeTab::CreateimeTabRandomListWidget()
 
 void TimeTab::CreateTimeTabWeekListWidget()
 {
-    timeTabWeekListWidget = new TimeTabWeekListWidget(imageList,dialogWindowListOfImage, this);
+    timeTabWeekListWidget = new TimeTabWeekListWidget(imageList, this);
     timeTabWeekListWidget->move(10,100);
     timeTabWeekListWidget->setStyleSheet(Style::getTimeTabStyle());
     connect(this, &TimeTab::SendSignalForWeekListWidget, timeTabWeekListWidget, &TimeTabWeekListWidget::CreateViewListItem);
@@ -54,7 +54,7 @@ void TimeTab::CreateTimeTabWeekListWidget()
 
 void TimeTab::CreateTimeTabDayListWidget()
 {
-    timeTabDayListWidget = new TimeTabDayListWidget(imageList,dialogWindowListOfImage,this);
+    timeTabDayListWidget = new TimeTabDayListWidget(imageList,this);
     timeTabDayListWidget->move(10,100);
     timeTabDayListWidget->setStyleSheet(Style::getTimeTabStyle());
     connect(this, &TimeTab::SendSignalForDayListWidget, timeTabDayListWidget, &TimeTabDayListWidget::CreateViewListItem);
