@@ -13,9 +13,12 @@
 #include <QCheckBox>
 #include "style.h"
 #include "imagelist.h"
-#include "sqlitedbmanager.h"
 #include "uielementfactory.h"
 #include "sqltableimagelist.h"
+#include "randomviewimageslider.h"
+#include "weekviewimageslider.h"
+#include "dayviewimageslider.h"
+
 
 
 class InterfaceAddition : public QWidget{

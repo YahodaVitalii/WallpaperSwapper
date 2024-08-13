@@ -71,13 +71,6 @@ QString Style::getStandartTabStyle()
            "QPushButton#StandartTabSetButton::hover{"
            "background-color: rgba(123, 145, 223,200);"
            "}"
-
-           "QPushButton#SliderRightArrow,QPushButton#SliderLeftArrow{"
-           "background-color: rgba(225, 225, 225,0);"
-           "}"
-           "QPushButton#SliderRightArrow,QPushButton#SliderLeftArrow::hover{"
-           "background-color: rgba(225, 225, 225,40);"
-           "}"
             ;
 }
 
@@ -161,36 +154,30 @@ QString Style::getIterfaceAdditionStyle()
            "border: none;"
            "}"
            "QLabel {"
-            "background-color: rgba(182, 184, 186, 80);"
+           "background-color: rgba(182, 184, 186, 80);"
            "border: none;"
            "}"
            "QPushButton::hover {"
            "background-color: rgb(182, 184, 186);"
            "}"
            "QCheckBox {"
-                   "    spacing: 0px;"
-                   "    padding: 0px;"
-                   "    margin: 0px;"
+           "    spacing: 0px;"
+           "    padding: 0px;"
+           "    margin: 0px;"
            "border:none;"
 
-                  "}"
-                  "QCheckBox::indicator {"
-                  "    width: 160px;"
-                  "    height: 60px;"
+           "}"
+           "QCheckBox::indicator {"
+           "    width: 160px;"
+           "    height: 60px;"
 
-                  "}"
-                  "QCheckBox::indicator:unchecked {"
-                  "    image: url(:/resource/off-button.png);"
-                  "}"
-//                  "QCheckBox::indicator:unchecked:hover {"
-//                  "    image: url(:/resource/checkbox_unchecked_hover.png);"
-//                  "}"
-                  "QCheckBox::indicator:checked {"
-                  "    image: url(:/resource/on-button.png);"
-                  "}";
-//                  "QCheckBox::indicator:checked:hover {"
-//                  "    image: url(:/resource/checkbox_checked_hover.png);"
-//                  "}";
+           "}"
+           "QCheckBox::indicator:unchecked {"
+           "    image: url(:/resource/off-button.png);"
+           "}"
+           "QCheckBox::indicator:checked {"
+           "    image: url(:/resource/on-button.png);"
+           "}";
 }
 
 QString Style::getCreateTabStyle()
@@ -203,29 +190,41 @@ QString Style::getCreateTabStyle()
            "color:rgb(182, 184, 186);"
            "}"
            "QPushButton#ButtonAddNewItemOfRandomList{"
-            "background-color: rgb(83, 190, 120);"
+           "background-color: rgb(83, 190, 120);"
            "color:rgb(255, 255, 255);"
-            "border-radius: 10px;"
+           "border-radius: 10px;"
            "}"
-            "QPushButton{"
+           "QPushButton{"
            "background-color: rgb(255, 255, 255);"
-            "border:1px solid rgb(182, 184, 186);"
+           "border:1px solid rgb(182, 184, 186);"
            "padding:5px;"
-           // "margin-left:5px;"
-           "min-width:60px;"
-           "}"
-           "QLineEdit,QTimeEdit{"
-           "background-color: rgb(255, 255, 255);"
+            // "margin-left:5px;"
+            "min-width:60px;"
+            "}"
+            "QLineEdit,QTimeEdit{"
+            "background-color: rgb(255, 255, 255);"
             "border:1px solid rgb(182, 184, 186);"
-           "}";
+            "}";
 
 }
 
 QString Style::getPressedImageButtonStyle()
-{return "QPushButton{"
-       "background-color: rgb(182, 184, 186);"
+{
+    return "QPushButton{"
+        "background-color: rgb(182, 184, 186);"
         "}";
 
+}
+
+QString Style::getSliderStyle()
+{
+    return
+            "QPushButton{"
+            "background-color: rgba(225, 225, 225,0);"
+            "}"
+            "QPushButton::hover{"
+            "background-color: rgba(225, 225, 225,80);"
+            "}";
 }
 
 

@@ -11,8 +11,8 @@
 #include "dialogwindowlistofimage.h"
 #include "wallpapersetter.h"
 #include "dialogwindowcontroller.h"
-
 #include "imagelist.h"
+#include "standarttabimageslider.h"
 namespace Ui {
 class StandartTab;
 }
@@ -30,7 +30,6 @@ public:
     void nextImage();
 
     void setStandartTabStyle();
-    void setSliderButtonIcon();
 
     void displayImageInLabel(QLabel* label, const QString& filePath);
 
@@ -39,9 +38,6 @@ private slots:
     void on_StandartTabChooseButton_clicked();
     void on_StandartTabAddButton_clicked();
     void on_StandartTabSetButton_clicked();
-
-    void on_SliderLeftArrow_clicked();
-    void on_SliderRightArrow_clicked();
     void on_StandartTabDeleteButton_clicked();
 public slots:
     void updateImage(int index);
@@ -52,9 +48,9 @@ private:
     ImageList* imageList;
     ImageLoader* imageLoader;
     WallpaperSetter* wallpaperSetter;
-    //DialogWindowListOfImage *dialogWindowListOfImage;
-     DialogWindowController* dialogWindowController;
+    DialogWindowController* dialogWindowController;
 
+    StandartTabImageSlider* imageSlider;
     InterfaceAddition* interfaceAddition;
     UIElementEventHandler *uiElementEventHandler;
     int currentIndex = 0;

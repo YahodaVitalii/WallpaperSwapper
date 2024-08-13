@@ -132,54 +132,6 @@
      <property name="styleSheet">
       <string notr="true"/>
      </property>
-     <widget class="QLabel" name="SliderImage">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>10</y>
-        <width>500</width>
-        <height>280</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QPushButton" name="SliderLeftArrow">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>120</y>
-       <width>65</width>
-       <height>65</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="SliderRightArrow">
-     <property name="geometry">
-      <rect>
-       <x>473</x>
-       <y>120</y>
-       <width>65</width>
-       <height>65</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton#SliderRightArrow{
-          background-color: rgba(225, 225, 225,0);
-}
-QPushButton#SliderRightArrow::hover{
-          background-color: rgba(225, 225, 225,40);
-}
-</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
     </widget>
    </widget>
   </widget>

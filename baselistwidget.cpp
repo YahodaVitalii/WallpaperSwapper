@@ -34,8 +34,8 @@ BaseListWidget::~BaseListWidget()
     delete interfaceAddition;
     delete tabInterfaceBuilder;
     delete tabWidget;
-    delete tabViewLists;
-    delete tabCreateList;
+    //delete tabViewLists;
+    //delete tabCreateList;
 }
 
 

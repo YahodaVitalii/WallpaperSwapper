@@ -13,6 +13,7 @@ CONFIG += c++17
 SOURCES += \
     baselistwidget.cpp \
     dayimagelist.cpp \
+    dayviewimageslider.cpp \
     dbdaylisttablemanager.cpp \
     dbimagetablemanager.cpp \
     dbrandomlisttablemanager.cpp \
@@ -26,10 +27,12 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     randomimagelist.cpp \
+    randomviewimageslider.cpp \
     scrollareamanager.cpp \
     sqlitedbmanager.cpp \
     sqltableimagelist.cpp \
     standarttab.cpp \
+    standarttabimageslider.cpp \
     style.cpp \
     tabinterfacebuilder.cpp \
     timetab.cpp \
@@ -38,14 +41,17 @@ SOURCES += \
     timetabweeklistwidget.cpp \
     uielementeventhandler.cpp \
     uielementfactory.cpp \
+    uiimageslider.cpp \
     wallpaperimage.cpp \
     wallpapersetter.cpp \
     weekimagelist.cpp \
+    weekviewimageslider.cpp \
     wsexeptions.cpp
 
 HEADERS += \
     baselistwidget.h \
     dayimagelist.h \
+    dayviewimageslider.h \
     dbdaylisttablemanager.h \
     dbimagetablemanager.h \
     dbmanager.h \
@@ -59,10 +65,12 @@ HEADERS += \
     interfaceaddition.h \
     mainwindow.h \
     randomimagelist.h \
+    randomviewimageslider.h \
     scrollareamanager.h \
     sqlitedbmanager.h \
     sqltableimagelist.h \
     standarttab.h \
+    standarttabimageslider.h \
     style.h \
     tabinterfacebuilder.h \
     timetab.h \
@@ -71,9 +79,12 @@ HEADERS += \
     timetabweeklistwidget.h \
     uielementeventhandler.h \
     uielementfactory.h \
+    uiimageslider.h \
     wallpaperimage.h \
     wallpapersetter.h \
     weekimagelist.h \
+    weekviewimageslider.h \
+    widgetgeometry.h \
     wsexeptions.h
 
 FORMS += \

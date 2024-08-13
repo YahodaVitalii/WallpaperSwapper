@@ -13,7 +13,7 @@ MainWindow::MainWindow(DBManager* dbManager,QWidget *parent)
     setInterfaceStyle();
     imageList = SQLTableImageList::getInstance();
 
-    standartTab = new StandartTab(dbManager,imageList,this);
+   standartTab = new StandartTab(dbManager,imageList,this);
     standartTab ->move(165, 0);
 
     timeTab = new TimeTab(dbManager,imageList,this);

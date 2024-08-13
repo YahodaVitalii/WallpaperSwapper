@@ -2,7 +2,13 @@
 
 UIElementFactory::UIElementFactory(UIElementEventHandler *uiElementEventHandler): uiElementEventHandler(uiElementEventHandler)
 {
+    imageList = SQLTableImageList::getInstance();
+}
+
+UIElementFactory::UIElementFactory()
+{
 imageList = SQLTableImageList::getInstance();
+uiElementEventHandler = new UIElementEventHandler();
 }
 
 void UIElementFactory::CreateLableWithImage(QWidget *containerWidget, int imageIndex, const WidgetGeometry &geometry)
@@ -10,6 +16,8 @@ void UIElementFactory::CreateLableWithImage(QWidget *containerWidget, int imageI
     QLabel* label = new QLabel(containerWidget);
     label->setFixedSize(geometry.width, geometry.height);
     label->move(geometry.xPos, geometry.yPos);
+
+
     if (imageIndex >= 0 && imageIndex < imageList->getsizeOfImages()) // Check for valid index range
     {
         QPixmap pixmap(imageList->GetImageByIndex(imageIndex).getUrl());
@@ -69,19 +77,20 @@ void UIElementFactory::CreateButtonImage(QWidget *conteinerWidget, int index, co
 
 
 
-void UIElementFactory::CreateLableWithText(QWidget *conteinerWidget, QString TextOfLabel, int Cordinate_x, int Cordinate_y)
+QLabel* UIElementFactory::CreateLableWithText(QWidget *conteinerWidget, QString TextOfLabel, int Cordinate_x, int Cordinate_y)
 {
     QLabel* labelText = new QLabel(conteinerWidget);
     labelText->setText(TextOfLabel);
     labelText->move(Cordinate_x,Cordinate_y);
     labelText->show();
+    return labelText;
 }
 
 void UIElementFactory::CreateToggleButton(QWidget *containerWidget, int id)
 {
     QCheckBox* checkBox = new QCheckBox(containerWidget);
        //checkBox->setFixedSize(10, 10);
-       checkBox->move(230, 10);
+       checkBox->move(270, 10);
        checkBox->setProperty("CheckBoxId", id);
        checkBox->show();
        //connect(checkBox, &QCheckBox::stateChanged, this, &InterfaceAddition::on_checkBox_stateChanged);
