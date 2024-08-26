@@ -1,18 +1,15 @@
 #include "timetab.h"
 #include "ui_timetab.h"
 
-TimeTab::TimeTab(DBManager *dbManager, ImageList *imageList, QWidget *parent) :
+TimeTab::TimeTab( QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TimeTab), dbManager(dbManager),imageList(imageList)
+    ui(new Ui::TimeTab),currentTab(nullptr)
 {
     ui->setupUi(this);
     ui->TimeTabWidget->setStyleSheet(Style::getTabsStyle());
     ui->TimeTabMenuBar->setStyleSheet(Style::getMenuBarStyle());
-    CreateimeTabRandomListWidget();
-    CreateTimeTabWeekListWidget();
-    CreateTimeTabDayListWidget();
 
-    showTab(timeTabRandomListWidget);
+    createChildTab(randomTabWidgetFactory);
 }
 
 TimeTab::~TimeTab()
@@ -20,78 +17,45 @@ TimeTab::~TimeTab()
     delete ui;
 }
 
-TimeTabRandomListWidget *TimeTab::getTimeTabRandomListWidget() const
+void TimeTab::createChildTab(TabWidgetFactory &factory)
 {
-    return timeTabRandomListWidget;
-}
+    if (currentTab != nullptr) {
+           delete currentTab;  // Видалити попередню вкладку, якщо вона існує
+           currentTab = nullptr;
+       }
 
-TimeTabWeekListWidget *TimeTab::getTimeTabWeekListWidget() const
-{
-    return timeTabWeekListWidget;
-}
+    BaseListWidget* tab = factory.createWidget(this);
 
-TimeTabDayListWidget *TimeTab::getTimeTabDayListWidget() const
-{
-    return timeTabDayListWidget;
-}
+        if (currentTab != nullptr) {
+            currentTab->hide();
+        }
 
-void TimeTab::CreateimeTabRandomListWidget()
-{
-    timeTabRandomListWidget = new TimeTabRandomListWidget(imageList,this);
-    timeTabRandomListWidget->move(10,100);
-    timeTabRandomListWidget->setStyleSheet(Style::getTimeTabStyle());
-    connect(this, &TimeTab::SendSignalForRandomListWidget, timeTabRandomListWidget, &TimeTabRandomListWidget::CreateViewListItem);
-
-}
-
-void TimeTab::CreateTimeTabWeekListWidget()
-{
-    timeTabWeekListWidget = new TimeTabWeekListWidget(imageList, this);
-    timeTabWeekListWidget->move(10,100);
-    timeTabWeekListWidget->setStyleSheet(Style::getTimeTabStyle());
-    connect(this, &TimeTab::SendSignalForWeekListWidget, timeTabWeekListWidget, &TimeTabWeekListWidget::CreateViewListItem);
-}
-
-void TimeTab::CreateTimeTabDayListWidget()
-{
-    timeTabDayListWidget = new TimeTabDayListWidget(imageList,this);
-    timeTabDayListWidget->move(10,100);
-    timeTabDayListWidget->setStyleSheet(Style::getTimeTabStyle());
-    connect(this, &TimeTab::SendSignalForDayListWidget, timeTabDayListWidget, &TimeTabDayListWidget::CreateViewListItem);
-}
-
-void TimeTab::showTab(QWidget *tab)
-{
-    timeTabRandomListWidget->hide();
-    timeTabWeekListWidget->hide();
-    timeTabDayListWidget->hide();
-
-    tab->show();
+        currentTab = tab;
+        tab->show();
+        connect(this, &TimeTab::CreateNewList, currentTab, &BaseListWidget::CreateViewListItem);
 }
 
 void TimeTab::on_TimeTabMenuBarPlusButton_clicked()
 {
-    emit SendSignalForRandomListWidget();
-    emit SendSignalForWeekListWidget();
-    emit SendSignalForDayListWidget();
+    emit CreateNewList();
 }
-
 
 
 void TimeTab::on_TimeTabMenuBarRandomButton_clicked()
 {
-    showTab(timeTabRandomListWidget);
+   createChildTab(randomTabWidgetFactory);
 }
 
 
 void TimeTab::on_TimeTabMenuBarWeekButton_clicked()
 {
-    showTab(timeTabWeekListWidget);
+    createChildTab(weekTabWidgetFactory);
 }
-
 
 void TimeTab::on_TimeTabMenuBarDayButton_clicked()
 {
-    showTab(timeTabDayListWidget);
+    createChildTab(dayTabWidgetFactory);
 }
+
+
 

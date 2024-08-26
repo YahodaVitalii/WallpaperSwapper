@@ -24,24 +24,22 @@ private:
     QVector<DayImageList> DayImageLists;
     QVector<TimeRangeImage> currentImageIds;
 
+     bool ValidateDataViewList();
+
 public:
-    explicit TimeTabDayListWidget(ImageList *imageList, QWidget *parent = nullptr);
+    explicit TimeTabDayListWidget(QWidget *parent = nullptr);
     ~TimeTabDayListWidget();
     void CreateInterfaceViewTab();
     void CreatInterfaceCreateTab();
     void UpdateViewTabItem();
     void CreateViewTabItem();
-    void PrepareTabForEditingItem(int ListId);
-    void PrepareTabForCreatingItem();
+    void PrepareTabForEditingItem(int ListId) override;
+    void PrepareTabForCreatingItem() override;
 public slots:
     void AcceptSavingOfList() override;
-    void RejectSavingOfList() override;
-    void ReceiveEditSignalForListView(int id) override;
     void addImageInList(int index) override;
 
     void ShowDialogWindowListOfImage();
-    void CreateViewListItem();
-
 
     void getTimeEditUpdatetData(int id,QTime startTime,QTime endTime);
 

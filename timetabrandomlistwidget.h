@@ -18,26 +18,25 @@ class TimeTabRandomListWidget :  public BaseListWidget
     Q_OBJECT
 
 public:
-    explicit TimeTabRandomListWidget(ImageList *imageList,  QWidget *parent = nullptr);
+    explicit TimeTabRandomListWidget(QWidget *parent = nullptr);
     ~TimeTabRandomListWidget();
+
     void CreateInterfaceViewTab();
     void CreatInterfaceCreateTab();
     void CreateViewTabItem();
     void UpdateViewTabItem();
-    void PrepareTabForEditingItem(int ListId);
-    void PrepareTabForCreatingItem();
+    void PrepareTabForEditingItem(int ListId) override;
+    void PrepareTabForCreatingItem() override;
 
 public slots:
     void AcceptSavingOfList() override;
-    void RejectSavingOfList() override;
-    void ReceiveEditSignalForListView(int id) override;
     void addImageInList(int index) override;
 
     void ShowDialogWindowListOfImage();
-    void CreateViewListItem();
-
-
 private:
+    bool ValidateDataViewList();
+
+
     Ui::TimeTabRandomListWidget *ui;
     DBRandomListTableManager dbRandomListTableManager;
 

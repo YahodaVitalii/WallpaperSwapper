@@ -17,6 +17,8 @@ class TimeTabWeekListWidget : public BaseListWidget
 {
     Q_OBJECT
 private:
+     bool ValidateDataViewList();
+
     Ui::TimeTabWeekListWidget *ui;
     DBWeekListTableManager dbWeekListTableManager;
 
@@ -27,24 +29,21 @@ private:
     QString currentDay;
 
 public:
-    explicit TimeTabWeekListWidget(ImageList *imageList, QWidget *parent = nullptr);
+    explicit TimeTabWeekListWidget(QWidget *parent = nullptr);
     ~TimeTabWeekListWidget();
     void CreatInterfaceCreateTab();
     void CreateInterfaceViewTab();
     void CreateViewTabItem();
     void  UpdateViewTabItem();
-    void PrepareTabForEditingItem(int ListId);
-    void PrepareTabForCreatingItem();
+    void PrepareTabForEditingItem(int ListId) override;
+    void PrepareTabForCreatingItem() override;
 
     QMap<QString, int> fillCurrentImageIds(const QStringList& keys);
 public slots:
-    void  ReceiveEditSignalForListView(int id) override;
     void AcceptSavingOfList() override;
-    void RejectSavingOfList() override;
     void addImageInList(int index) override;
 
     void ShowDialogWindowListOfImage(QString day);
-    void CreateViewListItem();
 
 
 

@@ -40,9 +40,9 @@ protected:
     const QString nextButtonIco = ":/resource/SliderRightArrow.png";
     const QString prevButtonIco = ":/resource/SliderLeftArrow.png";
 
+  int currentIndex;
 
     UIElementFactory* uiElementFactory;
-    int currentIndex;
     QLabel* imageLabel;
     QTimer* slideTimer;
     QPushButton* nextButton;

@@ -1,25 +1,17 @@
 #include "weekimagelist.h"
 
-WeekImageList::WeekImageList() : id(-1) {}
+WeekImageList::WeekImageList() : BaseImageList() {}
 
 WeekImageList::WeekImageList(QString name, const QMap<QString, int>& images)
-    : id(-1), name(name), images(images) {}
+    : BaseImageList(name), images(images) {}
 
-QString WeekImageList::getName() const {
-    return name;
+QMap<QString, int> WeekImageList::getImages() const {
+    return images;
 }
 
-void WeekImageList::setName(const QString& name) {
-    this->name = name;
+void WeekImageList::setImages(const QMap<QString, int>& newImages) {
+    images = newImages;
 }
-
-int WeekImageList::getId() const { return id; }
-
-void WeekImageList::setId(int newId) { id = newId; }
-
-QMap<QString, int> WeekImageList::getImages() const { return images; }
-
-void WeekImageList::setImages(const QMap<QString, int>& newImages) { images = newImages; }
 
 QString WeekImageList::toJsonString() const {
     QJsonObject jsonObj;
@@ -27,14 +19,21 @@ QString WeekImageList::toJsonString() const {
         jsonObj[it.key()] = it.value();
     }
 
-    QJsonDocument jsonDoc(jsonObj);
+    QJsonObject rootObj;
+    rootObj["name"] = name;  // Поле name успадковане з BaseImageList
+    rootObj["images"] = jsonObj;
+
+    QJsonDocument jsonDoc(rootObj);
     return QString(jsonDoc.toJson(QJsonDocument::Compact));
 }
 
 void WeekImageList::fromJsonString(const QString& jsonString) {
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonString.toUtf8());
-    QJsonObject jsonObj = jsonDoc.object();
+    QJsonObject rootObj = jsonDoc.object();
 
+    name = rootObj["name"].toString();  // Поле name успадковане з BaseImageList
+
+    QJsonObject jsonObj = rootObj["images"].toObject();
     QMap<QString, int> images;
     for (auto it = jsonObj.begin(); it != jsonObj.end(); ++it) {
         images[it.key()] = it.value().toInt();

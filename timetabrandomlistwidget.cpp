@@ -1,8 +1,8 @@
 #include "timetabrandomlistwidget.h"
 #include "ui_timetabrandomlistwidget.h"
 
-TimeTabRandomListWidget::TimeTabRandomListWidget(ImageList *imageList, QWidget* parent)
-    : BaseListWidget(imageList, parent), ui(new Ui::TimeTabRandomListWidget)
+TimeTabRandomListWidget::TimeTabRandomListWidget(QWidget* parent)
+    : BaseListWidget(parent), ui(new Ui::TimeTabRandomListWidget)
 {
     ui->setupUi(this);
     CurrentRandomImageList.reset(new RandomImageList());
@@ -77,44 +77,46 @@ void TimeTabRandomListWidget::addImageInList(int index)
     dialogWindowController->Close();
 }
 
-void TimeTabRandomListWidget::CreateViewListItem()
-{
-   PrepareTabForCreatingItem();
-}
-
-void TimeTabRandomListWidget::ReceiveEditSignalForListView(int id)
-{
-    PrepareTabForEditingItem(id);
-}
-
 void TimeTabRandomListWidget::ShowDialogWindowListOfImage()
 {
     dialogWindowController->Open(this);
 }
 
+bool TimeTabRandomListWidget::ValidateDataViewList()
+{
+    if(nameLineEdit->text().isEmpty() ||
+            timeEdit->text().isEmpty() ||
+           2 > currentImageIds.size()) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 void TimeTabRandomListWidget::AcceptSavingOfList()
 {
-    try {
-        int CurrentRandomListId = CurrentRandomImageList->getId();
-        if (CurrentRandomListId == -1) {
-            CreateViewTabItem();
-            RandomImageLists = dbRandomListTableManager.getAllRandomImageLists();
-            scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildRandomListOfImageView(&RandomImageLists.last()));
-        } else if (CurrentRandomListId > 0) {
-            UpdateViewTabItem();
-            scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerViewTab);
-            CreateInterfaceViewTab();
-        } else {
-            throw WSExeptions("Error: Random List has incorrect index: " + CurrentRandomListId);
+    if(ValidateDataViewList()){
+        try {
+            int CurrentRandomListId = CurrentRandomImageList->getId();
+            if (CurrentRandomListId == -1) {
+                CreateViewTabItem();
+                RandomImageLists = dbRandomListTableManager.getAllRandomImageLists();
+                scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildRandomListOfImageView(&RandomImageLists.last()));
+            } else if (CurrentRandomListId > 0) {
+                UpdateViewTabItem();
+                scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerViewTab);
+                CreateInterfaceViewTab();
+            } else {
+                throw WSExeptions("Error: Random List has incorrect index: " + CurrentRandomListId);
+            }
+        } catch (const WSExeptions& e) {
+            qDebug() << "Caught WSExeptions: " << e.what();
         }
-    } catch (const WSExeptions& e) {
-        qDebug() << "Caught WSExeptions: " << e.what();
+
+        tabWidget->setCurrentIndex(0);
     }
-
-    tabWidget->setCurrentIndex(0);
+    else{
+        QMessageBox::warning(this, "Warning", "Before creating the list, please make sure that you have entered a name, set the time interval, and added at least two images.");
+    }
 }
 
-void TimeTabRandomListWidget::RejectSavingOfList()
-{
-    tabWidget->setCurrentIndex(0);
-}

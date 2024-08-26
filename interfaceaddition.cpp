@@ -39,16 +39,13 @@ QWidget *InterfaceAddition::BuildRandomListOfImageView(const RandomImageList *ra
 {
     QWidget* viewWidget = CreateContainerWidget();
 
-
-   // uiElementFactory->CreateLableWithImage(viewWidget,imageList->findImageById(randomImageList->imageIds[0]),standartImageSize);
-
     uiElementFactory->CreateToggleButton(viewWidget,randomImageList->getId());
     uiElementFactory->CreateLableWithText(viewWidget,randomImageList->getName(),290,65);
-    uiElementFactory->CreateLableWithText(viewWidget,randomImageList->getTimeInterval().toString(),290,95);
+    uiElementFactory->CreateLableWithText(viewWidget, randomImageList->getTimeInterval().toString("HH:mm"), 290, 95);
     uiElementFactory->CreateButtonDelete(viewWidget,randomImageList->getId(),35,35,500,70);
     uiElementFactory->CreateButtonEdit(viewWidget,randomImageList->getId(),35,35,500,20);
 
-     ImageSlider* imageSlider = new RandomViewImageSlider(randomImageList->imageIds, standartImageSize, viewWidget);
+    imageSlider = new RandomViewImageSlider(randomImageList->imageIds, standartImageSize, viewWidget);
 
     return viewWidget;
 
@@ -68,14 +65,11 @@ QWidget *InterfaceAddition::BuildWeekListOfImageItem(int imageIndex, QString Day
 QWidget *InterfaceAddition::BuildWeekListOfImageView(const WeekImageList* weekImageList)
 {
     QWidget* viewWidget = CreateContainerWidget();
-
-   /// uiElementFactory->CreateLableWithImage(viewWidget,weekImageList->images["Other days"],standartImageSize);
-    //uiElementFactory->CreateLableWithText(viewWidget,weekImageList->getName(),290,65);
     uiElementFactory->CreateToggleButton(viewWidget,weekImageList->getId());
     uiElementFactory->CreateButtonDelete(viewWidget,weekImageList->getId(),35,35,500,70);
     uiElementFactory->CreateButtonEdit(viewWidget,weekImageList->getId(),35,35,500,20);
 
-    ImageSlider* imageSlider = new WeekViewImageSlider(weekImageList->images, standartImageSize, viewWidget);
+    imageSlider = new WeekViewImageSlider(weekImageList->images, standartImageSize, viewWidget);
 
     return viewWidget;
 }
@@ -84,19 +78,28 @@ QWidget *InterfaceAddition::BuildDayListOfImageItem(const TimeRangeImage* item)
 {
     QWidget* itemWidget = CreateContainerWidget();
 
-    uiElementFactory->CreateLableWithImage(itemWidget,item->imageId,standartImageSize);
-    uiElementFactory->CreateLableWithText(itemWidget,"from",245,10);
-    uiElementFactory->CreateLableWithText(itemWidget,"to",370,10);
+    uiElementFactory->CreateLableWithImage(itemWidget, item->imageId, standartImageSize);
+    uiElementFactory->CreateLableWithText(itemWidget, "from", 245, 10);
+    uiElementFactory->CreateLableWithText(itemWidget, "to", 370, 10);
 
-    QTimeEdit* startTimeEdit = uiElementFactory->CreateTimeEditor(itemWidget,item->id,290,10);
-    QTimeEdit* endTimeEdit = uiElementFactory->CreateTimeEditor(itemWidget,item->id,390,10);
+    QTime startTime = QTime::fromString(item->startTime, "HH:mm"); // Передбачимо, що час зберігається в форматі "HH:mm"
+    QTime endTime = QTime::fromString(item->endTime, "HH:mm");
+
+    QTimeEdit* startTimeEdit = uiElementFactory->CreateTimeEditor(itemWidget, 290, 10 ,startTime);
+    QTimeEdit* endTimeEdit = uiElementFactory->CreateTimeEditor(itemWidget, 390, 10 ,endTime);
+
+    int itemId = item->id;
+
     connect(startTimeEdit, &QTimeEdit::timeChanged, this, [=](const QTime& time) {
-        updateTimeEdit(item->id, time, endTimeEdit->time());
+        updateTimeEdit(itemId, time, endTimeEdit->time());
+        qDebug() << itemId;
     });
 
     connect(endTimeEdit, &QTimeEdit::timeChanged, this, [=](const QTime& time) {
-        updateTimeEdit(item->id, startTimeEdit->time(), time);
+        updateTimeEdit(itemId, startTimeEdit->time(), time);
     });
+
+
 
     return itemWidget;
 }
@@ -105,14 +108,12 @@ QWidget *InterfaceAddition::BuildDayListOfImageView(const DayImageList *dayImage
 {
     QWidget* viewWidget = CreateContainerWidget();
 
-   // uiElementFactory->CreateLableWithImage(viewWidget,dayImageList->images[0].imageId,standartImageSize);
     uiElementFactory->CreateLableWithText(viewWidget,dayImageList->getName(),290,35);
-    //uiElementFactory->CreateLableWithText(viewWidget,dayImageList->images[0].startTime + dayImageList->images[0].endTime,290,75);
     uiElementFactory->CreateButtonEdit(viewWidget,dayImageList->getId(),35,35,500,20);
     uiElementFactory->CreateButtonDelete(viewWidget,dayImageList->getId(),35,35,500,70);
     uiElementFactory->CreateToggleButton(viewWidget,dayImageList->getId());
 
-    ImageSlider* imageSlider = new DayViewImageSlider(dayImageList->images, standartImageSize, viewWidget);
+   imageSlider = new DayViewImageSlider(dayImageList->images, standartImageSize, viewWidget);
 
     return viewWidget;
 }

@@ -12,7 +12,7 @@ StandartTab::StandartTab(DBManager *dbManager, ImageList *imageList, QWidget *pa
     imageLoader = new ImageLoader();
     wallpaperSetter = new WallpaperSetter();
     dialogWindowController = new DialogWindowController(uiElementEventHandler);
-    imageSlider = new StandartTabImageSlider(WidgetGeometry(540,300,50,30),this);
+    imageSlider = new StandartTabImageSlider(WidgetGeometry(540,300,50,20),this);
 
     connect(uiElementEventHandler, &UIElementEventHandler::imageSelected, this, &StandartTab::updateImage);
 
@@ -35,7 +35,6 @@ void StandartTab::setStandartTabStyle()
 {
     ui->StandartTabWidget->setStyleSheet(Style::getTabsStyle());
     ui->StandartTabButtonMenuWidget->setStyleSheet(Style::getStandartTabStyle());
-    ui->StandartTabWlapperSliderWidget->setStyleSheet(Style::getStandartTabStyle());
 }
 void StandartTab::displayImageInLabel(QLabel *label, const QString &filePath)
 {
@@ -75,6 +74,7 @@ void StandartTab::on_StandartTabAddButton_clicked() {
 
 void StandartTab::on_StandartTabSetButton_clicked()
 {
+    currentIndex = imageSlider->GetCurrentIndex();
     wallpaperSetter-> setWallpaper(imageList->GetImageByIndex(currentIndex).getUrl());
 }
 

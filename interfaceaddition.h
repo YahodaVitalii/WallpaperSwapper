@@ -43,6 +43,7 @@ private:
     ImageList* imageList;
     UIElementFactory* uiElementFactory;
     UIElementEventHandler *uiElementEventHandler;
+     ImageSlider* imageSlider ;
     const WidgetGeometry standartImageSize={220,110,10,5};
 
 

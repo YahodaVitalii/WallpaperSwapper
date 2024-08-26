@@ -1,7 +1,9 @@
 #include "timetabweeklistwidget.h"
 #include "ui_timetabweeklistwidget.h"
-TimeTabWeekListWidget::TimeTabWeekListWidget(ImageList *imageList, QWidget *parent)
-    : BaseListWidget(imageList, parent), ui(new Ui::TimeTabWeekListWidget)
+
+
+TimeTabWeekListWidget::TimeTabWeekListWidget(QWidget *parent)
+    : BaseListWidget(parent), ui(new Ui::TimeTabWeekListWidget)
 {
     ui->setupUi(this);
 
@@ -34,6 +36,7 @@ void TimeTabWeekListWidget::CreatInterfaceCreateTab()
     }
 }
 
+
 void TimeTabWeekListWidget::CreateInterfaceViewTab()
 {
     WeekImageLists = dbWeekListTableManager.getAllWeekImageLists();
@@ -56,7 +59,24 @@ void TimeTabWeekListWidget::CreateViewTabItem()
     dbWeekListTableManager.insertWeekImageList(currentWeekImageList.data());
     scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildWeekListOfImageView(currentWeekImageList.data()));
 }
+bool TimeTabWeekListWidget::ValidateDataViewList()
+{
+        if (nameLineEdit->text().isEmpty()) {
+            return false;
+        }
 
+        int validImageCount = 0;
+        for (int value : currentImageIds.values()) {
+            if (value != -1) {
+                validImageCount++;
+                if (validImageCount >= 2) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+}
 void TimeTabWeekListWidget::UpdateViewTabItem()
 {
     currentWeekImageList->setName(nameLineEdit->text());
@@ -94,35 +114,27 @@ QMap<QString, int> TimeTabWeekListWidget::fillCurrentImageIds(const QStringList 
 
 void TimeTabWeekListWidget::AcceptSavingOfList()
 {
-    int CurrentWeekListId = currentWeekImageList->getId();
-    try{
-        if (CurrentWeekListId == -1) {
-            CreateViewTabItem();
-        } else if (CurrentWeekListId > 0) {
-            UpdateViewTabItem();
-            scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerViewTab);
-            CreateInterfaceViewTab();
-        }else{
-            throw WSExeptions("Error:Week List has incorrect index: " + CurrentWeekListId);
-        }
-    } catch (const WSExeptions& e) {
-        qDebug() <<  e.what();
-    }
+    if (ValidateDataViewList()) {
+           int CurrentWeekListId = currentWeekImageList->getId();
+           try {
+               if (CurrentWeekListId == -1) {
+                   CreateViewTabItem();
+               } else if (CurrentWeekListId > 0) {
+                   UpdateViewTabItem();
+                   scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerViewTab);
+                   CreateInterfaceViewTab();
+               } else {
+                   throw WSExeptions("Error: Week List has incorrect index: " + CurrentWeekListId);
+               }
+           } catch (const WSExeptions& e) {
+               qDebug() << "Caught WSExeptions: " << e.what();
+           }
 
-
-    tabWidget->setCurrentIndex(0);
+           tabWidget->setCurrentIndex(0);
+       } else {
+           QMessageBox::warning(this, "Warning", "Before saving the list, please ensure that you have entered a name and added at least two images.");
+       }
 }
-
-void TimeTabWeekListWidget::RejectSavingOfList()
-{
-    tabWidget->setCurrentIndex(0);
-}
-
-void TimeTabWeekListWidget::CreateViewListItem()
-{
-    PrepareTabForCreatingItem();
-}
-
 void TimeTabWeekListWidget::ShowDialogWindowListOfImage(QString day)
 {
     dialogWindowController->Open(this);
@@ -143,7 +155,3 @@ void TimeTabWeekListWidget::addImageInList(int index)
     dialogWindowController->Close();
 }
 
-void TimeTabWeekListWidget::ReceiveEditSignalForListView(int id)
-{
-   PrepareTabForEditingItem(id);
-}

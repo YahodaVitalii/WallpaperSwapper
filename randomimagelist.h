@@ -7,27 +7,20 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include "baseimagelist.h"
 
-class RandomImageList {
+class RandomImageList : public BaseImageList {
 private:
-    int id;
-    QString name;
     QDateTime timeInterval;
-
 
 public:
     QVector<int> imageIds;
+
     // Конструктори
     RandomImageList();
     RandomImageList(QString name, const QDateTime& interval, const QVector<int>& ids);
 
-    QString getName() const;
-    void setName(QString name);
-
     // Геттери та сеттери
-    int getId() const;
-    void setId(int newId);
-
     QDateTime getTimeInterval() const;
     void setTimeInterval(const QDateTime& newTimeInterval);
 
@@ -35,8 +28,8 @@ public:
     void setImageIds(const QVector<int>& newImageIds);
 
     // Методи серіалізації та десеріалізації у формат JSON
-    QString toJsonString() const;
-    void fromJsonString(const QString& jsonString);
+    QString toJsonString() const override;
+    void fromJsonString(const QString& jsonString) override;
 };
 
 #endif // RANDOMIMAGELIST_H

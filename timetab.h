@@ -11,6 +11,8 @@
 #include "timetabrandomlistwidget.h"
 #include "timetabweeklistwidget.h"
 #include "timetabdaylistwidget.h"
+#include "baselistwidget.h"
+#include "tabwidgetfactory.h"
 namespace Ui {
 class TimeTab;
 }
@@ -20,43 +22,29 @@ class TimeTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit TimeTab(DBManager* dbManager, ImageList* imageList, QWidget *parent = nullptr);
+    explicit TimeTab(QWidget *parent = nullptr);
     ~TimeTab();
 
-    TimeTabRandomListWidget* getTimeTabRandomListWidget() const;
-    TimeTabWeekListWidget* getTimeTabWeekListWidget() const;
-    TimeTabDayListWidget* getTimeTabDayListWidget() const;
 private slots:
-
-
     void on_TimeTabMenuBarPlusButton_clicked();
 
-
     void on_TimeTabMenuBarRandomButton_clicked();
-
     void on_TimeTabMenuBarWeekButton_clicked();
-
     void on_TimeTabMenuBarDayButton_clicked();
 
 signals:
-    void SendSignalForRandomListWidget();
-    void SendSignalForWeekListWidget();
-    void SendSignalForDayListWidget();
+    void CreateNewList();
 private:
+
     Ui::TimeTab *ui;
-    DBManager* dbManager;
-    ImageList* imageList;
-    //DialogWindowListOfImage *dialogWindowListOfImage;
 
-    TimeTabRandomListWidget* timeTabRandomListWidget;
-    TimeTabWeekListWidget* timeTabWeekListWidget;
-    TimeTabDayListWidget*  timeTabDayListWidget;
+    BaseListWidget* currentTab;
 
-    void CreateimeTabRandomListWidget();
-    void CreateTimeTabWeekListWidget();
-    void CreateTimeTabDayListWidget();
+    RandomTabWidgetFactory randomTabWidgetFactory;
+    WeekTabWidgetFactory weekTabWidgetFactory;
+    DayTabWidgetFactory dayTabWidgetFactory;
 
-    void showTab(QWidget* tab);
+    void createChildTab(TabWidgetFactory& factory);
 };
 
 #endif // TIMETAB_H

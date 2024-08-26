@@ -16,7 +16,7 @@ MainWindow::MainWindow(DBManager* dbManager,QWidget *parent)
    standartTab = new StandartTab(dbManager,imageList,this);
     standartTab ->move(165, 0);
 
-    timeTab = new TimeTab(dbManager,imageList,this);
+    timeTab = new TimeTab(this);
     timeTab->move(165, 0);
 }
 

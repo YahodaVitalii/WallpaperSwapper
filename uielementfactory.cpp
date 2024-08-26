@@ -107,12 +107,15 @@ void UIElementFactory::CreateButtonEdit(QWidget *conteinerWidget, int id, int wi
     buttonEdit->setProperty("ListId", id);
     connect(buttonEdit, &QPushButton::clicked, uiElementEventHandler, &UIElementEventHandler::on_buttonEdit_clicked);
 }
-QTimeEdit* UIElementFactory::CreateTimeEditor(QWidget *conteinerWidget, int id, int cordinate_x, int cordinate_y)
+QTimeEdit* UIElementFactory::CreateTimeEditor(QWidget *containerWidget, int coordinate_x, int coordinate_y, const QTime& time)
 {
-    QTimeEdit* TimeEdit = new QTimeEdit(conteinerWidget);
-    TimeEdit->setFixedSize(70,30);
-    TimeEdit->move(cordinate_x, cordinate_y);
-    TimeEdit->setProperty("id",id);
+    QTimeEdit* TimeEdit = new QTimeEdit(containerWidget);
+    TimeEdit->setFixedSize(70, 30);
+    TimeEdit->move(coordinate_x, coordinate_y);
+
+    // Встановлення часу
+    TimeEdit->setTime(time);
+
     TimeEdit->show();
     return TimeEdit;
 }

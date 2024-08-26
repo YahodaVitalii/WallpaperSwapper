@@ -1,34 +1,26 @@
 #include "randomimagelist.h"
 
-RandomImageList::RandomImageList() : id(-1) {}
+RandomImageList::RandomImageList() : BaseImageList() {}
 
-RandomImageList::RandomImageList(QString name,const QDateTime& interval, const QVector<int>& ids)
-    : id(-1), name(name),timeInterval(interval), imageIds(ids) {}
+RandomImageList::RandomImageList(QString name, const QDateTime& interval, const QVector<int>& ids)
+    : BaseImageList(name), timeInterval(interval), imageIds(ids) {}
 
-QString RandomImageList::getName() const
-{
-    return name;
+QDateTime RandomImageList::getTimeInterval() const {
+    return timeInterval;
 }
 
-void RandomImageList::setName(QString name)
-{
-    this->name = name;
+void RandomImageList::setTimeInterval(const QDateTime& newTimeInterval) {
+    timeInterval = newTimeInterval;
 }
 
-// Геттери та сеттери
-int RandomImageList::getId() const { return id; }
+QVector<int> RandomImageList::getImageIds() const {
+    return imageIds;
+}
 
-void RandomImageList::setId(int newId) { id = newId; }
+void RandomImageList::setImageIds(const QVector<int>& newImageIds) {
+    imageIds = newImageIds;
+}
 
-QDateTime RandomImageList::getTimeInterval() const { return timeInterval; }
-
-void RandomImageList::setTimeInterval(const QDateTime& newTimeInterval) { timeInterval = newTimeInterval; }
-
-QVector<int> RandomImageList::getImageIds() const { return imageIds; }
-
-void RandomImageList::setImageIds(const QVector<int>& newImageIds) { imageIds = newImageIds; }
-
-// Методи серіалізації та десеріалізації у формат JSON
 QString RandomImageList::toJsonString() const {
     QJsonArray jsonArray;
     for (int id : imageIds) {
@@ -36,6 +28,8 @@ QString RandomImageList::toJsonString() const {
     }
 
     QJsonObject jsonObj;
+    jsonObj["name"] = name;  // Поле name успадковане з BaseImageList
+    jsonObj["timeInterval"] = timeInterval.toString(Qt::ISODate);
     jsonObj["images"] = jsonArray;
 
     QJsonDocument jsonDoc(jsonObj);
@@ -46,11 +40,14 @@ void RandomImageList::fromJsonString(const QString& jsonString) {
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonString.toUtf8());
     QJsonObject jsonObj = jsonDoc.object();
 
+    name = jsonObj["name"].toString();  // Поле name успадковане з BaseImageList
+    timeInterval = QDateTime::fromString(jsonObj["timeInterval"].toString(), Qt::ISODate);
+
     QVector<int> imageIds;
     QJsonArray jsonArray = jsonObj["images"].toArray();
     for (const QJsonValue& value : jsonArray) {
         imageIds.append(value.toInt());
     }
 
-   this->imageIds=imageIds;
+    this->imageIds = imageIds;
 }

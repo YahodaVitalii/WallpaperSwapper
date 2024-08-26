@@ -36,7 +36,7 @@ public:
     QLabel *CreateLableWithText(QWidget* conteinerWidget, QString TextOfLabel, int Cordinate_x, int Cordinate_y);
     void CreateToggleButton(QWidget *containerWidget, int id);
 
-    QTimeEdit* CreateTimeEditor(QWidget *conteinerWidget, int id, int cordinate_x, int cordinate_y);
+    QTimeEdit* CreateTimeEditor(QWidget *containerWidget, int coordinate_x, int coordinate_y, const QTime& time);
 
     void CreateButtonAddImage(QWidget *containerWidget, const WidgetGeometry &geometry);
     void CreateButtonBox(QWidget *containerWidget, int cordinate_x, int cordinate_y);

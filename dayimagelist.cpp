@@ -1,25 +1,17 @@
 #include "dayimagelist.h"
 
-DayImageList::DayImageList() : id(-1) {}
+DayImageList::DayImageList() : BaseImageList() {}
 
 DayImageList::DayImageList(QString name, const QVector<TimeRangeImage>& images)
-    : id(-1), name(name), images(images) {}
+    : BaseImageList(name), images(images) {}
 
-QString DayImageList::getName() const {
-    return name;
+QVector<TimeRangeImage> DayImageList::getImages() const {
+    return images;
 }
 
-void DayImageList::setName(const QString& name) {
-    this->name = name;
+void DayImageList::setImages(const QVector<TimeRangeImage>& newImages) {
+    images = newImages;
 }
-
-int DayImageList::getId() const { return id; }
-
-void DayImageList::setId(int newId) { id = newId; }
-
-QVector<TimeRangeImage> DayImageList::getImages() const { return images; }
-
-void DayImageList::setImages(const QVector<TimeRangeImage>& newImages) { images = newImages; }
 
 QString DayImageList::toJsonString() const {
     QJsonArray jsonArray;
@@ -28,24 +20,23 @@ QString DayImageList::toJsonString() const {
         jsonTimeRangeImage["startTime"] = timeRangeImage.startTime;
         jsonTimeRangeImage["endTime"] = timeRangeImage.endTime;
         jsonTimeRangeImage["imageId"] = timeRangeImage.imageId;
-        jsonTimeRangeImage["id"] = timeRangeImage.id; // Include the new field
+        jsonTimeRangeImage["id"] = timeRangeImage.id;
         jsonArray.append(jsonTimeRangeImage);
     }
 
     QJsonObject jsonObj;
-    jsonObj["name"] = name;
+    jsonObj["name"] = name;  // Поле name успадковане з BaseImageList
     jsonObj["images"] = jsonArray;
 
     QJsonDocument jsonDoc(jsonObj);
     return QString(jsonDoc.toJson(QJsonDocument::Compact));
 }
 
-// JSON deserialization method
 void DayImageList::fromJsonString(const QString& jsonString) {
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonString.toUtf8());
     QJsonObject jsonObj = jsonDoc.object();
 
-    name = jsonObj["name"].toString();
+    name = jsonObj["name"].toString();  // Поле name успадковане з BaseImageList
 
     QJsonArray jsonArray = jsonObj["images"].toArray();
     images.clear();
@@ -55,7 +46,7 @@ void DayImageList::fromJsonString(const QString& jsonString) {
             jsonTimeRangeImage["startTime"].toString(),
             jsonTimeRangeImage["endTime"].toString(),
             jsonTimeRangeImage["imageId"].toInt(),
-            jsonTimeRangeImage["id"].toInt() // Include the new field
+            jsonTimeRangeImage["id"].toInt()
         );
         images.append(timeRangeImage);
     }
