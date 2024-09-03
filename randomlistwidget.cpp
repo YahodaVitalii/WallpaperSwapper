@@ -1,12 +1,12 @@
-#include "timetabrandomlistwidget.h"
-#include "ui_timetabrandomlistwidget.h"
+#include "randomlistwidget.h"
+#include "ui_randomlistwidget.h"
 
-TimeTabRandomListWidget::TimeTabRandomListWidget(QWidget* parent)
-    : BaseListWidget(parent), ui(new Ui::TimeTabRandomListWidget)
+RandomListWidget::RandomListWidget(QWidget* parent)
+    : BaseListWidget(parent), ui(new Ui::RandomListWidget)
 {
     ui->setupUi(this);
     CurrentRandomImageList.reset(new RandomImageList());
-    connect(uiElementEventHandler, &UIElementEventHandler::ButtonAddImageClicked, this, &TimeTabRandomListWidget::ShowDialogWindowListOfImage);
+    connect(uiElementEventHandler, &UIElementEventHandler::ButtonAddImageClicked, this, &RandomListWidget::ShowDialogWindowListOfImage);
 
     tabCreateList = tabInterfaceBuilder->buildTabCreateListForRandomList(tabWidget,scrollAreaConterinerCreateTab);
     tabWidget->addTab(tabCreateList, "Craete List");
@@ -16,19 +16,19 @@ TimeTabRandomListWidget::TimeTabRandomListWidget(QWidget* parent)
     CreateInterfaceViewTab();
 }
 
-TimeTabRandomListWidget::~TimeTabRandomListWidget()
+RandomListWidget::~RandomListWidget()
 {
     delete ui;
 }
 
-void TimeTabRandomListWidget::CreateInterfaceViewTab()
+void RandomListWidget::CreateInterfaceViewTab()
 {
     RandomImageLists = dbRandomListTableManager.getAllRandomImageLists();
     for (const auto& list : RandomImageLists)
         scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildRandomListOfImageView(&list));
 }
 
-void TimeTabRandomListWidget::CreatInterfaceCreateTab()
+void RandomListWidget::CreatInterfaceCreateTab()
 {
     for (int i = 0; i < currentImageIds.size(); i++){
         QWidget* itemWidget = interfaceAddition->BuildRandomListOfImageItem(imageList->findImageById(currentImageIds[i]));
@@ -36,13 +36,13 @@ void TimeTabRandomListWidget::CreatInterfaceCreateTab()
     }
 }
 
-void TimeTabRandomListWidget::CreateViewTabItem()
+void RandomListWidget::CreateViewTabItem()
 {
     CurrentRandomImageList.reset(new RandomImageList(nameLineEdit->text(), timeEdit->dateTime(), currentImageIds));
     dbRandomListTableManager.insertImageList(CurrentRandomImageList.data());
 }
 
-void TimeTabRandomListWidget::UpdateViewTabItem()
+void RandomListWidget::UpdateViewTabItem()
 {
     CurrentRandomImageList->setName(nameLineEdit->text());
     CurrentRandomImageList->setTimeInterval(timeEdit->dateTime());
@@ -50,16 +50,17 @@ void TimeTabRandomListWidget::UpdateViewTabItem()
     dbRandomListTableManager.updateRandomImageList(CurrentRandomImageList.data());
 }
 
-void TimeTabRandomListWidget::PrepareTabForCreatingItem()
+void RandomListWidget::PrepareTabForCreatingItem()
 {
     CurrentRandomImageList.reset(new RandomImageList());
+    nameLineEdit->clear();
     timeEdit->setTime(QTime(0, 0));
     currentImageIds.clear();
     scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
     tabWidget->setCurrentIndex(1);
 }
 
-void TimeTabRandomListWidget::PrepareTabForEditingItem(int ListId)
+void RandomListWidget::PrepareTabForEditingItem(int ListId)
 {
     tabWidget->setCurrentIndex(1);
     scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
@@ -70,19 +71,19 @@ void TimeTabRandomListWidget::PrepareTabForEditingItem(int ListId)
     CreatInterfaceCreateTab();
 }
 
-void TimeTabRandomListWidget::addImageInList(int index)
+void RandomListWidget::addImageInList(int index)
 {
     scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerCreateTab, interfaceAddition->BuildRandomListOfImageItem(index));
     currentImageIds.append(imageList->GetImageByIndex(index).getId());
     dialogWindowController->Close();
 }
 
-void TimeTabRandomListWidget::ShowDialogWindowListOfImage()
+void RandomListWidget::ShowDialogWindowListOfImage()
 {
     dialogWindowController->Open(this);
 }
 
-bool TimeTabRandomListWidget::ValidateDataViewList()
+bool RandomListWidget::ValidateDataViewList()
 {
     if(nameLineEdit->text().isEmpty() ||
             timeEdit->text().isEmpty() ||
@@ -93,7 +94,7 @@ bool TimeTabRandomListWidget::ValidateDataViewList()
     }
 }
 
-void TimeTabRandomListWidget::AcceptSavingOfList()
+void RandomListWidget::AcceptSavingOfList()
 {
     if(ValidateDataViewList()){
         try {

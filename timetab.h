@@ -8,9 +8,9 @@
 #include "sqlitedbmanager.h"
 #include "imagelist.h"
 #include "style.h"
-#include "timetabrandomlistwidget.h"
-#include "timetabweeklistwidget.h"
-#include "timetabdaylistwidget.h"
+#include "randomlistwidget.h"
+#include "weeklistwidget.h"
+#include "daylistwidget.h"
 #include "baselistwidget.h"
 #include "tabwidgetfactory.h"
 namespace Ui {

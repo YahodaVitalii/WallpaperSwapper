@@ -35,10 +35,9 @@ protected:
     ScrollAreaManager* scrollAreaManager;
     DialogWindowController* dialogWindowController;
 
-    QTabWidget* tabWidget;
     QLineEdit* nameLineEdit;
 
-
+    QTabWidget* tabWidget;
     QWidget* tabCreateList;
     QWidget* tabViewLists;
     QWidget *scrollAreaConterinerCreateTab;

@@ -15,6 +15,7 @@ SOURCES += \
     baselistwidget.cpp \
     customlabel.cpp \
     dayimagelist.cpp \
+    daylistwidget.cpp \
     dayviewimageslider.cpp \
     dbdaylisttablemanager.cpp \
     dbimagetablemanager.cpp \
@@ -28,7 +29,9 @@ SOURCES += \
     interfaceaddition.cpp \
     main.cpp \
     mainwindow.cpp \
+    moodtab.cpp \
     randomimagelist.cpp \
+    randomlistwidget.cpp \
     randomviewimageslider.cpp \
     scrollareamanager.cpp \
     sqlitedbmanager.cpp \
@@ -39,15 +42,14 @@ SOURCES += \
     tabinterfacebuilder.cpp \
     tabwidgetfactory.cpp \
     timetab.cpp \
-    timetabdaylistwidget.cpp \
-    timetabrandomlistwidget.cpp \
-    timetabweeklistwidget.cpp \
+    timetabwidgets.cpp \
     uielementeventhandler.cpp \
     uielementfactory.cpp \
     uiimageslider.cpp \
     wallpaperimage.cpp \
     wallpapersetter.cpp \
     weekimagelist.cpp \
+    weeklistwidget.cpp \
     weekviewimageslider.cpp \
     wsexeptions.cpp
 
@@ -56,6 +58,7 @@ HEADERS += \
     baselistwidget.h \
     customlabel.h \
     dayimagelist.h \
+    daylistwidget.h \
     dayviewimageslider.h \
     dbdaylisttablemanager.h \
     dbimagetablemanager.h \
@@ -69,7 +72,9 @@ HEADERS += \
     imageloader.h \
     interfaceaddition.h \
     mainwindow.h \
+    moodtab.h \
     randomimagelist.h \
+    randomlistwidget.h \
     randomviewimageslider.h \
     scrollareamanager.h \
     sqlitedbmanager.h \
@@ -80,27 +85,27 @@ HEADERS += \
     tabinterfacebuilder.h \
     tabwidgetfactory.h \
     timetab.h \
-    timetabdaylistwidget.h \
-    timetabrandomlistwidget.h \
-    timetabweeklistwidget.h \
+    timetabwidgets.h \
     uielementeventhandler.h \
     uielementfactory.h \
     uiimageslider.h \
     wallpaperimage.h \
     wallpapersetter.h \
     weekimagelist.h \
+    weeklistwidget.h \
     weekviewimageslider.h \
     widgetgeometry.h \
     wsexeptions.h
 
 FORMS += \
+    daylistwidget.ui \
     dialogwindowlistofimage.ui \
     mainwindow.ui \
+    moodtab.ui \
+    randomlistwidget.ui \
     standarttab.ui \
     timetab.ui \
-    timetabdaylistwidget.ui \
-    timetabrandomlistwidget.ui \
-    timetabweeklistwidget.ui
+    weeklistwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

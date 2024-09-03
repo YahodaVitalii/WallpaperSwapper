@@ -20,19 +20,14 @@ struct TimeRangeImage {
 };
 
 class DayImageList : public BaseImageList {
-public:
+private:
     QVector<TimeRangeImage> images;
-
-    // Конструктори
+public:
     DayImageList();
     DayImageList(QString name, const QVector<TimeRangeImage>& images);
 
     QVector<TimeRangeImage> getImages() const;
     void setImages(const QVector<TimeRangeImage>& newImages);
-
-    // Методи серіалізації та десеріалізації у формат JSON
-    QString toJsonString() const override;
-    void fromJsonString(const QString& jsonString) override;
 };
 
 #endif // DAYIMAGELIST_H

@@ -20,3 +20,4 @@ QString BaseImageList::getName() const {
 void BaseImageList::setName(const QString& newName) {
     name = newName;
 }
+

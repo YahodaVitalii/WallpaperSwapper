@@ -1,30 +1,39 @@
 #include "dbdaylisttablemanager.h"
 
-DBDayListTableManager::DBDayListTableManager()
-{
-
-}
+DBDayListTableManager::DBDayListTableManager(){}
 bool DBDayListTableManager::insertDayImageList(DayImageList* dayImageList) {
     try {
         if (!dayImageList) {
             throw WSExeptions("Null pointer received for day image list!");
         }
 
-        // Serialize the list to JSON format
-        QString jsonString = dayImageList->toJsonString();
-
-        // Insert it into the table
+        // Insert the basic list information into DayImageList table
         QSqlQuery query;
-        query.prepare("INSERT INTO Day_images_table (name, images) VALUES (:name, :images)");
+        query.prepare("INSERT INTO DayImageList (name) VALUES (:name)");
         query.bindValue(":name", dayImageList->getName());
-        query.bindValue(":images", jsonString);
 
         if (!query.exec()) {
-            throw WSExeptions("Error inserting day image list into Day_images_table: " + query.lastError().text());
+            throw WSExeptions("Error inserting day image list into DayImageList: " + query.lastError().text());
         }
 
         // Get the last inserted ID and set it in the non-const object
-        dayImageList->setId(query.lastInsertId().toInt());
+        int listId = query.lastInsertId().toInt();
+        dayImageList->setId(listId);
+
+        // Insert each TimeRangeImage into the DayImages table
+        for (const auto& timeRangeImage : dayImageList->getImages()) {
+            QSqlQuery imageQuery;
+            imageQuery.prepare("INSERT INTO DayImages (timeStart, timeEnd, imageID, listId) "
+                               "VALUES (:timeStart, :timeEnd, :imageID, :listId)");
+            imageQuery.bindValue(":timeStart", timeRangeImage.startTime);
+            imageQuery.bindValue(":timeEnd", timeRangeImage.endTime);
+            imageQuery.bindValue(":imageID", timeRangeImage.imageId);
+            imageQuery.bindValue(":listId", listId);
+
+            if (!imageQuery.exec()) {
+                throw WSExeptions("Error inserting day images into DayImages: " + imageQuery.lastError().text());
+            }
+        }
 
         return true;
     } catch (const WSExeptions& ex) {
@@ -37,20 +46,41 @@ QVector<DayImageList> DBDayListTableManager::getAllDayImageLists() {
     QVector<DayImageList> dayImageLists;
 
     try {
+        // Retrieve all lists from DayImageList
         QSqlQuery query;
-        if (!query.exec("SELECT id, name, images FROM Day_images_table")) {
+        if (!query.exec("SELECT id, name FROM DayImageList")) {
             throw WSExeptions("Error retrieving all day image lists: " + query.lastError().text());
         }
 
         while (query.next()) {
-            int id = query.value(0).toInt();
+            int listId = query.value(0).toInt();
             QString name = query.value(1).toString();
-            QString jsonImages = query.value(2).toString();
 
             DayImageList dayImageList;
-            dayImageList.fromJsonString(jsonImages);
-            dayImageList.setId(id);
-            dayImageList.setName(name); // Set the name
+            dayImageList.setId(listId);
+            dayImageList.setName(name);
+
+            // Retrieve images associated with this list from DayImages
+            QSqlQuery imageQuery;
+            imageQuery.prepare("SELECT id, timeStart, timeEnd, imageID FROM DayImages WHERE listId = :listId");
+            imageQuery.bindValue(":listId", listId);
+
+            if (!imageQuery.exec()) {
+                throw WSExeptions("Error retrieving day images for list: " + imageQuery.lastError().text());
+            }
+
+            QVector<TimeRangeImage> images;
+            while (imageQuery.next()) {
+                TimeRangeImage timeRangeImage;
+                timeRangeImage.id = imageQuery.value(0).toInt();
+                timeRangeImage.startTime = imageQuery.value(1).toString();
+                timeRangeImage.endTime = imageQuery.value(2).toString();
+                timeRangeImage.imageId = imageQuery.value(3).toInt();
+
+                images.append(timeRangeImage);
+            }
+
+            dayImageList.setImages(images);
             dayImageLists.append(dayImageList);
         }
     } catch (const WSExeptions& ex) {
@@ -62,8 +92,9 @@ QVector<DayImageList> DBDayListTableManager::getAllDayImageLists() {
 
 DayImageList DBDayListTableManager::findDayImageListById(int id) {
     try {
+        // Retrieve the list information from DayImageList
         QSqlQuery query;
-        query.prepare("SELECT id, name, images FROM Day_images_table WHERE id = :id");
+        query.prepare("SELECT id, name FROM DayImageList WHERE id = :id");
         query.bindValue(":id", id);
 
         if (!query.exec()) {
@@ -71,14 +102,34 @@ DayImageList DBDayListTableManager::findDayImageListById(int id) {
         }
 
         if (query.next()) {
-            int id = query.value(0).toInt();
+            int listId = query.value(0).toInt();
             QString name = query.value(1).toString();
-            QString jsonImages = query.value(2).toString();
 
             DayImageList dayImageList;
-            dayImageList.fromJsonString(jsonImages);
-            dayImageList.setId(id);
-            dayImageList.setName(name); // Set the name
+            dayImageList.setId(listId);
+            dayImageList.setName(name);
+
+            // Retrieve images associated with this list from DayImages
+            QSqlQuery imageQuery;
+            imageQuery.prepare("SELECT id, timeStart, timeEnd, imageID FROM DayImages WHERE listId = :listId");
+            imageQuery.bindValue(":listId", listId);
+
+            if (!imageQuery.exec()) {
+                throw WSExeptions("Error retrieving day images for list: " + imageQuery.lastError().text());
+            }
+
+            QVector<TimeRangeImage> images;
+            while (imageQuery.next()) {
+                TimeRangeImage timeRangeImage;
+                timeRangeImage.id = imageQuery.value(0).toInt();
+                timeRangeImage.startTime = imageQuery.value(1).toString();
+                timeRangeImage.endTime = imageQuery.value(2).toString();
+                timeRangeImage.imageId = imageQuery.value(3).toInt();
+
+                images.append(timeRangeImage);
+            }
+
+            dayImageList.setImages(images);
             return dayImageList;
         }
     } catch (const WSExeptions& ex) {
@@ -94,23 +145,42 @@ bool DBDayListTableManager::updateDayImageList(DayImageList* dayImageList) {
             throw WSExeptions("Null pointer received for day image list!");
         }
 
-        // Check if the list's ID is known
         if (dayImageList->getId() == -1) {
             throw WSExeptions("Unknown id for day image list!");
         }
 
-        // Serialize the list to JSON format
-        QString jsonString = dayImageList->toJsonString();
-
-        // Update the record in the database
+        // Update the basic list information in DayImageList table
         QSqlQuery query;
-        query.prepare("UPDATE Day_images_table SET name = :name, images = :images WHERE id = :id");
+        query.prepare("UPDATE DayImageList SET name = :name WHERE id = :id");
         query.bindValue(":name", dayImageList->getName());
-        query.bindValue(":images", jsonString);
         query.bindValue(":id", dayImageList->getId());
 
         if (!query.exec()) {
             throw WSExeptions("Error updating day image list: " + query.lastError().text());
+        }
+
+        // Remove existing entries in DayImages associated with this list
+        QSqlQuery deleteQuery;
+        deleteQuery.prepare("DELETE FROM DayImages WHERE listId = :listId");
+        deleteQuery.bindValue(":listId", dayImageList->getId());
+
+        if (!deleteQuery.exec()) {
+            throw WSExeptions("Error deleting old day images: " + deleteQuery.lastError().text());
+        }
+
+        // Re-insert each TimeRangeImage into the DayImages table
+        for (const auto& timeRangeImage : dayImageList->getImages()) {
+            QSqlQuery imageQuery;
+            imageQuery.prepare("INSERT INTO DayImages (timeStart, timeEnd, imageID, listId) "
+                               "VALUES (:timeStart, :timeEnd, :imageID, :listId)");
+            imageQuery.bindValue(":timeStart", timeRangeImage.startTime);
+            imageQuery.bindValue(":timeEnd", timeRangeImage.endTime);
+            imageQuery.bindValue(":imageID", timeRangeImage.imageId);
+            imageQuery.bindValue(":listId", dayImageList->getId());
+
+            if (!imageQuery.exec()) {
+                throw WSExeptions("Error inserting day images into DayImages: " + imageQuery.lastError().text());
+            }
         }
 
         return true;

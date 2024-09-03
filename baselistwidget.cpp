@@ -19,7 +19,7 @@ BaseListWidget::BaseListWidget( QWidget* parent)
     tabWidget = tabInterfaceBuilder->CreateTabWidget(this);
     tabWidget->show();
 
-    tabViewLists = tabInterfaceBuilder->buildTabViewLists(tabWidget,scrollAreaConterinerViewTab);
+    tabViewLists = tabInterfaceBuilder->buildTabViewLists(this,scrollAreaConterinerViewTab);
     tabWidget->addTab(tabViewLists, "View Lists");
 
     ConnectSignals();

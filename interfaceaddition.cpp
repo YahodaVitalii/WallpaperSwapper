@@ -45,7 +45,7 @@ QWidget *InterfaceAddition::BuildRandomListOfImageView(const RandomImageList *ra
     uiElementFactory->CreateButtonDelete(viewWidget,randomImageList->getId(),35,35,500,70);
     uiElementFactory->CreateButtonEdit(viewWidget,randomImageList->getId(),35,35,500,20);
 
-    imageSlider = new RandomViewImageSlider(randomImageList->imageIds, standartImageSize, viewWidget);
+    imageSlider = new RandomViewImageSlider(randomImageList->getImageIds(), standartImageSize, viewWidget);
 
     return viewWidget;
 
@@ -69,7 +69,7 @@ QWidget *InterfaceAddition::BuildWeekListOfImageView(const WeekImageList* weekIm
     uiElementFactory->CreateButtonDelete(viewWidget,weekImageList->getId(),35,35,500,70);
     uiElementFactory->CreateButtonEdit(viewWidget,weekImageList->getId(),35,35,500,20);
 
-    imageSlider = new WeekViewImageSlider(weekImageList->images, standartImageSize, viewWidget);
+    imageSlider = new WeekViewImageSlider(weekImageList->getImages(), standartImageSize, viewWidget);
 
     return viewWidget;
 }
@@ -113,7 +113,7 @@ QWidget *InterfaceAddition::BuildDayListOfImageView(const DayImageList *dayImage
     uiElementFactory->CreateButtonDelete(viewWidget,dayImageList->getId(),35,35,500,70);
     uiElementFactory->CreateToggleButton(viewWidget,dayImageList->getId());
 
-   imageSlider = new DayViewImageSlider(dayImageList->images, standartImageSize, viewWidget);
+   imageSlider = new DayViewImageSlider(dayImageList->getImages(), standartImageSize, viewWidget);
 
     return viewWidget;
 }

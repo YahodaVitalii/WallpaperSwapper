@@ -1,5 +1,5 @@
-#ifndef TIMETABWEEKLISTWIDGET_H
-#define TIMETABWEEKLISTWIDGET_H
+#ifndef WEEKLISTWIDGET_H
+#define WEEKLISTWIDGET_H
 
 #include <QWidget>
 #include "sqlitedbmanager.h"
@@ -10,16 +10,16 @@
 #include "baselistwidget.h"
 #include <QScopedPointer>
 namespace Ui {
-class TimeTabWeekListWidget;
+class WeekListWidget;
 }
 
-class TimeTabWeekListWidget : public BaseListWidget
+class WeekListWidget : public BaseListWidget
 {
     Q_OBJECT
 private:
      bool ValidateDataViewList();
 
-    Ui::TimeTabWeekListWidget *ui;
+    Ui::WeekListWidget *ui;
     DBWeekListTableManager dbWeekListTableManager;
 
     const QStringList days = {"Other days","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
@@ -29,8 +29,8 @@ private:
     QString currentDay;
 
 public:
-    explicit TimeTabWeekListWidget(QWidget *parent = nullptr);
-    ~TimeTabWeekListWidget();
+    explicit WeekListWidget(QWidget *parent = nullptr);
+    ~WeekListWidget();
     void CreatInterfaceCreateTab();
     void CreateInterfaceViewTab();
     void CreateViewTabItem();
@@ -49,4 +49,4 @@ public slots:
 
 };
 
-#endif // TIMETABWEEKLISTWIDGET_H
+#endif // WEEKLISTWIDGET_H

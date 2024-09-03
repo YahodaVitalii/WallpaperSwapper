@@ -1,14 +1,11 @@
-#include "timetabdaylistwidget.h"
-#include "ui_timetabdaylistwidget.h"
-
-
-
-TimeTabDayListWidget::TimeTabDayListWidget(QWidget *parent)
-    : BaseListWidget(parent), ui(new Ui::TimeTabDayListWidget)
+#include "daylistwidget.h"
+#include "ui_daylistwidget.h"
+DayListWidget::DayListWidget(QWidget *parent)
+    : BaseListWidget(parent), ui(new Ui::DayListWidget)
 {
     ui->setupUi(this);
-    connect(interfaceAddition, &InterfaceAddition::updateTimeEdit, this, &TimeTabDayListWidget::getTimeEditUpdatetData);
-    connect(uiElementEventHandler, &UIElementEventHandler::ButtonAddImageClicked, this, &TimeTabDayListWidget::ShowDialogWindowListOfImage);
+    connect(interfaceAddition, &InterfaceAddition::updateTimeEdit, this, &DayListWidget::getTimeEditUpdatetData);
+    connect(uiElementEventHandler, &UIElementEventHandler::ButtonAddImageClicked, this, &DayListWidget::ShowDialogWindowListOfImage);
 
     currentDayImageList.reset(new DayImageList());
 
@@ -20,12 +17,12 @@ TimeTabDayListWidget::TimeTabDayListWidget(QWidget *parent)
     CreateInterfaceViewTab();
 }
 
-TimeTabDayListWidget::~TimeTabDayListWidget()
+DayListWidget::~DayListWidget()
 {
     delete ui;
 }
 
-void TimeTabDayListWidget::CreateInterfaceViewTab()
+void DayListWidget::CreateInterfaceViewTab()
 {
     DayImageLists = dbDayListTableManager.getAllDayImageLists();
     for (auto& list : DayImageLists) {
@@ -33,13 +30,13 @@ void TimeTabDayListWidget::CreateInterfaceViewTab()
     }
 }
 
-void TimeTabDayListWidget::CreatInterfaceCreateTab()
+void DayListWidget::CreatInterfaceCreateTab()
 {
     for (auto& item : currentImageIds) {
         scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerCreateTab, interfaceAddition->BuildDayListOfImageItem(&item));
     }
 }
-bool TimeTabDayListWidget::ValidateDataViewList()
+bool DayListWidget::ValidateDataViewList()
 {
     if(nameLineEdit->text().isEmpty() ||
             2 > currentImageIds.size()) {
@@ -48,21 +45,21 @@ bool TimeTabDayListWidget::ValidateDataViewList()
          return true;
      }
 }
-void TimeTabDayListWidget::UpdateViewTabItem()
+void DayListWidget::UpdateViewTabItem()
 {
     currentDayImageList->setName(nameLineEdit->text());
     currentDayImageList->setImages(currentImageIds);
     dbDayListTableManager.updateDayImageList(currentDayImageList.data());
 }
 
-void TimeTabDayListWidget::CreateViewTabItem()
+void DayListWidget::CreateViewTabItem()
 {
     currentDayImageList.reset(new DayImageList(nameLineEdit->text(), currentImageIds));
     dbDayListTableManager.insertDayImageList(currentDayImageList.data());
     scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildDayListOfImageView(currentDayImageList.data()));
 }
 
-void TimeTabDayListWidget::PrepareTabForEditingItem(int ListId)
+void DayListWidget::PrepareTabForEditingItem(int ListId)
 {
     tabWidget->setCurrentIndex(1);
     scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
@@ -72,7 +69,7 @@ void TimeTabDayListWidget::PrepareTabForEditingItem(int ListId)
     CreatInterfaceCreateTab();
 }
 
-void TimeTabDayListWidget::PrepareTabForCreatingItem()
+void DayListWidget::PrepareTabForCreatingItem()
 {
     currentDayImageList.reset(new DayImageList());
     nameLineEdit->clear();
@@ -81,7 +78,7 @@ void TimeTabDayListWidget::PrepareTabForCreatingItem()
     tabWidget->setCurrentIndex(1);
 }
 
-void TimeTabDayListWidget::addImageInList(int index)
+void DayListWidget::addImageInList(int index)
 {
     int id;
     if (currentImageIds.isEmpty()) {
@@ -96,7 +93,7 @@ void TimeTabDayListWidget::addImageInList(int index)
     dialogWindowController->Close();
 }
 
-void TimeTabDayListWidget::getTimeEditUpdatetData(int id, QTime startTime, QTime endTime)
+void DayListWidget::getTimeEditUpdatetData(int id, QTime startTime, QTime endTime)
 {
     qDebug() <<id;
     QString startTimeStr = startTime.toString("HH:mm");
@@ -116,12 +113,12 @@ void TimeTabDayListWidget::getTimeEditUpdatetData(int id, QTime startTime, QTime
     qDebug() << "Image with id:" << id << "not found in currentImageIds.";
 }
 
-void TimeTabDayListWidget::ShowDialogWindowListOfImage()
+void DayListWidget::ShowDialogWindowListOfImage()
 {
     dialogWindowController->Open(this);
 }
 
-void TimeTabDayListWidget::AcceptSavingOfList()
+void DayListWidget::AcceptSavingOfList()
 {
     if(ValidateDataViewList()){
     int CurrenDayListId = currentDayImageList->getId();

@@ -22,10 +22,6 @@ public:
 
     QString getName() const;
     void setName(const QString& newName);
-
-    // Методи серіалізації та десеріалізації у формат JSON
-    virtual QString toJsonString() const = 0; // чисто віртуальний метод
-    virtual void fromJsonString(const QString& jsonString) = 0;
 };
 
 #endif // BASEIMAGELIST_H

@@ -2,9 +2,9 @@
 #define TABWIDGETFACTORY_H
 #include "QWidget"
 #include "imagelist.h"
-#include "timetabdaylistwidget.h"
-#include "timetabrandomlistwidget.h"
-#include "timetabweeklistwidget.h"
+#include "daylistwidget.h"
+#include "randomlistwidget.h"
+#include "weeklistwidget.h"
 
 class TabWidgetFactory {
 public:
@@ -15,7 +15,7 @@ public:
 class RandomTabWidgetFactory : public TabWidgetFactory {
 public:
     BaseListWidget* createWidget(QWidget* parent) override {
-        auto widget = new TimeTabRandomListWidget(parent);
+        auto widget = new RandomListWidget(parent);
         return widget;
     }
 };
@@ -23,7 +23,7 @@ public:
 class WeekTabWidgetFactory : public TabWidgetFactory {
 public:
     BaseListWidget* createWidget(QWidget* parent) override {
-        auto widget = new TimeTabWeekListWidget(parent);
+        auto widget = new WeekListWidget(parent);
         return widget;
     }
 };
@@ -31,7 +31,7 @@ public:
 class DayTabWidgetFactory : public TabWidgetFactory {
 public:
     BaseListWidget* createWidget(QWidget* parent) override {
-        auto widget = new TimeTabDayListWidget(parent);
+        auto widget = new DayListWidget(parent);
         return widget;
     }
 };

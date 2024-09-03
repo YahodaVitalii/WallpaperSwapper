@@ -5,12 +5,12 @@
 #include <QSqlQuery>
 #include <QDebug>
 #include <QSqlError>
+#include <QVariant>
 #include"weekimagelist.h"
 #include "wsexeptions.h"
 class DBWeekListTableManager
 {
 public:
-    DBWeekListTableManager();
     bool insertWeekImageList(WeekImageList* weekImageList);
     bool updateWeekImageList(WeekImageList* weekImageList);
     QVector<WeekImageList> getAllWeekImageLists();

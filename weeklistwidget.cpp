@@ -1,13 +1,13 @@
-#include "timetabweeklistwidget.h"
-#include "ui_timetabweeklistwidget.h"
+#include "weeklistwidget.h"
+#include "ui_weeklistwidget.h"
 
 
-TimeTabWeekListWidget::TimeTabWeekListWidget(QWidget *parent)
-    : BaseListWidget(parent), ui(new Ui::TimeTabWeekListWidget)
+WeekListWidget::WeekListWidget(QWidget *parent)
+    : BaseListWidget(parent), ui(new Ui::WeekListWidget)
 {
     ui->setupUi(this);
 
-    connect(uiElementEventHandler, &UIElementEventHandler::setImageIntoWeekListItem, this, &TimeTabWeekListWidget::ShowDialogWindowListOfImage);
+    connect(uiElementEventHandler, &UIElementEventHandler::setImageIntoWeekListItem, this, &WeekListWidget::ShowDialogWindowListOfImage);
     currentImageIds = fillCurrentImageIds(days);
 
     currentWeekImageList.reset(new WeekImageList());
@@ -19,12 +19,12 @@ TimeTabWeekListWidget::TimeTabWeekListWidget(QWidget *parent)
     CreateInterfaceViewTab();
 }
 
-TimeTabWeekListWidget::~TimeTabWeekListWidget()
+WeekListWidget::~WeekListWidget()
 {
     delete ui;
 }
 
-void TimeTabWeekListWidget::CreatInterfaceCreateTab()
+void WeekListWidget::CreatInterfaceCreateTab()
 {
     for (const QString& day : days) {
         if (currentImageIds.contains(day)) {
@@ -37,7 +37,7 @@ void TimeTabWeekListWidget::CreatInterfaceCreateTab()
 }
 
 
-void TimeTabWeekListWidget::CreateInterfaceViewTab()
+void WeekListWidget::CreateInterfaceViewTab()
 {
     WeekImageLists = dbWeekListTableManager.getAllWeekImageLists();
     for (const auto& list : WeekImageLists) {
@@ -45,7 +45,7 @@ void TimeTabWeekListWidget::CreateInterfaceViewTab()
     }
 }
 
-void TimeTabWeekListWidget::CreateViewTabItem()
+void WeekListWidget::CreateViewTabItem()
 {
     if (currentImageIds["Other days"] == -1) {
         for (const QString& day : days) {
@@ -59,7 +59,7 @@ void TimeTabWeekListWidget::CreateViewTabItem()
     dbWeekListTableManager.insertWeekImageList(currentWeekImageList.data());
     scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildWeekListOfImageView(currentWeekImageList.data()));
 }
-bool TimeTabWeekListWidget::ValidateDataViewList()
+bool WeekListWidget::ValidateDataViewList()
 {
         if (nameLineEdit->text().isEmpty()) {
             return false;
@@ -77,14 +77,14 @@ bool TimeTabWeekListWidget::ValidateDataViewList()
 
         return false;
 }
-void TimeTabWeekListWidget::UpdateViewTabItem()
+void WeekListWidget::UpdateViewTabItem()
 {
     currentWeekImageList->setName(nameLineEdit->text());
     currentWeekImageList->setImages(currentImageIds);
     dbWeekListTableManager.updateWeekImageList(currentWeekImageList.data());
 }
 
-void TimeTabWeekListWidget::PrepareTabForEditingItem(int ListId)
+void WeekListWidget::PrepareTabForEditingItem(int ListId)
 {
     tabWidget->setCurrentIndex(1);
     scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
@@ -94,16 +94,17 @@ void TimeTabWeekListWidget::PrepareTabForEditingItem(int ListId)
     CreatInterfaceCreateTab();
 }
 
-void TimeTabWeekListWidget::PrepareTabForCreatingItem()
+void WeekListWidget::PrepareTabForCreatingItem()
 {
     currentWeekImageList.reset(new WeekImageList());
     currentImageIds = fillCurrentImageIds(days);
     scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
     CreatInterfaceCreateTab();
+    nameLineEdit->clear();
     tabWidget->setCurrentIndex(1);
 }
 
-QMap<QString, int> TimeTabWeekListWidget::fillCurrentImageIds(const QStringList &keys)
+QMap<QString, int> WeekListWidget::fillCurrentImageIds(const QStringList &keys)
 {
     QMap<QString, int> currentImageIds;
     for (const QString& key : keys) {
@@ -112,7 +113,7 @@ QMap<QString, int> TimeTabWeekListWidget::fillCurrentImageIds(const QStringList 
     return currentImageIds;
 }
 
-void TimeTabWeekListWidget::AcceptSavingOfList()
+void WeekListWidget::AcceptSavingOfList()
 {
     if (ValidateDataViewList()) {
            int CurrentWeekListId = currentWeekImageList->getId();
@@ -135,13 +136,13 @@ void TimeTabWeekListWidget::AcceptSavingOfList()
            QMessageBox::warning(this, "Warning", "Before saving the list, please ensure that you have entered a name and added at least two images.");
        }
 }
-void TimeTabWeekListWidget::ShowDialogWindowListOfImage(QString day)
+void WeekListWidget::ShowDialogWindowListOfImage(QString day)
 {
     dialogWindowController->Open(this);
     currentDay = day;
 }
 
-void TimeTabWeekListWidget::addImageInList(int index)
+void WeekListWidget::addImageInList(int index)
 {
     if (currentImageIds.contains(currentDay)) {
         currentImageIds[currentDay] = index;

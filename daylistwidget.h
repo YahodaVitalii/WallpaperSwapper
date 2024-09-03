@@ -1,5 +1,5 @@
-#ifndef TIMETABDAYLISTWIDGET_H
-#define TIMETABDAYLISTWIDGET_H
+#ifndef DAYLISTWIDGET_H
+#define DAYLISTWIDGET_H
 
 #include <QWidget>
 #include "sqlitedbmanager.h"
@@ -10,14 +10,14 @@
 #include "dbdaylisttablemanager.h"
 #include "baselistwidget.h"
 namespace Ui {
-class TimeTabDayListWidget;
+class DayListWidget;
 }
 
-class TimeTabDayListWidget : public BaseListWidget
+class DayListWidget : public BaseListWidget
 {
     Q_OBJECT
 private:
-    Ui::TimeTabDayListWidget *ui;
+    Ui::DayListWidget *ui;
     DBDayListTableManager dbDayListTableManager;
 
     QScopedPointer<DayImageList> currentDayImageList;
@@ -27,8 +27,8 @@ private:
      bool ValidateDataViewList();
 
 public:
-    explicit TimeTabDayListWidget(QWidget *parent = nullptr);
-    ~TimeTabDayListWidget();
+    explicit DayListWidget(QWidget *parent = nullptr);
+    ~DayListWidget();
     void CreateInterfaceViewTab();
     void CreatInterfaceCreateTab();
     void UpdateViewTabItem();
@@ -47,4 +47,4 @@ public slots:
 
 };
 
-#endif // TIMETABDAYLISTWIDGET_H
+#endif // DAYLISTWIDGET_H

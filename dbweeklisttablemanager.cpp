@@ -1,30 +1,38 @@
 #include "dbweeklisttablemanager.h"
-
-DBWeekListTableManager::DBWeekListTableManager()
-{
-
-}
 bool DBWeekListTableManager::insertWeekImageList(WeekImageList* weekImageList) {
     try {
         if (!weekImageList) {
             throw WSExeptions("Null pointer received for week image list!");
         }
 
-        // Serialize the list to JSON format
-        QString jsonString = weekImageList->toJsonString();
-
-        // Insert it into the table
+        // Вставка у таблицю WeekImagesList
         QSqlQuery query;
-        query.prepare("INSERT INTO Week_images_table (name, images) VALUES (:name, :images)");
+        query.prepare("INSERT INTO WeekImageList (name) VALUES (:name)");
         query.bindValue(":name", weekImageList->getName());
-        query.bindValue(":images", jsonString);
 
         if (!query.exec()) {
-            throw WSExeptions("Error inserting week image list into Week_images_table: " + query.lastError().text());
+            throw WSExeptions("Error inserting week image list into WeekImagesList: " + query.lastError().text());
         }
 
-        // Get the last inserted ID and set it in the non-const object
-        weekImageList->setId(query.lastInsertId().toInt());
+        int listId = query.lastInsertId().toInt();
+        weekImageList->setId(listId);
+
+        // Вставка у таблицю WeekImages
+        query.prepare("INSERT INTO WeekImages (list_id, monday, tuesday, wednesday, thursday, friday, saturday, sunday, other_days) "
+                      "VALUES (:list_id, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday, :other_days)");
+        query.bindValue(":list_id", listId);
+        query.bindValue(":monday", weekImageList->getImages()["Monday"]);
+        query.bindValue(":tuesday", weekImageList->getImages()["Tuesday"]);
+        query.bindValue(":wednesday", weekImageList->getImages()["Wednesday"]);
+        query.bindValue(":thursday", weekImageList->getImages()["Thursday"]);
+        query.bindValue(":friday", weekImageList->getImages()["Friday"]);
+        query.bindValue(":saturday", weekImageList->getImages()["Saturday"]);
+        query.bindValue(":sunday", weekImageList->getImages()["Sunday"]);
+        query.bindValue(":other_days", weekImageList->getImages()["Other days"]);
+        if (!query.exec()) {
+            throw WSExeptions("Error inserting week images into WeekImages: " + query.lastError().text());
+        }
+
         return true;
     } catch (const WSExeptions& ex) {
         qDebug() << "Exception:" << ex.getMessage();
@@ -37,19 +45,39 @@ QVector<WeekImageList> DBWeekListTableManager::getAllWeekImageLists() {
 
     try {
         QSqlQuery query;
-        if (!query.exec("SELECT id, name, images FROM Week_images_table")) {
+        if (!query.exec("SELECT id, name FROM WeekImageList")) {
             throw WSExeptions("Error retrieving all week image lists: " + query.lastError().text());
         }
 
         while (query.next()) {
             int id = query.value(0).toInt();
             QString name = query.value(1).toString();
-            QString jsonImages = query.value(2).toString();
 
             WeekImageList weekImageList;
-            weekImageList.fromJsonString(jsonImages);
             weekImageList.setId(id);
-            weekImageList.setName(name); // Set the name
+            weekImageList.setName(name);
+
+            QSqlQuery imageQuery;
+            imageQuery.prepare("SELECT monday, tuesday, wednesday, thursday, friday, saturday, sunday, other_days FROM WeekImages WHERE list_id = :list_id");
+            imageQuery.bindValue(":list_id", id);
+
+            if (!imageQuery.exec()) {
+                throw WSExeptions("Error retrieving week images for list: " + imageQuery.lastError().text());
+            }
+
+            QMap<QString, int> images;
+            if (imageQuery.next()) {
+                images["Monday"] = imageQuery.value(0).toInt();
+                images["Tuesday"] = imageQuery.value(1).toInt();
+                images["Wednesday"] = imageQuery.value(2).toInt();
+                images["Thursday"] = imageQuery.value(3).toInt();
+                images["Friday"] = imageQuery.value(4).toInt();
+                images["Saturday"] = imageQuery.value(5).toInt();
+                images["Sunday"] = imageQuery.value(6).toInt();
+                images["Other days"] = imageQuery.value(7).toInt();
+            }
+
+            weekImageList.setImages(images);
             weekImageLists.append(weekImageList);
         }
     } catch (const WSExeptions& ex) {
@@ -62,7 +90,7 @@ QVector<WeekImageList> DBWeekListTableManager::getAllWeekImageLists() {
 WeekImageList DBWeekListTableManager::findWeekImageListById(int id) {
     try {
         QSqlQuery query;
-        query.prepare("SELECT id, name, images FROM Week_images_table WHERE id = :id");
+        query.prepare("SELECT id, name FROM WeekImageList WHERE id = :id");
         query.bindValue(":id", id);
 
         if (!query.exec()) {
@@ -72,19 +100,39 @@ WeekImageList DBWeekListTableManager::findWeekImageListById(int id) {
         if (query.next()) {
             int id = query.value(0).toInt();
             QString name = query.value(1).toString();
-            QString jsonImages = query.value(2).toString();
 
             WeekImageList weekImageList;
-            weekImageList.fromJsonString(jsonImages);
             weekImageList.setId(id);
-            weekImageList.setName(name); // Set the name
+            weekImageList.setName(name);
+
+            QSqlQuery imageQuery;
+            imageQuery.prepare("SELECT monday, tuesday, wednesday, thursday, friday, saturday, sunday, other_days FROM WeekImages WHERE list_id = :list_id");
+            imageQuery.bindValue(":list_id", id);
+
+            if (!imageQuery.exec()) {
+                throw WSExeptions("Error retrieving week images for list: " + imageQuery.lastError().text());
+            }
+
+            QMap<QString, int> images;
+            if (imageQuery.next()) {
+                images["Monday"] = imageQuery.value(0).toInt();
+                images["Tuesday"] = imageQuery.value(1).toInt();
+                images["Wednesday"] = imageQuery.value(2).toInt();
+                images["Thursday"] = imageQuery.value(3).toInt();
+                images["Friday"] = imageQuery.value(4).toInt();
+                images["Saturday"] = imageQuery.value(5).toInt();
+                images["Sunday"] = imageQuery.value(6).toInt();
+                images["Other days"] = imageQuery.value(7).toInt();
+            }
+
+            weekImageList.setImages(images);
             return weekImageList;
         }
     } catch (const WSExeptions& ex) {
         qDebug() << "Exception:" << ex.getMessage();
     }
 
-    return WeekImageList(); // Return a default-constructed WeekImageList if no record with such id is found
+    return WeekImageList(); // Повернення пустого об'єкта, якщо нічого не знайдено
 }
 
 bool DBWeekListTableManager::updateWeekImageList(WeekImageList* weekImageList) {
@@ -93,23 +141,34 @@ bool DBWeekListTableManager::updateWeekImageList(WeekImageList* weekImageList) {
             throw WSExeptions("Null pointer received for week image list!");
         }
 
-        // Check if the list's ID is known
         if (weekImageList->getId() == -1) {
             throw WSExeptions("Unknown id for week image list!");
         }
 
-        // Serialize the list to JSON format
-        QString jsonString = weekImageList->toJsonString();
-
-        // Update the record in the database
         QSqlQuery query;
-        query.prepare("UPDATE Week_images_table SET name = :name, images = :images WHERE id = :id");
+        query.prepare("UPDATE WeekImageList SET name = :name WHERE id = :id");
         query.bindValue(":name", weekImageList->getName());
-        query.bindValue(":images", jsonString);
         query.bindValue(":id", weekImageList->getId());
 
         if (!query.exec()) {
             throw WSExeptions("Error updating week image list: " + query.lastError().text());
+        }
+
+        // Оновлення зображень у таблиці WeekImages
+        query.prepare("UPDATE WeekImages SET monday = :monday, tuesday = :tuesday, wednesday = :wednesday, thursday = :thursday, "
+                      "friday = :friday, saturday = :saturday, sunday = :sunday, other_days = :other_days WHERE list_id = :list_id");
+        query.bindValue(":monday", weekImageList->getImages()["Monday"]);
+        query.bindValue(":tuesday", weekImageList->getImages()["Tuesday"]);
+        query.bindValue(":wednesday", weekImageList->getImages()["Wednesday"]);
+        query.bindValue(":thursday", weekImageList->getImages()["Thursday"]);
+        query.bindValue(":friday", weekImageList->getImages()["Friday"]);
+        query.bindValue(":saturday", weekImageList->getImages()["Saturday"]);
+        query.bindValue(":sunday", weekImageList->getImages()["Sunday"]);
+        query.bindValue(":other_days", weekImageList->getImages()["Other days"]);
+        query.bindValue(":list_id", weekImageList->getId());
+
+        if (!query.exec()) {
+            throw WSExeptions("Error updating week images: " + query.lastError().text());
         }
 
         return true;

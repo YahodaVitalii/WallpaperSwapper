@@ -10,11 +10,11 @@
 class DBRandomListTableManager
 {
 public:
-    DBRandomListTableManager();
     bool insertImageList(RandomImageList* imageList);
     bool updateRandomImageList(RandomImageList* randomImageList);
     QVector<RandomImageList> getAllRandomImageLists();
     RandomImageList FindRandomImageListById(int id);
+    QVector<int> getImageIdsForList(int listId) const;
 };
 
 #endif // DBRANDOMLISTTABLEMANAGER_H

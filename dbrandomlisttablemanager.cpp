@@ -1,31 +1,34 @@
 #include "dbrandomlisttablemanager.h"
 
-DBRandomListTableManager::DBRandomListTableManager()
-{
-
-}
 bool DBRandomListTableManager::insertImageList(RandomImageList* imageList) {
     try {
         if (!imageList) {
             throw WSExeptions("Null pointer received for image list!");
         }
 
-        // Serialize the list to JSON format
-        QString jsonString = imageList->toJsonString();
-
-        // Insert it into the table
         QSqlQuery query;
-        query.prepare("INSERT INTO RandomImageLists (name, time_interval, image_array) VALUES (:name, :time, :images)");
+        query.prepare("INSERT INTO RandomImageLists (name, time_interval) VALUES (:name, :time)");
         query.bindValue(":name", imageList->getName());
         query.bindValue(":time", imageList->getTimeInterval());
-        query.bindValue(":images", jsonString);
 
         if (!query.exec()) {
             throw WSExeptions("Error inserting image list into RandomImageLists: " + query.lastError().text());
         }
 
-        // Get the last inserted ID and set it in the non-const object
-        imageList->setId(query.lastInsertId().toInt());
+        int listId = query.lastInsertId().toInt();
+        imageList->setId(listId);
+
+        // Вставка зображень у таблицю RandomImages
+        for (int imageId : imageList->getImageIds()) {
+            QSqlQuery imageQuery;
+            imageQuery.prepare("INSERT INTO RandomImages (random_list_id, image_id) VALUES (:listId, :imageId)");
+            imageQuery.bindValue(":listId", listId);
+            imageQuery.bindValue(":imageId", imageId);
+
+            if (!imageQuery.exec()) {
+                throw WSExeptions("Error inserting image into RandomImages: " + imageQuery.lastError().text());
+            }
+        }
         return true;
     } catch (const WSExeptions& ex) {
         qDebug() << "Exception:" << ex.getMessage();
@@ -38,21 +41,19 @@ QVector<RandomImageList> DBRandomListTableManager::getAllRandomImageLists() {
 
     try {
         QSqlQuery query;
-        if (!query.exec("SELECT id, name, time_interval, image_array FROM RandomImageLists")) {
+        if (!query.exec("SELECT id, name, time_interval FROM RandomImageLists")) {
             throw WSExeptions("Error retrieving all random image lists: " + query.lastError().text());
         }
 
         while (query.next()) {
-            int id = query.value(0).toInt();
+            int listId = query.value(0).toInt();
             QString name = query.value(1).toString();
             QDateTime timeInterval = query.value(2).toDateTime();
-            QString jsonImages = query.value(3).toString();
 
-            RandomImageList randomImageList;
-            randomImageList.fromJsonString(jsonImages);
-            randomImageList.setId(id);
-            randomImageList.setName(name);
-            randomImageList.setTimeInterval(timeInterval);
+            QVector<int> imageIds = getImageIdsForList(listId);
+
+            RandomImageList randomImageList(name, timeInterval, imageIds);
+            randomImageList.setId(listId);
             randomImageLists.append(randomImageList);
         }
     } catch (const WSExeptions& ex) {
@@ -65,7 +66,7 @@ QVector<RandomImageList> DBRandomListTableManager::getAllRandomImageLists() {
 RandomImageList DBRandomListTableManager::FindRandomImageListById(int id) {
     try {
         QSqlQuery query;
-        query.prepare("SELECT id, name, time_interval, image_array FROM RandomImageLists WHERE id = :id");
+        query.prepare("SELECT id, name, time_interval FROM RandomImageLists WHERE id = :id");
         query.bindValue(":id", id);
 
         if (!query.exec()) {
@@ -73,16 +74,13 @@ RandomImageList DBRandomListTableManager::FindRandomImageListById(int id) {
         }
 
         if (query.next()) {
-            int id = query.value(0).toInt();
             QString name = query.value(1).toString();
             QDateTime timeInterval = query.value(2).toDateTime();
-            QString jsonImages = query.value(3).toString();
 
-            RandomImageList randomImageList;
-            randomImageList.fromJsonString(jsonImages);
+            QVector<int> imageIds = getImageIdsForList(id);
+
+            RandomImageList randomImageList(name, timeInterval, imageIds);
             randomImageList.setId(id);
-            randomImageList.setName(name);
-            randomImageList.setTimeInterval(timeInterval);
             return randomImageList;
         }
     } catch (const WSExeptions& ex) {
@@ -98,24 +96,39 @@ bool DBRandomListTableManager::updateRandomImageList(RandomImageList* randomImag
             throw WSExeptions("Null pointer received for random image list!");
         }
 
-        // Check if the list's ID is known
         if (randomImageList->getId() == -1) {
             throw WSExeptions("Unknown id for random image list!");
         }
 
-        // Serialize the list to JSON format
-        QString jsonString = randomImageList->toJsonString();
-
-        // Update the record in the database
         QSqlQuery query;
-        query.prepare("UPDATE RandomImageLists SET name = :name, time_interval = :time, image_array = :images WHERE id = :id");
+        query.prepare("UPDATE RandomImageLists SET name = :name, time_interval = :time WHERE id = :id");
         query.bindValue(":name", randomImageList->getName());
         query.bindValue(":time", randomImageList->getTimeInterval());
-        query.bindValue(":images", jsonString);
         query.bindValue(":id", randomImageList->getId());
 
         if (!query.exec()) {
             throw WSExeptions("Error updating random image list: " + query.lastError().text());
+        }
+
+        // Видалення старих зображень
+        QSqlQuery deleteQuery;
+        deleteQuery.prepare("DELETE FROM RandomImages WHERE random_list_id = :listId");
+        deleteQuery.bindValue(":listId", randomImageList->getId());
+
+        if (!deleteQuery.exec()) {
+            throw WSExeptions("Error deleting old images: " + deleteQuery.lastError().text());
+        }
+
+        // Додавання нових зображень
+        for (int imageId : randomImageList->getImageIds()) {
+            QSqlQuery imageQuery;
+            imageQuery.prepare("INSERT INTO RandomImages (random_list_id, image_id) VALUES (:listId, :imageId)");
+            imageQuery.bindValue(":listId", randomImageList->getId());
+            imageQuery.bindValue(":imageId", imageId);
+
+            if (!imageQuery.exec()) {
+                throw WSExeptions("Error inserting image into RandomImages: " + imageQuery.lastError().text());
+            }
         }
 
         return true;
@@ -123,4 +136,20 @@ bool DBRandomListTableManager::updateRandomImageList(RandomImageList* randomImag
         qDebug() << "Exception:" << ex.getMessage();
         return false;
     }
+}
+
+QVector<int> DBRandomListTableManager::getImageIdsForList(int listId) const {
+    QVector<int> imageIds;
+    QSqlQuery query;
+    query.prepare("SELECT image_id FROM RandomImages WHERE random_list_id = :listId");
+    query.bindValue(":listId", listId);
+
+    if (query.exec()) {
+        while (query.next()) {
+            imageIds.append(query.value(0).toInt());
+        }
+    } else {
+        qDebug() << "Error retrieving image ids for list: " << query.lastError().text();
+    }
+    return imageIds;
 }

@@ -1,5 +1,5 @@
-#ifndef TIMETABRANDOMLISTWIDGET_H
-#define TIMETABRANDOMLISTWIDGET_H
+#ifndef RANDOMLISTWIDGET_H
+#define RANDOMLISTWIDGET_H
 
 #include <QWidget>
 #include "sqlitedbmanager.h"
@@ -10,16 +10,16 @@
 #include "dbrandomlisttablemanager.h"
 #include "baselistwidget.h"
 namespace Ui {
-class TimeTabRandomListWidget;
+class RandomListWidget;
 }
 
-class TimeTabRandomListWidget :  public BaseListWidget
+class RandomListWidget :  public BaseListWidget
 {
     Q_OBJECT
 
 public:
-    explicit TimeTabRandomListWidget(QWidget *parent = nullptr);
-    ~TimeTabRandomListWidget();
+    explicit RandomListWidget(QWidget *parent = nullptr);
+    ~RandomListWidget();
 
     void CreateInterfaceViewTab();
     void CreatInterfaceCreateTab();
@@ -37,7 +37,7 @@ private:
     bool ValidateDataViewList();
 
 
-    Ui::TimeTabRandomListWidget *ui;
+    Ui::RandomListWidget *ui;
     DBRandomListTableManager dbRandomListTableManager;
 
     QScopedPointer<RandomImageList> CurrentRandomImageList;
@@ -48,4 +48,4 @@ private:
 
 };
 
-#endif // TIMETABRANDOMLISTWIDGET_H
+#endif // RANDOMLISTWIDGET_H
