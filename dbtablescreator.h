@@ -2,9 +2,8 @@
 #define DBTABLESCREATOR_H
 #include <QSqlQuery>
 #include <QDebug>
-#include "wsexeptions.h"
+#include "wsexception.h"
 #include <QSqlError>
-#include <QFile>
 class DBTablesCreator
 {
 public:
@@ -17,7 +16,7 @@ private:
     void createTableRandomImages();
     void createTableWeekImages();
     void createTableDayImages();
-    void createTableMoodImageList();
+    void createTableMoodImage();
    void  createTableEmodji();
 };
 

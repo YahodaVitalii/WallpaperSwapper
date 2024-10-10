@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QScrollArea>
 #include <QVBoxLayout>
+#include "widgetgeometry.h"
 
 class ScrollAreaManager : public QWidget
 {
@@ -12,9 +13,10 @@ class ScrollAreaManager : public QWidget
 public:
     explicit ScrollAreaManager(QWidget *parent = nullptr);
 
-    void CreateScrollArea(QWidget* parent, QWidget* child, int width, int hight, int cordinate_X, int cordinate_Y);
+    void CreateScrollArea(QWidget* parent, QWidget* child, const WidgetGeometry &geometry);
     void ClearScrollAreaConteinerWidget(QWidget* containerWidget);
     void setWidgetIntoScrollArea(QWidget* conteinerWidget,QWidget* childWidget);
+    QWidget* getWidgetById(QWidget* parentWidget, int itemId);
 
 };
 

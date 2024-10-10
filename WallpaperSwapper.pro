@@ -16,6 +16,7 @@ SOURCES += \
     customlabel.cpp \
     dayimagelist.cpp \
     daylistwidget.cpp \
+    dayofweek.cpp \
     dayviewimageslider.cpp \
     dbdaylisttablemanager.cpp \
     dbimagetablemanager.cpp \
@@ -24,11 +25,13 @@ SOURCES += \
     dbweeklisttablemanager.cpp \
     dialogwindowcontroller.cpp \
     dialogwindowlistofimage.cpp \
+    emodjitablemanager.cpp \
     imagelist.cpp \
     imageloader.cpp \
     interfaceaddition.cpp \
     main.cpp \
     mainwindow.cpp \
+    moodlisttablemeneger.cpp \
     moodtab.cpp \
     randomimagelist.cpp \
     randomlistwidget.cpp \
@@ -51,7 +54,7 @@ SOURCES += \
     weekimagelist.cpp \
     weeklistwidget.cpp \
     weekviewimageslider.cpp \
-    wsexeptions.cpp
+    wsexception.cpp
 
 HEADERS += \
     baseimagelist.h \
@@ -59,6 +62,7 @@ HEADERS += \
     customlabel.h \
     dayimagelist.h \
     daylistwidget.h \
+    dayofweek.h \
     dayviewimageslider.h \
     dbdaylisttablemanager.h \
     dbimagetablemanager.h \
@@ -68,10 +72,12 @@ HEADERS += \
     dbweeklisttablemanager.h \
     dialogwindowcontroller.h \
     dialogwindowlistofimage.h \
+    emodjitablemanager.h \
     imagelist.h \
     imageloader.h \
     interfaceaddition.h \
     mainwindow.h \
+    moodlisttablemeneger.h \
     moodtab.h \
     randomimagelist.h \
     randomlistwidget.h \
@@ -95,7 +101,7 @@ HEADERS += \
     weeklistwidget.h \
     weekviewimageslider.h \
     widgetgeometry.h \
-    wsexeptions.h
+    wsexception.h
 
 FORMS += \
     daylistwidget.ui \

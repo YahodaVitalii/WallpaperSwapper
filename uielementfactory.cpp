@@ -14,6 +14,7 @@ uiElementEventHandler = new UIElementEventHandler();
 void UIElementFactory::CreateLableWithImage(QWidget *containerWidget, int imageIndex, const WidgetGeometry &geometry)
 {
     QLabel* label = new QLabel(containerWidget);
+     label->setObjectName("imageLabel");
     label->setFixedSize(geometry.width, geometry.height);
     label->move(geometry.xPos, geometry.yPos);
 
@@ -74,9 +75,6 @@ void UIElementFactory::CreateButtonImage(QWidget *conteinerWidget, int index, co
     connect(buttonImage, &QPushButton::clicked, uiElementEventHandler, &UIElementEventHandler::on_buttonImage_clicked);
 }
 
-
-
-
 QLabel* UIElementFactory::CreateLableWithText(QWidget *conteinerWidget, QString TextOfLabel, int Cordinate_x, int Cordinate_y)
 {
     QLabel* labelText = new QLabel(conteinerWidget);
@@ -130,16 +128,16 @@ QLineEdit* UIElementFactory::CreateLineEdit(QWidget *containerWidget, const Widg
     lineEdit->show();
     return lineEdit;
 }
-void UIElementFactory::CreateButtonSetImage(QWidget *conteinerWidget, QString day, const WidgetGeometry& geometry)
+void UIElementFactory::CreateButtonSetImage(QWidget *conteinerWidget, int itemId, const WidgetGeometry& geometry)
 {
     QPushButton* ButtonSetImage = new QPushButton(conteinerWidget);
-    ButtonSetImage->setObjectName("buttonImage");  // Встановлення об'єктного імені
+    ButtonSetImage->setObjectName("ButtonSetImage");  // Встановлення об'єктного імені
     ButtonSetImage->setFixedSize(geometry.width, geometry.height);
     ButtonSetImage->move(geometry.xPos, geometry.yPos);
     ButtonSetImage-> setIcon(QIcon(":/resource/Img_load_box_fill@3x.png"));
     ButtonSetImage->setIconSize(QSize(40, 40));
     ButtonSetImage->show();
-    ButtonSetImage->setProperty("DayOfButton", day);
+    ButtonSetImage->setProperty("ItemId",itemId);
     connect(ButtonSetImage, &QPushButton::clicked, uiElementEventHandler, &UIElementEventHandler::on_ButtonSetImage_clicked);
 }
 void UIElementFactory::CreateButtonAddImage(QWidget *containerWidget, const WidgetGeometry &geometry)

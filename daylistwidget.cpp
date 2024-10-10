@@ -1,7 +1,7 @@
 #include "daylistwidget.h"
 #include "ui_daylistwidget.h"
 DayListWidget::DayListWidget(QWidget *parent)
-    : BaseListWidget(parent), ui(new Ui::DayListWidget)
+    : TimeTabWidgets(parent), ui(new Ui::DayListWidget)
 {
     ui->setupUi(this);
     connect(interfaceAddition, &InterfaceAddition::updateTimeEdit, this, &DayListWidget::getTimeEditUpdatetData);
@@ -26,14 +26,14 @@ void DayListWidget::CreateInterfaceViewTab()
 {
     DayImageLists = dbDayListTableManager.getAllDayImageLists();
     for (auto& list : DayImageLists) {
-        scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildDayListOfImageView(&list));
+        scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildDayListView(&list));
     }
 }
 
 void DayListWidget::CreatInterfaceCreateTab()
 {
     for (auto& item : currentImageIds) {
-        scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerCreateTab, interfaceAddition->BuildDayListOfImageItem(&item));
+        scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerCreateTab, interfaceAddition->BuildDayListItem(&item));
     }
 }
 bool DayListWidget::ValidateDataViewList()
@@ -56,7 +56,7 @@ void DayListWidget::CreateViewTabItem()
 {
     currentDayImageList.reset(new DayImageList(nameLineEdit->text(), currentImageIds));
     dbDayListTableManager.insertDayImageList(currentDayImageList.data());
-    scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildDayListOfImageView(currentDayImageList.data()));
+    scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildDayListView(currentDayImageList.data()));
 }
 
 void DayListWidget::PrepareTabForEditingItem(int ListId)
@@ -88,7 +88,7 @@ void DayListWidget::addImageInList(int index)
     }
     TimeRangeImage newImage("00:00", "00:00", index, id);
     currentImageIds.push_back(newImage);
-    scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerCreateTab, interfaceAddition->BuildDayListOfImageItem(&newImage));
+    scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerCreateTab, interfaceAddition->BuildDayListItem(&newImage));
 
     dialogWindowController->Close();
 }
@@ -130,9 +130,9 @@ void DayListWidget::AcceptSavingOfList()
             scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerViewTab);
             CreateInterfaceViewTab();
         }else {
-            throw WSExeptions("Error: Day List has incorrect index: " + CurrenDayListId);
+            throw WSExceptions("Error: Day List has incorrect index: " + CurrenDayListId);
         }
-    } catch (const WSExeptions& e) {
+    } catch (const WSExceptions& e) {
         qDebug() << e.what();
     }
 

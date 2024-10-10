@@ -8,12 +8,12 @@
 #include "imagelist.h"
 #include "dialogwindowlistofimage.h"
 #include "dbrandomlisttablemanager.h"
-#include "baselistwidget.h"
+#include "timetabwidgets.h"
 namespace Ui {
 class RandomListWidget;
 }
 
-class RandomListWidget :  public BaseListWidget
+class RandomListWidget :  public TimeTabWidgets
 {
     Q_OBJECT
 
@@ -38,7 +38,7 @@ private:
 
 
     Ui::RandomListWidget *ui;
-    DBRandomListTableManager dbRandomListTableManager;
+    DBRandomListTableManager dbManager;
 
     QScopedPointer<RandomImageList> CurrentRandomImageList;
     QVector<RandomImageList>  RandomImageLists;

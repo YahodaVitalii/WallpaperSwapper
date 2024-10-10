@@ -7,18 +7,19 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include "baseimagelist.h"
+#include "dayofweek.h"
 
 
 class WeekImageList : public BaseImageList {
 private:
-    QMap<QString, int> images;
+    QMap<DayOfWeek, int> images; // Використовуємо DayOfWeek як ключ
 public:
     WeekImageList();
-    WeekImageList(QString name, const QMap<QString, int>& images);
+    WeekImageList(QString name, const QMap<DayOfWeek, int>& images);
 
     // Геттери та сеттери
-    QMap<QString, int> getImages() const;
-    void setImages(const QMap<QString, int>& newImages);
+    QMap<DayOfWeek, int> getImages() const;
+    void setImages(const QMap<DayOfWeek, int>& newImages);
 };
 
 #endif // WEEKIMAGELIST_H

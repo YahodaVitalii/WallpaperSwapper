@@ -7,7 +7,7 @@
 #include <QSqlError>
 #include <QVariant>
 #include"weekimagelist.h"
-#include "wsexeptions.h"
+#include "wsexception.h"
 class DBWeekListTableManager
 {
 public:

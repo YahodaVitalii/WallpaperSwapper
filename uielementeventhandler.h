@@ -19,13 +19,15 @@ public slots:
     void on_buttonEdit_clicked();
     void on_ButtonSetImage_clicked();
     void on_ButtonAddImage_clicked();
+    void on_EmojiButton_clicked();
     void onButtonBoxAccepted();
     void onButtonBoxRejected();
 
 signals:
     void imageSelected(int imageIndex);
     void sendEditSignalToItem(int elementId);
-    void setImageIntoWeekListItem(QString day);
+    void setImageIntoListItem(int itemId);
+    void sendEmodjiID(int id);
     void ButtonAddImageClicked();
     void ButtonBoxAccepted();
     void ButtonBoxRejected();

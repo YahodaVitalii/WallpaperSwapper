@@ -36,10 +36,10 @@ bool DBImageTableManager::insertIntoImageTable(const WallpaperImage& wallpaperIm
         query.bindValue(":Width", wallpaperImage.getWidth());
 
         if (!query.exec()) {
-            throw WSExeptions("Error inserting into Images: " + query.lastError().text());
+            throw WSExceptions("Error inserting into Images: " + query.lastError().text());
         }
         return true;
-    } catch (const WSExeptions& ex) {
+    } catch (const WSExceptions& ex) {
         qDebug() << "Exception in insertIntoImageTable:" << ex.getMessage();
         return false;
     }
@@ -58,12 +58,12 @@ QVector<WallpaperImage> DBImageTableManager::getAllImages() {
         QString queryString = QString("SELECT id, name, url, height, width FROM Images");
 
         if (!query.prepare(queryString)) {
-            throw WSExeptions("Error preparing query: " + query.lastError().text());
+            throw WSExceptions("Error preparing query: " + query.lastError().text());
         }
         //qDebug() << "Query prepared:" << queryString;
 
         if (!query.exec()) {
-            throw WSExeptions("Error executing query: " + query.lastError().text());
+            throw WSExceptions("Error executing query: " + query.lastError().text());
         }
 
       //  qDebug() << "Query executed successfully";
@@ -80,7 +80,7 @@ QVector<WallpaperImage> DBImageTableManager::getAllImages() {
 
        // qDebug() << "Loaded images count: " << images.size();
         return images;
-    } catch (const WSExeptions& ex) {
+    } catch (const WSExceptions& ex) {
         qDebug() << "Exception in getAllImages:" << ex.getMessage();
         return images;
     }
@@ -98,11 +98,11 @@ bool DBImageTableManager::deleteImageById(int imageId) {
         query.bindValue(":id", imageId);
 
         if (!query.exec()) {
-            throw WSExeptions("Error deleting image from database: " + query.lastError().text());
+            throw WSExceptions("Error deleting image from database: " + query.lastError().text());
         }
 
         return true;
-    } catch (const WSExeptions& ex) {
+    } catch (const WSExceptions& ex) {
         qDebug() << "Exception in deleteImageById:" << ex.getMessage();
         return false;
     }

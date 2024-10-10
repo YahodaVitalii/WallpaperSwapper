@@ -23,7 +23,7 @@ QWidget *InterfaceAddition::BuildListOfImageItem(int imageIndex)
 
     return itemWidget;
 }
-QWidget *InterfaceAddition::BuildRandomListOfImageItem(int imageIndex)
+QWidget *InterfaceAddition::BuildRandomListItem(int imageIndex)
 {
     QWidget* itemWidget = CreateContainerWidget();
 
@@ -35,7 +35,7 @@ QWidget *InterfaceAddition::BuildRandomListOfImageItem(int imageIndex)
     return itemWidget;
 }
 
-QWidget *InterfaceAddition::BuildRandomListOfImageView(const RandomImageList *randomImageList)
+QWidget *InterfaceAddition::BuildRandomListView(const RandomImageList *randomImageList)
 {
     QWidget* viewWidget = CreateContainerWidget();
 
@@ -51,18 +51,18 @@ QWidget *InterfaceAddition::BuildRandomListOfImageView(const RandomImageList *ra
 
 }
 
-QWidget *InterfaceAddition::BuildWeekListOfImageItem(int imageIndex, QString DayOfWeek)
+QWidget *InterfaceAddition::BuildWeekListItem(int imageIndex, DayOfWeek dayOfWeek)
 {
     QWidget* itemWidget = CreateContainerWidget();
 
     uiElementFactory->CreateLableWithImage(itemWidget,imageIndex,standartImageSize);
-    uiElementFactory->CreateButtonSetImage(itemWidget,DayOfWeek,standartImageSize);
-    uiElementFactory->CreateLableWithText(itemWidget,DayOfWeek,290,95);
+    uiElementFactory->CreateButtonSetImage(itemWidget,static_cast<int>(dayOfWeek),standartImageSize);
+    uiElementFactory->CreateLableWithText(itemWidget,dayOfWeekToString(dayOfWeek),290,95);
 
     return itemWidget;
 }
 
-QWidget *InterfaceAddition::BuildWeekListOfImageView(const WeekImageList* weekImageList)
+QWidget *InterfaceAddition::BuildWeekListView(const WeekImageList* weekImageList)
 {
     QWidget* viewWidget = CreateContainerWidget();
     uiElementFactory->CreateToggleButton(viewWidget,weekImageList->getId());
@@ -74,7 +74,7 @@ QWidget *InterfaceAddition::BuildWeekListOfImageView(const WeekImageList* weekIm
     return viewWidget;
 }
 
-QWidget *InterfaceAddition::BuildDayListOfImageItem(const TimeRangeImage* item)
+QWidget *InterfaceAddition::BuildDayListItem(const TimeRangeImage* item)
 {
     QWidget* itemWidget = CreateContainerWidget();
 
@@ -104,7 +104,7 @@ QWidget *InterfaceAddition::BuildDayListOfImageItem(const TimeRangeImage* item)
     return itemWidget;
 }
 
-QWidget *InterfaceAddition::BuildDayListOfImageView(const DayImageList *dayImageList)
+QWidget *InterfaceAddition::BuildDayListView(const DayImageList *dayImageList)
 {
     QWidget* viewWidget = CreateContainerWidget();
 
@@ -115,7 +115,35 @@ QWidget *InterfaceAddition::BuildDayListOfImageView(const DayImageList *dayImage
 
    imageSlider = new DayViewImageSlider(dayImageList->getImages(), standartImageSize, viewWidget);
 
-    return viewWidget;
+   return viewWidget;
+}
+
+QWidget* InterfaceAddition::BuildMoodTabItem(int emodjiID, int imageID)
+{
+    QWidget* itemWidget = CreateContainerWidget();
+    itemWidget->setProperty("WidgetItemId",emodjiID);
+
+    EmodjiTableManager emodjiManager;
+    QString emodji = emodjiManager.getEmodjiById(emodjiID);
+
+    // Створюємо віджет з текстом емодзі
+    uiElementFactory->CreateLableWithText(itemWidget, emodji, 290, 35);
+    uiElementFactory->CreateLableWithImage(itemWidget, imageID, standartImageSize);
+    uiElementFactory->CreateButtonSetImage(itemWidget, emodjiID, standartImageSize);
+
+    return itemWidget;
+}
+
+QPushButton *InterfaceAddition::CreateEmojiButton(int emojiKey, const QString &emojiText, QWidget *parent)
+{
+    QPushButton* emojiButton = new QPushButton(emojiText, parent);
+      // emojiButton->setFixedSize(50, 50); // Налаштування розміру кнопки
+       emojiButton->setStyleSheet(Style::getIterfaceAdditionStyle()); // Налаштування стилю емоджі
+       emojiButton->setCursor(Qt::PointingHandCursor);
+       emojiButton->setProperty("emojiKey", emojiKey);
+       connect(emojiButton, &QPushButton::clicked, uiElementEventHandler, &UIElementEventHandler::on_EmojiButton_clicked);
+
+       return emojiButton;
 }
 
 QWidget *InterfaceAddition::CreateContainerWidget()

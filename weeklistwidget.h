@@ -7,13 +7,13 @@
 #include "dialogwindowlistofimage.h"
 #include "weekimagelist.h"
 #include "dbweeklisttablemanager.h"
-#include "baselistwidget.h"
-#include <QScopedPointer>
+#include "timetabwidgets.h"
+#include "dayofweek.h"
 namespace Ui {
 class WeekListWidget;
 }
 
-class WeekListWidget : public BaseListWidget
+class WeekListWidget : public TimeTabWidgets
 {
     Q_OBJECT
 private:
@@ -22,11 +22,11 @@ private:
     Ui::WeekListWidget *ui;
     DBWeekListTableManager dbWeekListTableManager;
 
-    const QStringList days = {"Other days","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+   // const QStringList days = {"Other days","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
     QVector<WeekImageList>  WeekImageLists;
     QScopedPointer<WeekImageList> currentWeekImageList;
-    QMap<QString, int> currentImageIds;
-    QString currentDay;
+    QMap<DayOfWeek, int> currentImageIds;
+    DayOfWeek currentDay;
 
 public:
     explicit WeekListWidget(QWidget *parent = nullptr);
@@ -38,14 +38,12 @@ public:
     void PrepareTabForEditingItem(int ListId) override;
     void PrepareTabForCreatingItem() override;
 
-    QMap<QString, int> fillCurrentImageIds(const QStringList& keys);
+    QMap<DayOfWeek, int> fillCurrentImageIds();
 public slots:
     void AcceptSavingOfList() override;
     void addImageInList(int index) override;
 
-    void ShowDialogWindowListOfImage(QString day);
-
-
+    void ShowDialogWindowListOfImage(int itemId);
 
 };
 

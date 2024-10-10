@@ -23,13 +23,19 @@ void UIElementEventHandler::on_buttonEdit_clicked()
 
 void UIElementEventHandler::on_ButtonSetImage_clicked()
 {
-    QString day = sender()->property("DayOfButton").toString();
-    emit setImageIntoWeekListItem(day);
+    int itemId = sender()->property("ItemId").toInt();
+    emit setImageIntoListItem(itemId);
 }
 
 void UIElementEventHandler::on_ButtonAddImage_clicked()
 {
     emit ButtonAddImageClicked();
+}
+
+void UIElementEventHandler::on_EmojiButton_clicked()
+{
+    int key = sender()->property("emojiKey").toInt();
+emit sendEmodjiID(key);
 }
 
 void UIElementEventHandler::onButtonBoxAccepted()

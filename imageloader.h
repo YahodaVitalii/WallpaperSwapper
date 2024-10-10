@@ -10,7 +10,7 @@
 #include <QFileDialog>
 #include <Windows.h>
 #include "wallpaperimage.h"
-#include "wsexeptions.h"
+#include "wsexception.h"
 #include "sqlitedbmanager.h"
 #include "dbimagetablemanager.h"
 

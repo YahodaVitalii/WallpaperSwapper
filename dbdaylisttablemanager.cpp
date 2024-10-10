@@ -4,7 +4,7 @@ DBDayListTableManager::DBDayListTableManager(){}
 bool DBDayListTableManager::insertDayImageList(DayImageList* dayImageList) {
     try {
         if (!dayImageList) {
-            throw WSExeptions("Null pointer received for day image list!");
+            throw WSExceptions("Null pointer received for day image list!");
         }
 
         // Insert the basic list information into DayImageList table
@@ -13,7 +13,7 @@ bool DBDayListTableManager::insertDayImageList(DayImageList* dayImageList) {
         query.bindValue(":name", dayImageList->getName());
 
         if (!query.exec()) {
-            throw WSExeptions("Error inserting day image list into DayImageList: " + query.lastError().text());
+            throw WSExceptions("Error inserting day image list into DayImageList: " + query.lastError().text());
         }
 
         // Get the last inserted ID and set it in the non-const object
@@ -31,12 +31,12 @@ bool DBDayListTableManager::insertDayImageList(DayImageList* dayImageList) {
             imageQuery.bindValue(":listId", listId);
 
             if (!imageQuery.exec()) {
-                throw WSExeptions("Error inserting day images into DayImages: " + imageQuery.lastError().text());
+                throw WSExceptions("Error inserting day images into DayImages: " + imageQuery.lastError().text());
             }
         }
 
         return true;
-    } catch (const WSExeptions& ex) {
+    } catch (const WSExceptions& ex) {
         qDebug() << "Exception:" << ex.getMessage();
         return false;
     }
@@ -49,7 +49,7 @@ QVector<DayImageList> DBDayListTableManager::getAllDayImageLists() {
         // Retrieve all lists from DayImageList
         QSqlQuery query;
         if (!query.exec("SELECT id, name FROM DayImageList")) {
-            throw WSExeptions("Error retrieving all day image lists: " + query.lastError().text());
+            throw WSExceptions("Error retrieving all day image lists: " + query.lastError().text());
         }
 
         while (query.next()) {
@@ -66,7 +66,7 @@ QVector<DayImageList> DBDayListTableManager::getAllDayImageLists() {
             imageQuery.bindValue(":listId", listId);
 
             if (!imageQuery.exec()) {
-                throw WSExeptions("Error retrieving day images for list: " + imageQuery.lastError().text());
+                throw WSExceptions("Error retrieving day images for list: " + imageQuery.lastError().text());
             }
 
             QVector<TimeRangeImage> images;
@@ -83,7 +83,7 @@ QVector<DayImageList> DBDayListTableManager::getAllDayImageLists() {
             dayImageList.setImages(images);
             dayImageLists.append(dayImageList);
         }
-    } catch (const WSExeptions& ex) {
+    } catch (const WSExceptions& ex) {
         qDebug() << "Exception:" << ex.getMessage();
     }
 
@@ -98,7 +98,7 @@ DayImageList DBDayListTableManager::findDayImageListById(int id) {
         query.bindValue(":id", id);
 
         if (!query.exec()) {
-            throw WSExeptions("Error retrieving day image list: " + query.lastError().text());
+            throw WSExceptions("Error retrieving day image list: " + query.lastError().text());
         }
 
         if (query.next()) {
@@ -115,7 +115,7 @@ DayImageList DBDayListTableManager::findDayImageListById(int id) {
             imageQuery.bindValue(":listId", listId);
 
             if (!imageQuery.exec()) {
-                throw WSExeptions("Error retrieving day images for list: " + imageQuery.lastError().text());
+                throw WSExceptions("Error retrieving day images for list: " + imageQuery.lastError().text());
             }
 
             QVector<TimeRangeImage> images;
@@ -132,7 +132,7 @@ DayImageList DBDayListTableManager::findDayImageListById(int id) {
             dayImageList.setImages(images);
             return dayImageList;
         }
-    } catch (const WSExeptions& ex) {
+    } catch (const WSExceptions& ex) {
         qDebug() << "Exception:" << ex.getMessage();
     }
 
@@ -142,11 +142,11 @@ DayImageList DBDayListTableManager::findDayImageListById(int id) {
 bool DBDayListTableManager::updateDayImageList(DayImageList* dayImageList) {
     try {
         if (!dayImageList) {
-            throw WSExeptions("Null pointer received for day image list!");
+            throw WSExceptions("Null pointer received for day image list!");
         }
 
         if (dayImageList->getId() == -1) {
-            throw WSExeptions("Unknown id for day image list!");
+            throw WSExceptions("Unknown id for day image list!");
         }
 
         // Update the basic list information in DayImageList table
@@ -156,7 +156,7 @@ bool DBDayListTableManager::updateDayImageList(DayImageList* dayImageList) {
         query.bindValue(":id", dayImageList->getId());
 
         if (!query.exec()) {
-            throw WSExeptions("Error updating day image list: " + query.lastError().text());
+            throw WSExceptions("Error updating day image list: " + query.lastError().text());
         }
 
         // Remove existing entries in DayImages associated with this list
@@ -165,7 +165,7 @@ bool DBDayListTableManager::updateDayImageList(DayImageList* dayImageList) {
         deleteQuery.bindValue(":listId", dayImageList->getId());
 
         if (!deleteQuery.exec()) {
-            throw WSExeptions("Error deleting old day images: " + deleteQuery.lastError().text());
+            throw WSExceptions("Error deleting old day images: " + deleteQuery.lastError().text());
         }
 
         // Re-insert each TimeRangeImage into the DayImages table
@@ -179,12 +179,12 @@ bool DBDayListTableManager::updateDayImageList(DayImageList* dayImageList) {
             imageQuery.bindValue(":listId", dayImageList->getId());
 
             if (!imageQuery.exec()) {
-                throw WSExeptions("Error inserting day images into DayImages: " + imageQuery.lastError().text());
+                throw WSExceptions("Error inserting day images into DayImages: " + imageQuery.lastError().text());
             }
         }
 
         return true;
-    } catch (const WSExeptions& ex) {
+    } catch (const WSExceptions& ex) {
         qDebug() << "Exception:" << ex.getMessage();
         return false;
     }

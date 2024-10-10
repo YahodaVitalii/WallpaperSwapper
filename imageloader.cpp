@@ -1,4 +1,4 @@
-#include "imageloader.h"
+ #include "imageloader.h"
 
 ImageLoader::ImageLoader(){
      dbImageTableManager = new DBImageTableManager();
@@ -10,20 +10,20 @@ bool ImageLoader::ChooseImageFromFiles(QWidget* parent) {
         qDebug() << "File selected:" << fileName;
 
         if (fileName.isEmpty()) {
-            throw WSExeptions("No file selected.");
+            throw WSExceptions("No file selected.");
         }
 
         QImage image = loadImage(fileName);
         if (image.isNull()) {
-            throw WSExeptions("Failed to load image from file.");
+            throw WSExceptions("Failed to load image from file.");
         }
 
         auto wlapperImage = createWlapperImage(fileName, image);
         if (!dbImageTableManager->insertIntoImageTable(*wlapperImage)) {
-            throw WSExeptions("Error inserting data into the database.");
+            throw WSExceptions("Error inserting data into the database.");
         }
         return true; // Return the ID of the last element
-    } catch (const WSExeptions& ex) {
+    } catch (const WSExceptions& ex) {
         qDebug() << "Error:" << ex.getMessage();
     } catch (const QException& ex) {
         qDebug() << "Unexpected error:" << ex.what();

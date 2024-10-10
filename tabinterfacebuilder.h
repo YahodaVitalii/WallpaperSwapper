@@ -11,7 +11,7 @@ public:
     TabInterfaceBuilder(QWidget *parent, UIElementEventHandler *uiElementEventHandler);
 
     QTabWidget* CreateTabWidget(QWidget *conteinerWidget);
-    QWidget* buildTabViewLists(QWidget *conteinerWidget, QWidget *scrollAreaConterinerViewTab);
+    QWidget* buildTabViewLists(QWidget *conteinerWidget, QWidget *scrollAreaConterinerViewTab, const WidgetGeometry &geometry);
     QWidget* buildTabCreateListForRandomList(QWidget *conteinerWidget, QWidget *scrollAreaConterinerCreateTab);
     QWidget* buildTabCreateListForWeekList(QWidget *conteinerWidget, QWidget *scrollAreaConterinerCreateTab);
     QWidget* buildTabCreateListForDayList(QWidget *conteinerWidget, QWidget *scrollAreaConterinerCreateTab);

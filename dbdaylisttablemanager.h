@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <QSqlError>
 #include"dayimagelist.h"
-#include "wsexeptions.h"
+#include "wsexception.h"
 class DBDayListTableManager
 {
 public:

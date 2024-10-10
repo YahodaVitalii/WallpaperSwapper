@@ -5,6 +5,7 @@
 #include <QPainter>
 #include "standarttab.h"
 #include "timetab.h"
+#include "moodtab.h"
 #include "dbmanager.h"
 #include "sqlitedbmanager.h"
 QT_BEGIN_NAMESPACE
@@ -29,16 +30,18 @@ private slots:
 
     void on_mainMenuTimeButton_clicked();
 
+    void on_mainMenuMoodButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     StandartTab* standartTab;
     TimeTab* timeTab;
+    MoodTab* moodTab;
 
     DBManager* dbManager;
     InterfaceAddition* interfaceAddition;
     UIElementFactory* uiElementFactory;
     ImageList* imageList;
-    //DialogWindowListOfImage* dialogWindowListOfImage;
 
     void setInterfaceStyle();
 };

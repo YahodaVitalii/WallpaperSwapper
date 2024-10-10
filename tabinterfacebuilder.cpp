@@ -22,7 +22,7 @@ QWidget* TabInterfaceBuilder::buildTabCreateListForRandomList(QWidget *conteiner
 
     QVBoxLayout *layoutCreateTab = new QVBoxLayout(scrollAreaConterinerCreateTab);
     scrollAreaConterinerCreateTab->setLayout(layoutCreateTab);
-    scrollAreaManager.CreateScrollArea(tabCreateList, scrollAreaConterinerCreateTab, 600, 280, 0, 60);
+    scrollAreaManager.CreateScrollArea(tabCreateList, scrollAreaConterinerCreateTab, WidgetGeometry(600, 280, 0, 60));
 
 
     uiElementFactory->CreateButtonAddImage(tabCreateList,WidgetGeometry(90,30,500,10));
@@ -40,7 +40,7 @@ QWidget *TabInterfaceBuilder::buildTabCreateListForWeekList(QWidget *conteinerWi
 
     QVBoxLayout *layoutCreateTab = new QVBoxLayout(scrollAreaConterinerCreateTab);
     scrollAreaConterinerCreateTab->setLayout(layoutCreateTab);
-    scrollAreaManager.CreateScrollArea(tabCreateList, scrollAreaConterinerCreateTab, 600, 280, 0, 60);
+    scrollAreaManager.CreateScrollArea(tabCreateList, scrollAreaConterinerCreateTab, WidgetGeometry(600, 280, 0, 60));
 
     uiElementFactory->CreateLableWithText(tabCreateList,"Name:",30,15);
     uiElementFactory->CreateButtonBox(tabCreateList,430,340);
@@ -54,7 +54,7 @@ QWidget *TabInterfaceBuilder::buildTabCreateListForDayList(QWidget *conteinerWid
 
     QVBoxLayout *layoutCreateTab = new QVBoxLayout(scrollAreaConterinerCreateTab);
     scrollAreaConterinerCreateTab->setLayout(layoutCreateTab);
-    scrollAreaManager.CreateScrollArea(tabCreateList, scrollAreaConterinerCreateTab, 600, 280, 0, 60);
+    scrollAreaManager.CreateScrollArea(tabCreateList, scrollAreaConterinerCreateTab, WidgetGeometry(600, 280, 0, 60));
 
     uiElementFactory->CreateButtonAddImage(tabCreateList,WidgetGeometry(90,30,500,10));
     uiElementFactory->CreateLableWithText(tabCreateList,"Name:",30,15);
@@ -64,13 +64,15 @@ QWidget *TabInterfaceBuilder::buildTabCreateListForDayList(QWidget *conteinerWid
 }
 
 // Function to build the "View Lists" tab
-QWidget* TabInterfaceBuilder::buildTabViewLists(QWidget *conteinerWidget,QWidget *scrollAreaConterinerViewTab)
+QWidget* TabInterfaceBuilder::buildTabViewLists(QWidget *conteinerWidget,QWidget *scrollAreaConterinerViewTab,const WidgetGeometry &geometry)
 {
     QWidget* tabViewLists = new QWidget(conteinerWidget);
+    tabViewLists->move(geometry.xPos,geometry.yPos);
 
     QVBoxLayout *layoutViewTab = new QVBoxLayout(scrollAreaConterinerViewTab);
     scrollAreaConterinerViewTab->setLayout(layoutViewTab);
-    scrollAreaManager.CreateScrollArea(tabViewLists, scrollAreaConterinerViewTab, 600, 360, 0, 10);
+    scrollAreaManager.CreateScrollArea(tabViewLists, scrollAreaConterinerViewTab, geometry);
+
 
     return tabViewLists;
 }

@@ -12,6 +12,8 @@ public:
     static QString getTabsStyle();
     static QString getStandartTabStyle();
     static QString getTimeTabStyle();
+    static QString getMoodTabStyle();
+
     static QString getMenuBarStyle();
     static QString getImageListStyle();
     static QString getTabWidgetStyle();

@@ -13,11 +13,22 @@ MainWindow::MainWindow(DBManager* dbManager,QWidget *parent)
     setInterfaceStyle();
     imageList = SQLTableImageList::getInstance();
 
-   standartTab = new StandartTab(dbManager,imageList,this);
+    standartTab = new StandartTab(dbManager,imageList,this);
     standartTab ->move(165, 0);
+    standartTab->setFixedSize(640,500);
+    standartTab->hide();
+
 
     timeTab = new TimeTab(this);
     timeTab->move(165, 0);
+    timeTab->setFixedSize(640,500);
+    timeTab->hide();
+
+
+    moodTab = new MoodTab(this);
+    moodTab->move(165, 0);
+    moodTab->setFixedSize(640,500);
+    moodTab->setStyleSheet(Style::getTabsStyle());
 }
 
 MainWindow::~MainWindow()
@@ -53,6 +64,7 @@ void MainWindow::on_mainMenuStandartButton_clicked()
 {
     standartTab ->show();
     timeTab->hide();
+    moodTab->hide();
 }
 
 
@@ -60,5 +72,14 @@ void MainWindow::on_mainMenuTimeButton_clicked()
 {
     timeTab->show();
     standartTab ->hide();
+    moodTab->hide();
+}
+
+
+void MainWindow::on_mainMenuMoodButton_clicked()
+{
+    timeTab->hide();
+    standartTab ->hide();
+    moodTab->show();
 }
 

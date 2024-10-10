@@ -5,7 +5,27 @@
 class TimeTabWidgets : public BaseListWidget
 {
 public:
-    TimeTabWidgets();
+    explicit TimeTabWidgets(QWidget* parent = nullptr);
+    ~TimeTabWidgets();
+public slots:
+    virtual void AcceptSavingOfList() = 0;
+    void ReceiveEditSignalForListView(int id);
+    void RejectSavingOfList();
+    void  CreateViewListItem();
+
+protected:
+    virtual void PrepareTabForCreatingItem() =0;
+    virtual void PrepareTabForEditingItem(int ListId) =0;
+    virtual bool ValidateDataViewList();
+
+    QLineEdit* nameLineEdit;
+
+    QTabWidget* tabWidget;
+    QWidget* tabCreateList;
+    QWidget *scrollAreaConterinerCreateTab;
+
+private:
+    void ConnectSignals() override;
 };
 
 #endif // TIMETABWIDGETS_H

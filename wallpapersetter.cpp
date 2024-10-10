@@ -9,11 +9,11 @@ bool WallpaperSetter::setWallpaper(const QString &imagePath) {
         BOOL result = SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, static_cast<void*>(const_cast<wchar_t*>(path.c_str())),
                                             SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
         if (!result) {
-            throw WSExeptions("Failed to set wallpaper. Error: " + QString::number(GetLastError()));
+            throw WSExceptions("Failed to set wallpaper. Error: " + QString::number(GetLastError()));
         }
 
         return true;
-    } catch (const WSExeptions& ex) {
+    } catch (const WSExceptions& ex) {
         qDebug() << "Error:" << ex.getMessage();
     } catch (const QException& ex) {
         qDebug() << "Unexpected error:" << ex.what();

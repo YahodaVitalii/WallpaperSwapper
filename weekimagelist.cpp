@@ -2,13 +2,13 @@
 
 WeekImageList::WeekImageList() : BaseImageList() {}
 
-WeekImageList::WeekImageList(QString name, const QMap<QString, int>& images)
+WeekImageList::WeekImageList(QString name, const QMap<DayOfWeek, int>& images)
     : BaseImageList(name), images(images) {}
 
-QMap<QString, int> WeekImageList::getImages() const {
+QMap<DayOfWeek, int> WeekImageList::getImages() const {
     return images;
 }
 
-void WeekImageList::setImages(const QMap<QString, int>& newImages) {
+void WeekImageList::setImages(const QMap<DayOfWeek, int>& newImages) {
     images = newImages;
 }

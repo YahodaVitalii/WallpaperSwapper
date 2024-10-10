@@ -18,6 +18,7 @@
 #include "randomviewimageslider.h"
 #include "weekviewimageslider.h"
 #include "dayviewimageslider.h"
+#include "emodjitablemanager.h"
 
 
 
@@ -28,12 +29,15 @@ public:
     InterfaceAddition(QWidget *parent, UIElementEventHandler *uiElementEventHandler);
     ~InterfaceAddition();
     QWidget* BuildListOfImageItem(int imageIndex);
-    QWidget* BuildRandomListOfImageItem(int imageIndex);
-    QWidget* BuildRandomListOfImageView(const RandomImageList* randomImageList);
-    QWidget* BuildWeekListOfImageItem(int imageIndex, QString DayOfWeek);
-    QWidget* BuildWeekListOfImageView(const WeekImageList* weekImageList);
-    QWidget* BuildDayListOfImageItem(const TimeRangeImage* item);
-    QWidget* BuildDayListOfImageView(const DayImageList* dayImageList);
+    QWidget* BuildRandomListItem(int imageIndex);
+    QWidget* BuildRandomListView(const RandomImageList* randomImageList);
+    QWidget* BuildWeekListItem(int imageIndex, InterfaceAddition::DayOfWeek dayOfWeek);
+    QWidget* BuildWeekListView(const WeekImageList* weekImageList);
+    QWidget* BuildDayListItem(const TimeRangeImage* item);
+    QWidget* BuildDayListView(const DayImageList* dayImageList);
+    QWidget* BuildMoodTabItem(int emodjiID, int imageID);
+    QPushButton *CreateEmojiButton(int emojiKey,const QString& emojiText, QWidget* parent);
+
 private:
     QWidget *CreateContainerWidget();
 signals:
@@ -43,7 +47,7 @@ private:
     ImageList* imageList;
     UIElementFactory* uiElementFactory;
     UIElementEventHandler *uiElementEventHandler;
-     ImageSlider* imageSlider ;
+    ImageSlider* imageSlider ;
     const WidgetGeometry standartImageSize={220,110,10,5};
 
 

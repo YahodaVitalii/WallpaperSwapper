@@ -9,12 +9,12 @@
 class TabWidgetFactory {
 public:
     virtual ~TabWidgetFactory() = default;
-    virtual BaseListWidget* createWidget(QWidget* parent) = 0;
+    virtual TimeTabWidgets* createWidget(QWidget* parent) = 0;
 };
 
 class RandomTabWidgetFactory : public TabWidgetFactory {
 public:
-    BaseListWidget* createWidget(QWidget* parent) override {
+    TimeTabWidgets* createWidget(QWidget* parent) override {
         auto widget = new RandomListWidget(parent);
         return widget;
     }
@@ -22,7 +22,7 @@ public:
 
 class WeekTabWidgetFactory : public TabWidgetFactory {
 public:
-    BaseListWidget* createWidget(QWidget* parent) override {
+    TimeTabWidgets* createWidget(QWidget* parent) override {
         auto widget = new WeekListWidget(parent);
         return widget;
     }
@@ -30,7 +30,7 @@ public:
 
 class DayTabWidgetFactory : public TabWidgetFactory {
 public:
-    BaseListWidget* createWidget(QWidget* parent) override {
+    TimeTabWidgets* createWidget(QWidget* parent) override {
         auto widget = new DayListWidget(parent);
         return widget;
     }

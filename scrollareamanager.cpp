@@ -5,12 +5,12 @@ ScrollAreaManager::ScrollAreaManager(QWidget *parent)
 {
 
 }
-void ScrollAreaManager::CreateScrollArea(QWidget *parent, QWidget *child,int width,int hight,int cordinate_X, int cordinate_Y)
+void ScrollAreaManager::CreateScrollArea(QWidget *parent, QWidget *child,const WidgetGeometry &geometry)
 {
 
     QScrollArea* scrollArea = new QScrollArea(parent);
-    scrollArea->setFixedSize(width, hight);
-    scrollArea->move(cordinate_X, cordinate_Y);
+    scrollArea->setFixedSize(geometry.width, geometry.height);
+    scrollArea->move(geometry.xPos, geometry.yPos);
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(child);
 }
@@ -31,4 +31,17 @@ void ScrollAreaManager::setWidgetIntoScrollArea(QWidget* containerWidget, QWidge
 
     layout->addWidget(childWidget);
 
+}
+QWidget* ScrollAreaManager::getWidgetById(QWidget* parentWidget, int itemId)
+{
+    // Отримуємо список всіх дочірніх віджетів від заданого контейнера
+    const QList<QWidget*> widgets = parentWidget->findChildren<QWidget*>();
+    // Проходимо через всі знайдені віджети і перевіряємо властивість "itemId"
+    for (QWidget* widget : widgets) {
+        if (widget->property("WidgetItemId").isValid() && widget->property("WidgetItemId").toInt() == itemId) {
+            return widget;  // Повертаємо віджет, якщо ідентифікатор співпадає
+        }
+    }
+
+    return nullptr;  // Якщо не знайдено, повертаємо nullptr
 }

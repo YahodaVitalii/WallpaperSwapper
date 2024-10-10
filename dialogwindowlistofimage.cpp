@@ -16,7 +16,7 @@ DialogWindowListOfImage::DialogWindowListOfImage(QWidget *parent, UIElementEvent
     scrollAreaManager = new ScrollAreaManager();
     interfaceAddition = new InterfaceAddition(this,uiElementEventHandler);
     imageLoader = new ImageLoader();
-    scrollAreaManager->CreateScrollArea(this, scrollAreaConterinerWidget,300,420,0,80);
+    scrollAreaManager->CreateScrollArea(this, scrollAreaConterinerWidget,WidgetGeometry(300,420,0,80));
     CreateListOfImageIntarface(); // Кінець заміру часу
 
 }
@@ -39,15 +39,15 @@ void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
                 if (imageIndex != -1) {
                     scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerWidget, interfaceAddition->BuildListOfImageItem(imageIndex));
                 } else {
-                    throw WSExeptions("Image not found for ID: " + QString::number(imageId));
+                    throw WSExceptions("Image not found for ID: " + QString::number(imageId));
                 }
             } else {
-                throw WSExeptions("Failed to choose image.");
+                throw WSExceptions("Failed to choose image.");
             }
         } else {
-            throw WSExeptions("Image not loaded!");
+            throw WSExceptions("Image not loaded!");
         }
-    } catch (const WSExeptions& ex) {
+    } catch (const WSExceptions& ex) {
         qDebug() << "Error:" << ex.getMessage();
     } catch (const QException& ex) {
         qDebug() << "Unexpected error:" << ex.what();

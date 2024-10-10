@@ -10,6 +10,7 @@
 #include "dialogwindowlistofimage.h"
 #include <QTabWidget>
 #include <QMessageBox>
+#include <QScopedPointer>
 #include "tabinterfacebuilder.h"
 #include "dialogwindowcontroller.h"
 
@@ -20,13 +21,7 @@ public:
     explicit BaseListWidget(QWidget* parent = nullptr);
     ~BaseListWidget();
 public slots:
-    virtual void AcceptSavingOfList() = 0;
     virtual void addImageInList(int index) = 0;
-    void ReceiveEditSignalForListView(int id);
-    void RejectSavingOfList();
-    void  CreateViewListItem();
-
-
 protected:
     ImageList *imageList;
     InterfaceAddition* interfaceAddition;
@@ -35,19 +30,12 @@ protected:
     ScrollAreaManager* scrollAreaManager;
     DialogWindowController* dialogWindowController;
 
-    QLineEdit* nameLineEdit;
 
-    QTabWidget* tabWidget;
-    QWidget* tabCreateList;
     QWidget* tabViewLists;
-    QWidget *scrollAreaConterinerCreateTab;
     QWidget *scrollAreaConterinerViewTab;
 
-    virtual void PrepareTabForCreatingItem() =0;
-    virtual void PrepareTabForEditingItem(int ListId) =0;
-    virtual bool ValidateDataViewList();
-private:
-    void ConnectSignals();
+
+   virtual void ConnectSignals();
 };
 
 #endif // BASELISTWIDGET_H

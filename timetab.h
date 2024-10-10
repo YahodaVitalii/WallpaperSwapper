@@ -38,7 +38,7 @@ private:
 
     Ui::TimeTab *ui;
 
-    BaseListWidget* currentTab;
+    TimeTabWidgets* currentTab;
 
     RandomTabWidgetFactory randomTabWidgetFactory;
     WeekTabWidgetFactory weekTabWidgetFactory;

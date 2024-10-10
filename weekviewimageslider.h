@@ -6,14 +6,14 @@ class WeekViewImageSlider : public ImageSlider
 {
     Q_OBJECT
 public:
-    WeekViewImageSlider(const QMap<QString, int> &imageIds, const WidgetGeometry &geometry, QWidget *parent);
+    WeekViewImageSlider(const QMap<DayOfWeek, int> &imageIds, const WidgetGeometry &geometry, QWidget *parent);
 private:
     const QStringList days = {"Other days","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     void showNextImage() override;
     void showPrevImage() override;
 
-   QMap<QString, int> imageIds;
+   QMap<DayOfWeek, int> imageIds;
    QLabel* lableDay;
 
 

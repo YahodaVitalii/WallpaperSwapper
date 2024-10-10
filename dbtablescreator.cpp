@@ -10,9 +10,9 @@ bool DBTablesCreator::BuildTables()
             createTableWeekImages();
             createTableDayImageLists();
             createTableDayImages();
-            createTableMoodImageList();
+            createTableMoodImage();
             createTableEmodji();
-        } catch (const WSExeptions& e) {
+        } catch (const WSExceptions& e) {
             qDebug() << "Database: error in createTables: " << e.what();
             return false;
         }
@@ -28,7 +28,7 @@ void DBTablesCreator::createTableImage() {
                     " width INTEGER NOT NULL"
                     " )"
                     )) {
-        throw WSExeptions("Error creating table  Images" + query.lastError().text());
+        throw WSExceptions("Error creating table  Images" + query.lastError().text());
     }
 }
 
@@ -39,7 +39,7 @@ void DBTablesCreator::createTableRandomImageLists() {
                     "name VARCHAR(255) NOT NULL,"
                     "time_interval TIMESTAMP NOT NULL)"
                     )) {
-        throw WSExeptions("Error creating table RandomImageLists: " + query.lastError().text());
+        throw WSExceptions("Error creating table RandomImageLists: " + query.lastError().text());
     }
 }
 void DBTablesCreator::createTableRandomImages() {
@@ -51,7 +51,7 @@ void DBTablesCreator::createTableRandomImages() {
                     "FOREIGN KEY(random_list_id) REFERENCES RandomImageLists(id) ON DELETE CASCADE, "
                     "FOREIGN KEY(image_id) REFERENCES Images(id) ON DELETE CASCADE)"
                     )) {
-        throw WSExeptions("Error creating table RandomImageListImages: " + query.lastError().text());
+        throw WSExceptions("Error creating table RandomImageListImages: " + query.lastError().text());
     }
 }
 void DBTablesCreator::createTableWeekImageLists() {
@@ -59,7 +59,7 @@ void DBTablesCreator::createTableWeekImageLists() {
     if (!query.exec("CREATE TABLE WeekImageList ("
                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     "name TEXT NOT NULL)")) {
-        throw WSExeptions("Error creating table WeekImagesList: " + query.lastError().text());
+        throw WSExceptions("Error creating table WeekImagesList: " + query.lastError().text());
     }
 }
 
@@ -86,7 +86,7 @@ void DBTablesCreator::createTableWeekImages() {
                     "FOREIGN KEY(sunday) REFERENCES Images(id) ON DELETE SET NULL, "
                     "FOREIGN KEY(other_days) REFERENCES Images(id) ON DELETE SET NULL"
                     ")")) {
-        throw WSExeptions("Error creating table WeekImages: " + query.lastError().text());
+        throw WSExceptions("Error creating table WeekImages: " + query.lastError().text());
     }
 }
 
@@ -95,7 +95,7 @@ void DBTablesCreator::createTableDayImageLists() {
     if (!query.exec("CREATE TABLE DayImageList ("
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     "name TEXT)")) {
-        throw WSExeptions("Error creating table DayImageList: " + query.lastError().text());
+        throw WSExceptions("Error creating table DayImageList: " + query.lastError().text());
     }
 }
 void DBTablesCreator::createTableDayImages() {
@@ -108,48 +108,27 @@ void DBTablesCreator::createTableDayImages() {
                     "listId INTEGER, "
                     "FOREIGN KEY(imageID) REFERENCES ImagesTable(id), "
                     "FOREIGN KEY(listId) REFERENCES WeekImagesList(id))")) {
-        throw WSExeptions("Error creating table DayImages: " + query.lastError().text());
+        throw WSExceptions("Error creating table DayImages: " + query.lastError().text());
     }
 }
-void DBTablesCreator::createTableMoodImageList() {
+void DBTablesCreator::createTableMoodImage() {
     QSqlQuery query;
     if (!query.exec("CREATE TABLE MoodImageList ("
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    "emodjiId INTEGER, "
+                    "emodjiId INTEGER UNIQUE, "
                     "imageId INTEGER, "
                     "FOREIGN KEY(emodjiId) REFERENCES Emodji(id), "  // Added a comma
                     "FOREIGN KEY(imageId) REFERENCES ImagesTable(id))")) {
-        throw WSExeptions("Error creating table MoodImageList: " + query.lastError().text());
+        throw WSExceptions("Error creating table MoodImageList: " + query.lastError().text());
     }
 }
 void DBTablesCreator::createTableEmodji() {
     QSqlQuery query;
 
-    // Create the Emodji table with only id and emodji fields
     if (!query.exec("CREATE TABLE Emodji ("
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     "emodji TEXT)")) {
-        throw WSExeptions("Error creating table Emodji: " + query.lastError().text());
+        throw WSExceptions("Error creating table Emodji: " + query.lastError().text());
     }
 
-    // Load emojis from the resource file and insert them into the table
-    qDebug()<<"1";
-    QFile file(":/resource/emojis.txt");
-    qDebug()<<"2";
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        throw WSExeptions("Error opening emoji resource file.");
-    }
-
-    QTextStream in(&file);
-    while (!in.atEnd()) {
-        QString emodji = in.readLine().trimmed();
-        if (!emodji.isEmpty()) {
-            query.prepare("INSERT INTO Emodji (emodji) VALUES (:emodji)");  // Corrected to insert into Emodji table
-            query.bindValue(":emodji", emodji);
-            if (!query.exec()) {
-                qDebug() << "Error inserting emoji:" << query.lastError().text();
-            }
-        }
-    }
-    file.close();
 }

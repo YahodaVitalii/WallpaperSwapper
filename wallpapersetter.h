@@ -2,7 +2,7 @@
 #define WALLPAPERSETTER_H
 #include <QString>
 #include <Windows.h>
-#include "wsexeptions.h"
+#include "wsexception.h"
 #include <QDebug>
 
 class WallpaperSetter

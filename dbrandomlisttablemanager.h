@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <QSqlError>
 #include"randomimagelist.h"
-#include "wsexeptions.h"
+#include "wsexception.h"
 class DBRandomListTableManager
 {
 public:

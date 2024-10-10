@@ -83,6 +83,14 @@ QString Style::getTimeTabStyle()
 
 }
 
+QString Style::getMoodTabStyle()
+{
+    return  "QWidget{"
+            "background-color: rgb(232, 248, 238);"
+            "border-radius: 20px;"
+            "}";
+}
+
 QString Style::getMenuBarStyle()
 {
     return
@@ -211,8 +219,8 @@ QString Style::getCreateTabStyle()
 QString Style::getPressedImageButtonStyle()
 {
     return "QPushButton{"
-        "background-color: rgb(182, 184, 186);"
-        "}";
+           "background-color: rgb(182, 184, 186);"
+           "}";
 
 }
 

@@ -24,7 +24,7 @@ void TimeTab::createChildTab(TabWidgetFactory &factory)
            currentTab = nullptr;
        }
 
-    BaseListWidget* tab = factory.createWidget(this);
+    TimeTabWidgets* tab = factory.createWidget(this);
 
         if (currentTab != nullptr) {
             currentTab->hide();
@@ -32,7 +32,7 @@ void TimeTab::createChildTab(TabWidgetFactory &factory)
 
         currentTab = tab;
         tab->show();
-        connect(this, &TimeTab::CreateNewList, currentTab, &BaseListWidget::CreateViewListItem);
+        connect(this, &TimeTab::CreateNewList, currentTab, &TimeTabWidgets::CreateViewListItem);
 }
 
 void TimeTab::on_TimeTabMenuBarPlusButton_clicked()

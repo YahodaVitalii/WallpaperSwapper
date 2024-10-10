@@ -26,7 +26,7 @@ public:
      UIElementFactory();
     void CreateLableWithImage(QWidget* conteinerWidget, int imageIndex, const WidgetGeometry& geometry);
     void CreateButtonImage(QWidget* conteinerWidget, int index, const WidgetGeometry& geometry);
-    void CreateButtonSetImage(QWidget *conteinerWidget, QString day, const WidgetGeometry& geometry);
+    void CreateButtonSetImage(QWidget *conteinerWidget, int itemId, const WidgetGeometry& geometry);
 
     void CreateButtonInfo(QWidget* conteinerWidget);
     void CreateButtonDelete(QWidget* conteinerWidget, int index, int width, int hight, int cordinate_x, int cordinate_y);
