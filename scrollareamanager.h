@@ -17,6 +17,7 @@ public:
     void ClearScrollAreaConteinerWidget(QWidget* containerWidget);
     void setWidgetIntoScrollArea(QWidget* conteinerWidget,QWidget* childWidget);
     QWidget* getWidgetById(QWidget* parentWidget, int itemId);
+    void initVBoxLayout(QWidget* containerWidget);
 
 };
 

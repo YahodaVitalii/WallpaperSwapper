@@ -8,11 +8,7 @@ RandomListWidget::RandomListWidget(QWidget* parent)
     CurrentRandomImageList.reset(new RandomImageList());
     connect(uiElementEventHandler, &UIElementEventHandler::ButtonAddImageClicked, this, &RandomListWidget::ShowDialogWindowListOfImage);
 
-    tabCreateList = tabInterfaceBuilder->buildTabCreateListForRandomList(tabWidget,scrollAreaConterinerCreateTab);
-    tabWidget->addTab(tabCreateList, "Craete List");
-
-    nameLineEdit = tabInterfaceBuilder->CreateLineEdit(tabCreateList,WidgetGeometry(110,30,90,10));
-    timeEdit = tabInterfaceBuilder->CreateTimeEdit(tabCreateList,WidgetGeometry(70,30,410,10));
+    BuildCreateTabInterface();
     CreateInterfaceViewTab();
 }
 
@@ -87,11 +83,21 @@ bool RandomListWidget::ValidateDataViewList()
 {
     if(nameLineEdit->text().isEmpty() ||
             timeEdit->text().isEmpty() ||
-           2 > currentImageIds.size()) {
+            2 > currentImageIds.size()) {
         return false;
     } else {
         return true;
     }
+}
+
+void RandomListWidget::BuildCreateTabInterface()
+{
+    TimeTabWidgets::BuildCreateTabInterface();
+
+    uiElementFactory->CreateButtonAddImage(tabCreateList,WidgetGeometry(90,30,500,10));
+    uiElementFactory->CreateLableWithText(tabCreateList,"Change wlapper interval:",220,15);
+    timeEdit = uiElementFactory->CreateTimeEdit(tabCreateList,WidgetGeometry(70,30,410,10),QTime::fromString("00:00:00", "hh:mm:ss"));
+
 }
 
 void RandomListWidget::AcceptSavingOfList()

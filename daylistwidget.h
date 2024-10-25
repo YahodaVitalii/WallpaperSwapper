@@ -25,6 +25,7 @@ private:
     QVector<TimeRangeImage> currentImageIds;
 
      bool ValidateDataViewList();
+     void BuildCreateTabInterface();
 
 public:
     explicit DayListWidget(QWidget *parent = nullptr);

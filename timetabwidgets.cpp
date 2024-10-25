@@ -5,22 +5,25 @@ TimeTabWidgets::TimeTabWidgets(QWidget* parent)
 {
     this->move(10,100);
     this->setStyleSheet(Style::getTimeTabStyle());
-    tabViewLists = tabInterfaceBuilder->buildTabViewLists(this,scrollAreaConterinerViewTab,WidgetGeometry( 600, 360, 0, 10));
+    tabViewLists = buildTabViewLists(this,scrollAreaConterinerViewTab,WidgetGeometry( 600, 360, 0, 10));
 
     scrollAreaConterinerCreateTab =  new QWidget(this);
 
-    tabWidget = tabInterfaceBuilder->CreateTabWidget(this);
-    tabWidget->show();
-    tabWidget->addTab(tabViewLists, "View Lists");
+    BuildTabWidget();
+    //BuildCreateTabInterface();
     ConnectSignals();
 }
-TimeTabWidgets::~TimeTabWidgets()
+TimeTabWidgets::~TimeTabWidgets() {}
+
+void TimeTabWidgets::BuildTabWidget()
 {
-
+    tabWidget = uiElementFactory->CreateTabWidget(this);
+    tabWidget->show();
+    tabWidget->addTab(tabViewLists, "View Lists");
 }
-
 void TimeTabWidgets::ConnectSignals()
 {
+    qDebug()<<"dada";
     BaseListWidget::ConnectSignals();
     connect(uiElementEventHandler, &UIElementEventHandler::sendEditSignalToItem, this, &TimeTabWidgets::ReceiveEditSignalForListView);
     connect(uiElementEventHandler, &UIElementEventHandler::ButtonBoxAccepted, this, &TimeTabWidgets::AcceptSavingOfList);
@@ -28,12 +31,12 @@ void TimeTabWidgets::ConnectSignals()
 }
 void TimeTabWidgets::ReceiveEditSignalForListView(int id)
 {
-PrepareTabForEditingItem(id);
+    PrepareTabForEditingItem(id);
 }
 
 void TimeTabWidgets::RejectSavingOfList()
 {
-   tabWidget->setCurrentIndex(0);
+    tabWidget->setCurrentIndex(0);
 }
 
 void TimeTabWidgets::CreateViewListItem()
@@ -44,9 +47,23 @@ void TimeTabWidgets::CreateViewListItem()
 bool TimeTabWidgets::ValidateDataViewList()
 {
     if(nameLineEdit->text().isEmpty()){
-   return false;
+        return false;
     }
     else{
-         return true;
+        return true;
     }
+}
+
+void TimeTabWidgets::BuildCreateTabInterface()
+{
+    tabCreateList = new QWidget(this);
+    tabCreateList->setStyleSheet(Style::getCreateTabStyle());
+
+    scrollAreaManager->initVBoxLayout(scrollAreaConterinerCreateTab);
+    scrollAreaManager->CreateScrollArea(tabCreateList, scrollAreaConterinerCreateTab, WidgetGeometry(600, 280, 0, 60));
+    tabWidget->addTab(tabCreateList, "Create List");
+
+    uiElementFactory->CreateLableWithText(tabCreateList,"Name:",30,15);
+    nameLineEdit = uiElementFactory->CreateLineEdit(tabCreateList, WidgetGeometry(110, 30, 90, 10));
+    uiElementFactory->CreateButtonBox(tabCreateList,430,340);
 }

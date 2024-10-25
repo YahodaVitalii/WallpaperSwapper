@@ -42,7 +42,6 @@ SOURCES += \
     standarttab.cpp \
     standarttabimageslider.cpp \
     style.cpp \
-    tabinterfacebuilder.cpp \
     tabwidgetfactory.cpp \
     timetab.cpp \
     timetabwidgets.cpp \
@@ -88,7 +87,6 @@ HEADERS += \
     standarttab.h \
     standarttabimageslider.h \
     style.h \
-    tabinterfacebuilder.h \
     tabwidgetfactory.h \
     timetab.h \
     timetabwidgets.h \

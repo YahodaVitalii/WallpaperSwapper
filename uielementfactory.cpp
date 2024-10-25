@@ -105,12 +105,11 @@ void UIElementFactory::CreateButtonEdit(QWidget *conteinerWidget, int id, int wi
     buttonEdit->setProperty("ListId", id);
     connect(buttonEdit, &QPushButton::clicked, uiElementEventHandler, &UIElementEventHandler::on_buttonEdit_clicked);
 }
-QTimeEdit* UIElementFactory::CreateTimeEditor(QWidget *containerWidget, int coordinate_x, int coordinate_y, const QTime& time)
+QTimeEdit* UIElementFactory::CreateTimeEdit(QWidget *containerWidget, const WidgetGeometry &geometry, const QTime& time)
 {
     QTimeEdit* TimeEdit = new QTimeEdit(containerWidget);
-    TimeEdit->setFixedSize(70, 30);
-    TimeEdit->move(coordinate_x, coordinate_y);
-
+    TimeEdit->move(geometry.xPos, geometry.yPos);
+    TimeEdit->setFixedSize(geometry.width,geometry.height);
     // Встановлення часу
     TimeEdit->setTime(time);
 
@@ -164,5 +163,15 @@ void UIElementFactory::CreateButtonBox(QWidget *containerWidget, int cordinate_x
     connect(buttonBox, &QDialogButtonBox::accepted, uiElementEventHandler, &UIElementEventHandler::onButtonBoxAccepted);
     connect(buttonBox, &QDialogButtonBox::rejected, uiElementEventHandler, &UIElementEventHandler::onButtonBoxRejected);
 }
+QTabWidget *UIElementFactory::CreateTabWidget(QWidget *conteinerWidget)
+{
+    QTabWidget* tabWidget = new QTabWidget(conteinerWidget);
 
+    tabWidget->setFixedSize (600, 380);
+    tabWidget->tabBar()->hide();
+    tabWidget->setStyleSheet(Style::getTabWidgetStyle());
+
+    return tabWidget;
+
+}
 

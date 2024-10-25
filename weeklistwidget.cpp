@@ -11,11 +11,7 @@ WeekListWidget::WeekListWidget(QWidget *parent)
     currentImageIds = fillCurrentImageIds();
 
     currentWeekImageList.reset(new WeekImageList());
-
-    tabCreateList = tabInterfaceBuilder->buildTabCreateListForWeekList(tabWidget, scrollAreaConterinerCreateTab);
-    tabWidget->addTab(tabCreateList, "Create List");
-
-    nameLineEdit = tabInterfaceBuilder->CreateLineEdit(tabCreateList, WidgetGeometry(110, 30, 90, 10));
+    BuildCreateTabInterface();
     CreateInterfaceViewTab();
 }
 

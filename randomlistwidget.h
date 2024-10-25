@@ -35,6 +35,7 @@ public slots:
     void ShowDialogWindowListOfImage();
 private:
     bool ValidateDataViewList();
+    void BuildCreateTabInterface() override;
 
 
     Ui::RandomListWidget *ui;

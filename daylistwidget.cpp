@@ -9,11 +9,11 @@ DayListWidget::DayListWidget(QWidget *parent)
 
     currentDayImageList.reset(new DayImageList());
 
-    tabCreateList = tabInterfaceBuilder->buildTabCreateListForDayList(tabWidget,scrollAreaConterinerCreateTab);
-    tabWidget->addTab(tabCreateList, "Craete List");
+//    tabCreateList = tabInterfaceBuilder->buildTabCreateListForDayList(tabWidget,scrollAreaConterinerCreateTab);
+//    tabWidget->addTab(tabCreateList, "Craete List");
 
-    nameLineEdit = tabInterfaceBuilder->CreateLineEdit(tabCreateList,WidgetGeometry(110,30,90,10));
-
+//    nameLineEdit = uiElementFactory->CreateLineEdit(tabCreateList,WidgetGeometry(110,30,90,10));
+BuildCreateTabInterface();
     CreateInterfaceViewTab();
 }
 
@@ -141,4 +141,9 @@ void DayListWidget::AcceptSavingOfList()
     else{
         QMessageBox::warning(this, "Warning", "Before creating the list, please make sure that you have entered a name and added at least two images with setted time.");
     }
+}
+void DayListWidget::BuildCreateTabInterface()
+{
+    TimeTabWidgets::BuildCreateTabInterface();
+    uiElementFactory->CreateButtonAddImage(tabCreateList,WidgetGeometry(90,30,500,10));
 }

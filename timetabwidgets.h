@@ -17,6 +17,7 @@ protected:
     virtual void PrepareTabForCreatingItem() =0;
     virtual void PrepareTabForEditingItem(int ListId) =0;
     virtual bool ValidateDataViewList();
+    virtual  void BuildCreateTabInterface();
 
     QLineEdit* nameLineEdit;
 
@@ -26,6 +27,7 @@ protected:
 
 private:
     void ConnectSignals() override;
+   void BuildTabWidget();
 };
 
 #endif // TIMETABWIDGETS_H

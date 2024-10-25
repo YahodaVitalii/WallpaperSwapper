@@ -40,6 +40,7 @@ emit sendEmodjiID(key);
 
 void UIElementEventHandler::onButtonBoxAccepted()
 {
+    qDebug() << "Accepted signal received";
     emit ButtonBoxAccepted();
 }
 

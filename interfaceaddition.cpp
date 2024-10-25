@@ -85,8 +85,8 @@ QWidget *InterfaceAddition::BuildDayListItem(const TimeRangeImage* item)
     QTime startTime = QTime::fromString(item->startTime, "HH:mm"); // Передбачимо, що час зберігається в форматі "HH:mm"
     QTime endTime = QTime::fromString(item->endTime, "HH:mm");
 
-    QTimeEdit* startTimeEdit = uiElementFactory->CreateTimeEditor(itemWidget, 290, 10 ,startTime);
-    QTimeEdit* endTimeEdit = uiElementFactory->CreateTimeEditor(itemWidget, 390, 10 ,endTime);
+    QTimeEdit* startTimeEdit = uiElementFactory->CreateTimeEdit(itemWidget,WidgetGeometry(70,30, 290, 10) ,startTime);
+    QTimeEdit* endTimeEdit = uiElementFactory->CreateTimeEdit(itemWidget, WidgetGeometry(70,30, 390, 10) ,endTime);
 
     int itemId = item->id;
 

@@ -45,3 +45,9 @@ QWidget* ScrollAreaManager::getWidgetById(QWidget* parentWidget, int itemId)
 
     return nullptr;  // Якщо не знайдено, повертаємо nullptr
 }
+
+void ScrollAreaManager::initVBoxLayout(QWidget *containerWidget)
+{
+    QVBoxLayout *layoutCreateTab = new QVBoxLayout(containerWidget);
+    containerWidget->setLayout(layoutCreateTab);
+}

@@ -11,7 +11,7 @@ emodjiManager = new EmodjiTableManager();
  ui->MoodTabWidget->setStyleSheet(Style::getTabsStyle());
 CreateEmodjiPad();
 
-  tabViewLists = tabInterfaceBuilder->buildTabViewLists(ui->MoodTabWidget,scrollAreaConterinerViewTab,WidgetGeometry( 350, 400, 20, 25));
+  tabViewLists = buildTabViewLists(ui->MoodTabWidget,scrollAreaConterinerViewTab,WidgetGeometry( 350, 400, 20, 25));
   tabViewLists ->setStyleSheet(Style::getMoodTabStyle());
 
    ConnectSignals();

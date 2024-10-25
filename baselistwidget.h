@@ -11,7 +11,6 @@
 #include <QTabWidget>
 #include <QMessageBox>
 #include <QScopedPointer>
-#include "tabinterfacebuilder.h"
 #include "dialogwindowcontroller.h"
 
 class BaseListWidget: public QWidget
@@ -25,8 +24,8 @@ public slots:
 protected:
     ImageList *imageList;
     InterfaceAddition* interfaceAddition;
-    TabInterfaceBuilder* tabInterfaceBuilder;
     UIElementEventHandler *uiElementEventHandler;
+    UIElementFactory* uiElementFactory;
     ScrollAreaManager* scrollAreaManager;
     DialogWindowController* dialogWindowController;
 
@@ -36,6 +35,7 @@ protected:
 
 
    virtual void ConnectSignals();
+   virtual QWidget* buildTabViewLists(QWidget *conteinerWidget,QWidget *scrollAreaConterinerViewTab,const WidgetGeometry &geometry);
 };
 
 #endif // BASELISTWIDGET_H
