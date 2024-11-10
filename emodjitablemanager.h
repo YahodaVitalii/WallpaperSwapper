@@ -1,20 +1,25 @@
 #ifndef EMODJITABLEMANAGER_H
 #define EMODJITABLEMANAGER_H
-#include <QString>
-#include <QSqlQuery>
-#include <QDebug>
-#include "wsexception.h"
 #include <QSqlError>
 #include <QFile>
-class EmodjiTableManager
+#include "wsexception.h"
+#include "dbtablemanager.h"
+
+// Наслідуємо EmodjiTableManager від DBTableManager
+class EmodjiTableManager : public DBTableManager<QString, QMap<int, QString>>
 {
 public:
     EmodjiTableManager();
-    void insertEmodji(const QString& emodji);
-    void loadEmojisFromFile(const QString& filePath);
-    QMap<int, QString> getAllEmodji();
+
+    // Реалізуємо абстрактні методи базового класу
+    bool insertIntoTable(const QString& emodji) override;
+    QMap<int, QString> getAllRecords() override;
+
     QString getEmodjiById(int id);
-     bool isTableEmpty();
+    bool isTableEmpty();
+
+private:
+    void loadEmojisFromFile(const QString& filePath);
 };
 
 #endif // EMODJITABLEMANAGER_H

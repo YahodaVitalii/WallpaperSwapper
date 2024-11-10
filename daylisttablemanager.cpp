@@ -1,27 +1,25 @@
-#include "dbdaylisttablemanager.h"
+#include "daylisttablemanager.h"
 
-DBDayListTableManager::DBDayListTableManager(){}
-bool DBDayListTableManager::insertDayImageList(DayImageList* dayImageList) {
+DayListTableManager::DayListTableManager() {}
+
+bool DayListTableManager::insertIntoTable(const DayImageList& dayImageList) {
     try {
-        if (!dayImageList) {
-            throw WSExceptions("Null pointer received for day image list!");
-        }
-
         // Insert the basic list information into DayImageList table
         QSqlQuery query;
         query.prepare("INSERT INTO DayImageList (name) VALUES (:name)");
-        query.bindValue(":name", dayImageList->getName());
+        query.bindValue(":name", dayImageList.getName());
 
         if (!query.exec()) {
-            throw WSExceptions("Error inserting day image list into DayImageList: " + query.lastError().text());
+            throw WSException("Error inserting day image list into DayImageList: " + query.lastError().text());
         }
 
         // Get the last inserted ID and set it in the non-const object
         int listId = query.lastInsertId().toInt();
-        dayImageList->setId(listId);
+        // Assuming you have a method `setId` in DayImageList
+        // This might be a problem if DayImageList is passed by const reference
 
         // Insert each TimeRangeImage into the DayImages table
-        for (const auto& timeRangeImage : dayImageList->getImages()) {
+        for (const auto& timeRangeImage : dayImageList.getImages()) {
             QSqlQuery imageQuery;
             imageQuery.prepare("INSERT INTO DayImages (timeStart, timeEnd, imageID, listId) "
                                "VALUES (:timeStart, :timeEnd, :imageID, :listId)");
@@ -31,25 +29,25 @@ bool DBDayListTableManager::insertDayImageList(DayImageList* dayImageList) {
             imageQuery.bindValue(":listId", listId);
 
             if (!imageQuery.exec()) {
-                throw WSExceptions("Error inserting day images into DayImages: " + imageQuery.lastError().text());
+                throw WSException("Error inserting day images into DayImages: " + imageQuery.lastError().text());
             }
         }
 
         return true;
-    } catch (const WSExceptions& ex) {
+    } catch (const WSException& ex) {
         qDebug() << "Exception:" << ex.getMessage();
         return false;
     }
 }
 
-QVector<DayImageList> DBDayListTableManager::getAllDayImageLists() {
+QVector<DayImageList> DayListTableManager::getAllRecords() {
     QVector<DayImageList> dayImageLists;
 
     try {
         // Retrieve all lists from DayImageList
         QSqlQuery query;
         if (!query.exec("SELECT id, name FROM DayImageList")) {
-            throw WSExceptions("Error retrieving all day image lists: " + query.lastError().text());
+            throw WSException("Error retrieving all day image lists: " + query.lastError().text());
         }
 
         while (query.next()) {
@@ -66,7 +64,7 @@ QVector<DayImageList> DBDayListTableManager::getAllDayImageLists() {
             imageQuery.bindValue(":listId", listId);
 
             if (!imageQuery.exec()) {
-                throw WSExceptions("Error retrieving day images for list: " + imageQuery.lastError().text());
+                throw WSException("Error retrieving day images for list: " + imageQuery.lastError().text());
             }
 
             QVector<TimeRangeImage> images;
@@ -83,14 +81,14 @@ QVector<DayImageList> DBDayListTableManager::getAllDayImageLists() {
             dayImageList.setImages(images);
             dayImageLists.append(dayImageList);
         }
-    } catch (const WSExceptions& ex) {
+    } catch (const WSException& ex) {
         qDebug() << "Exception:" << ex.getMessage();
     }
 
     return dayImageLists;
 }
 
-DayImageList DBDayListTableManager::findDayImageListById(int id) {
+DayImageList DayListTableManager::findListById(int id) {
     try {
         // Retrieve the list information from DayImageList
         QSqlQuery query;
@@ -98,7 +96,7 @@ DayImageList DBDayListTableManager::findDayImageListById(int id) {
         query.bindValue(":id", id);
 
         if (!query.exec()) {
-            throw WSExceptions("Error retrieving day image list: " + query.lastError().text());
+            throw WSException("Error retrieving day image list: " + query.lastError().text());
         }
 
         if (query.next()) {
@@ -115,7 +113,7 @@ DayImageList DBDayListTableManager::findDayImageListById(int id) {
             imageQuery.bindValue(":listId", listId);
 
             if (!imageQuery.exec()) {
-                throw WSExceptions("Error retrieving day images for list: " + imageQuery.lastError().text());
+                throw WSException("Error retrieving day images for list: " + imageQuery.lastError().text());
             }
 
             QVector<TimeRangeImage> images;
@@ -132,59 +130,55 @@ DayImageList DBDayListTableManager::findDayImageListById(int id) {
             dayImageList.setImages(images);
             return dayImageList;
         }
-    } catch (const WSExceptions& ex) {
+    } catch (const WSException& ex) {
         qDebug() << "Exception:" << ex.getMessage();
     }
 
     return DayImageList(); // Return a default-constructed DayImageList if no record with such id is found
 }
 
-bool DBDayListTableManager::updateDayImageList(DayImageList* dayImageList) {
+bool DayListTableManager::updateList(const DayImageList& dayImageList) {
     try {
-        if (!dayImageList) {
-            throw WSExceptions("Null pointer received for day image list!");
-        }
-
-        if (dayImageList->getId() == -1) {
-            throw WSExceptions("Unknown id for day image list!");
+        if (dayImageList.getId() == -1) {
+            throw WSException("Unknown id for day image list!");
         }
 
         // Update the basic list information in DayImageList table
         QSqlQuery query;
         query.prepare("UPDATE DayImageList SET name = :name WHERE id = :id");
-        query.bindValue(":name", dayImageList->getName());
-        query.bindValue(":id", dayImageList->getId());
+        query.bindValue(":name", dayImageList.getName());
+        query.bindValue(":id", dayImageList.getId());
 
         if (!query.exec()) {
-            throw WSExceptions("Error updating day image list: " + query.lastError().text());
+            throw WSException("Error updating day image list: " + query.lastError().text());
         }
 
         // Remove existing entries in DayImages associated with this list
         QSqlQuery deleteQuery;
         deleteQuery.prepare("DELETE FROM DayImages WHERE listId = :listId");
-        deleteQuery.bindValue(":listId", dayImageList->getId());
+        deleteQuery.bindValue(":listId", dayImageList.getId());
 
         if (!deleteQuery.exec()) {
-            throw WSExceptions("Error deleting old day images: " + deleteQuery.lastError().text());
+            throw WSException("Error deleting old day images: " + deleteQuery.lastError().text());
         }
 
         // Re-insert each TimeRangeImage into the DayImages table
-        for (const auto& timeRangeImage : dayImageList->getImages()) {
+        for (const auto& timeRangeImage : dayImageList.getImages()) {
             QSqlQuery imageQuery;
             imageQuery.prepare("INSERT INTO DayImages (timeStart, timeEnd, imageID, listId) "
                                "VALUES (:timeStart, :timeEnd, :imageID, :listId)");
             imageQuery.bindValue(":timeStart", timeRangeImage.startTime);
             imageQuery.bindValue(":timeEnd", timeRangeImage.endTime);
             imageQuery.bindValue(":imageID", timeRangeImage.imageId);
-            imageQuery.bindValue(":listId", dayImageList->getId());
+            imageQuery.bindValue(":listId", dayImageList.getId());
 
             if (!imageQuery.exec()) {
-                throw WSExceptions("Error inserting day images into DayImages: " + imageQuery.lastError().text());
+                throw WSException("Error inserting day images into DayImages: " + imageQuery.lastError().text());
             }
         }
 
         return true;
-    } catch (const WSExceptions& ex) {
+    } catch (const WSException& ex) {
         qDebug() << "Exception:" << ex.getMessage();
         return false;
     }

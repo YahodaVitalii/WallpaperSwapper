@@ -39,15 +39,15 @@ void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
                 if (imageIndex != -1) {
                     scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerWidget, interfaceAddition->BuildListOfImageItem(imageIndex));
                 } else {
-                    throw WSExceptions("Image not found for ID: " + QString::number(imageId));
+                    throw WSException("Image not found for ID: " + QString::number(imageId));
                 }
             } else {
-                throw WSExceptions("Failed to choose image.");
+                throw WSException("Failed to choose image.");
             }
         } else {
-            throw WSExceptions("Image not loaded!");
+            throw WSException("Image not loaded!");
         }
-    } catch (const WSExceptions& ex) {
+    } catch (const WSException& ex) {
         qDebug() << "Error:" << ex.getMessage();
     } catch (const QException& ex) {
         qDebug() << "Unexpected error:" << ex.what();

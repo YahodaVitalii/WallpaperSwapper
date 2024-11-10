@@ -41,7 +41,7 @@ void MoodTab::CreateEmodjiPad()
 
 void MoodTab::PopulateEmodjiPad(QGridLayout* gridLayout, QWidget* emodjiPad)
 {
-     emodjis = emodjiManager->getAllEmodji();
+     emodjis = emodjiManager->getAllRecords();
           // Створюємо екземпляр InterfaceAddition для використання
 
         int row = 0;
@@ -90,11 +90,11 @@ void MoodTab::addImageInList(int index)
     if (currentImageIds.contains(currentEmodjiId)) {
             // Якщо такий ключ вже є, оновлюємо значення
             currentImageIds[currentEmodjiId] = index;
-            dbManager.updateMoodImage(currentEmodjiId, index); // Припускаємо, що є метод для оновлення запису в БД
+            dbManager.updateList(QPair<int, int>(currentEmodjiId, index)); // Припускаємо, що є метод для оновлення запису в БД
         } else {
             // Якщо немає такого ключа, додаємо новий запис
             currentImageIds.insert(currentEmodjiId, index);
-            dbManager.insertMoodImage(currentEmodjiId, index);
+            dbManager.insertIntoTable(QPair<int, int>(currentEmodjiId, index));
         }
 
        dialogWindowController->Close();
@@ -102,7 +102,7 @@ void MoodTab::addImageInList(int index)
 
 void MoodTab::CreateInterfaceViewTab()
 {
-    currentImageIds = dbManager.getAllMoodImages();
+    currentImageIds = dbManager.getAllRecords();
     for (auto it = currentImageIds.constBegin(); it != currentImageIds.constEnd(); ++it) {
         int emodjiId = it.key();
         int imageId = it.value();

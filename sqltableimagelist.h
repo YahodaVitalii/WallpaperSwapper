@@ -8,7 +8,7 @@ class SQLTableImageList : public ImageList
 private:
     DBManager* dbManager;
     ImageLoader* imageLoader;
-    DBImageTableManager* dbImageTableManager;
+    ImageTableManager* dbImageTableManager;
     QVector<WallpaperImage> images;
 
     explicit SQLTableImageList(QObject* parent = nullptr); // Приватний конструктор для Singleton
@@ -18,16 +18,14 @@ private:
 public:
     static SQLTableImageList* getInstance(); // Метод для доступу до єдиного екземпляра
 
-    // Заборонити копіювання та присвоєння
     SQLTableImageList(const SQLTableImageList&) = delete;
     SQLTableImageList& operator=(const SQLTableImageList&) = delete;
 
-    // Реалізація абстрактних методів
     void getImagesFromTable() override;
     QVector<WallpaperImage> getImages() override;
     WallpaperImage GetImageByIndex(int index) override;
     int findImageById(int imageId) override;
-    void deleteImageByIndex(int index) override;
+    //void deleteImageByIndex(int index) override;
     int getsizeOfImages() override;
 
 public slots:

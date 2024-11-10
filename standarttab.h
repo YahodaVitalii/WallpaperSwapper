@@ -24,16 +24,7 @@ class StandartTab : public QWidget
 public:
     explicit StandartTab(DBManager* dbManager, ImageList* imageList, QWidget *parent = nullptr);
     ~StandartTab();
-
-    void showImage(int index);
-    void previousImage();
-    void nextImage();
-
     void setStandartTabStyle();
-
-    void displayImageInLabel(QLabel* label, const QString& filePath);
-
-    bool setWallpaper(const QString &imagePath);
 private slots:
     void on_StandartTabChooseButton_clicked();
     void on_StandartTabAddButton_clicked();

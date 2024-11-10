@@ -31,7 +31,6 @@ signals:
     void ButtonAddImageClicked();
     void ButtonBoxAccepted();
     void ButtonBoxRejected();
-
 };
 
 

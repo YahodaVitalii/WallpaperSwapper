@@ -15,25 +15,26 @@ SOURCES += \
     baselistwidget.cpp \
     customlabel.cpp \
     dayimagelist.cpp \
+    daylisttablemanager.cpp \
     daylistwidget.cpp \
     dayofweek.cpp \
     dayviewimageslider.cpp \
-    dbdaylisttablemanager.cpp \
-    dbimagetablemanager.cpp \
-    dbrandomlisttablemanager.cpp \
+    dbtablemanager.cpp \
     dbtablescreator.cpp \
-    dbweeklisttablemanager.cpp \
     dialogwindowcontroller.cpp \
     dialogwindowlistofimage.cpp \
     emodjitablemanager.cpp \
     imagelist.cpp \
     imageloader.cpp \
+    imagetablemanager.cpp \
     interfaceaddition.cpp \
+    listtablemanager.cpp \
     main.cpp \
     mainwindow.cpp \
     moodlisttablemeneger.cpp \
     moodtab.cpp \
     randomimagelist.cpp \
+    randomlisttablemanager.cpp \
     randomlistwidget.cpp \
     randomviewimageslider.cpp \
     scrollareamanager.cpp \
@@ -51,6 +52,7 @@ SOURCES += \
     wallpaperimage.cpp \
     wallpapersetter.cpp \
     weekimagelist.cpp \
+    weeklisttablemanager.cpp \
     weeklistwidget.cpp \
     weekviewimageslider.cpp \
     wsexception.cpp
@@ -60,25 +62,26 @@ HEADERS += \
     baselistwidget.h \
     customlabel.h \
     dayimagelist.h \
+    daylisttablemanager.h \
     daylistwidget.h \
     dayofweek.h \
     dayviewimageslider.h \
-    dbdaylisttablemanager.h \
-    dbimagetablemanager.h \
     dbmanager.h \
-    dbrandomlisttablemanager.h \
+    dbtablemanager.h \
     dbtablescreator.h \
-    dbweeklisttablemanager.h \
     dialogwindowcontroller.h \
     dialogwindowlistofimage.h \
     emodjitablemanager.h \
     imagelist.h \
     imageloader.h \
+    imagetablemanager.h \
     interfaceaddition.h \
+    listtablemanager.h \
     mainwindow.h \
     moodlisttablemeneger.h \
     moodtab.h \
     randomimagelist.h \
+    randomlisttablemanager.h \
     randomlistwidget.h \
     randomviewimageslider.h \
     scrollareamanager.h \
@@ -96,6 +99,7 @@ HEADERS += \
     wallpaperimage.h \
     wallpapersetter.h \
     weekimagelist.h \
+    weeklisttablemanager.h \
     weeklistwidget.h \
     weekviewimageslider.h \
     widgetgeometry.h \

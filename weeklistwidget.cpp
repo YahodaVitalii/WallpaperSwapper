@@ -40,7 +40,7 @@ void WeekListWidget::CreatInterfaceCreateTab()
 
 void WeekListWidget::CreateInterfaceViewTab()
 {
-    WeekImageLists = dbWeekListTableManager.getAllWeekImageLists();
+    WeekImageLists = dbManager.getAllRecords();
     for (const auto& list : WeekImageLists) {
         scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildWeekListView(&list));
     }
@@ -62,7 +62,7 @@ void WeekListWidget::CreateViewTabItem()
 
     // Оновлюємо дані у списку зображень
     currentWeekImageList.reset(new WeekImageList(nameLineEdit->text(), currentImageIds));
-    dbWeekListTableManager.insertWeekImageList(currentWeekImageList.data());
+    dbManager.insertIntoTable(*currentWeekImageList.data());
     scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildWeekListView(currentWeekImageList.data()));
 }
 bool WeekListWidget::ValidateDataViewList()
@@ -87,14 +87,14 @@ void WeekListWidget::UpdateViewTabItem()
 {
     currentWeekImageList->setName(nameLineEdit->text());
     currentWeekImageList->setImages(currentImageIds);
-    dbWeekListTableManager.updateWeekImageList(currentWeekImageList.data());
+    dbManager.updateList(*currentWeekImageList.data());
 }
 
 void WeekListWidget::PrepareTabForEditingItem(int ListId)
 {
     tabWidget->setCurrentIndex(1);
     scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
-    currentWeekImageList.reset(new WeekImageList(dbWeekListTableManager.findWeekImageListById(ListId)));
+    currentWeekImageList.reset(new WeekImageList(dbManager.findListById(ListId)));
     nameLineEdit->setText(currentWeekImageList->getName());
     currentImageIds = currentWeekImageList->getImages();
     CreatInterfaceCreateTab();
@@ -130,10 +130,10 @@ void WeekListWidget::AcceptSavingOfList()
                    scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerViewTab);
                    CreateInterfaceViewTab();
                } else {
-                   throw WSExceptions("Error: Week List has incorrect index: " + CurrentWeekListId);
+                   throw WSException("Error: Week List has incorrect index: " + CurrentWeekListId);
                }
-           } catch (const WSExceptions& e) {
-               qDebug() << "Caught WSExceptions: " << e.what();
+           } catch (const WSException& e) {
+               qDebug() << "Caught WSException: " << e.what();
            }
 
            tabWidget->setCurrentIndex(0);

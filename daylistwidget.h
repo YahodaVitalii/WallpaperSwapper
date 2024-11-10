@@ -7,7 +7,7 @@
 #include <QDebug>
 #include "imagelist.h"
 #include "dialogwindowlistofimage.h"
-#include "dbdaylisttablemanager.h"
+#include "daylisttablemanager.h"
 #include "timetabwidgets.h"
 namespace Ui {
 class DayListWidget;
@@ -18,7 +18,7 @@ class DayListWidget : public TimeTabWidgets
     Q_OBJECT
 private:
     Ui::DayListWidget *ui;
-    DBDayListTableManager dbDayListTableManager;
+    DayListTableManager dbManager;
 
     QScopedPointer<DayImageList> currentDayImageList;
     QVector<DayImageList> DayImageLists;

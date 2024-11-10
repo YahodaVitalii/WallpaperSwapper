@@ -33,6 +33,7 @@ private:
     QMap<int, QString> emodjis;
     QMap<int, int> currentImageIds;
     MoodListTableMeneger dbManager;
+    QPair<int, int> moodImage;
 
 int currentEmodjiId;
     void ConnectSignals() override;

@@ -15,11 +15,8 @@ private:
     QVector<int> imageIds;
 
 public:
-    // Конструктори
     RandomImageList();
     RandomImageList(QString name, const QDateTime& interval, const QVector<int>& ids);
-
-    // Геттери та сеттери
     QDateTime getTimeInterval() const;
     void setTimeInterval(const QDateTime& newTimeInterval);
 

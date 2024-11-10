@@ -11,7 +11,7 @@
 #include "wallpaperimage.h"
 #include "scrollareamanager.h"
 #include "imageloader.h"
-#include "dbimagetablemanager.h"
+#include "imagetablemanager.h"
 
 
 class ImageList : public QObject
@@ -25,7 +25,7 @@ public:
     virtual QVector<WallpaperImage> getImages()  = 0;
     virtual WallpaperImage GetImageByIndex(int index)  = 0;
     virtual int findImageById(int imageId)  = 0;
-    virtual void deleteImageByIndex(int index) = 0;
+    //virtual void deleteImageByIndex(int index) = 0;
     virtual int getsizeOfImages()  = 0;
 
 signals:

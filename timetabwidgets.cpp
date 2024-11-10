@@ -23,7 +23,6 @@ void TimeTabWidgets::BuildTabWidget()
 }
 void TimeTabWidgets::ConnectSignals()
 {
-    qDebug()<<"dada";
     BaseListWidget::ConnectSignals();
     connect(uiElementEventHandler, &UIElementEventHandler::sendEditSignalToItem, this, &TimeTabWidgets::ReceiveEditSignalForListView);
     connect(uiElementEventHandler, &UIElementEventHandler::ButtonBoxAccepted, this, &TimeTabWidgets::AcceptSavingOfList);

@@ -1,31 +1,24 @@
 #ifndef MOODLISTTABLEMENEGER_H
 #define MOODLISTTABLEMENEGER_H
 
+#include "listtablemanager.h"
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QVector>
 #include <QPair>
 #include "wsexception.h"
 
-class MoodListTableMeneger {
+class MoodListTableMeneger : public ListTableManager<QPair<int, int>, QMap<int, int>> {
 public:
-    // Конструктор
     MoodListTableMeneger();
 
-    // Функція для вставки нового запису у MoodImageList
-    bool insertMoodImage(int emodjiId, int imageId);
+    // Implement abstract methods from ListTableManager
+    bool insertIntoTable(const QPair<int, int>& moodImage) override;
+    QMap<int, int> getAllRecords() override;
+    bool updateList(const QPair<int, int>& moodImage) override;
 
-    // Функція для отримання всіх записів MoodImageList
-    QMap<int, int> getAllMoodImages();
-
-     // Функція для отримання imageId за emodjiId
-     int findImageByEmodjiId(int emodjiId);
-    // Функція для оновлення MoodImage
-    bool updateMoodImage(int emodjiId, int newImageId);
-
-    // Функція для видалення запису за emodjiId та imageId
+    QPair<int,int> findListById(int emodjiId) override;
     bool deleteMoodImage(int emodjiId, int imageId);
-
 };
 
 #endif // MOODLISTTABLEMENEGER_H

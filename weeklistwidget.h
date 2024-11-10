@@ -6,7 +6,7 @@
 #include "imagelist.h"
 #include "dialogwindowlistofimage.h"
 #include "weekimagelist.h"
-#include "dbweeklisttablemanager.h"
+#include "weeklisttablemanager.h"
 #include "timetabwidgets.h"
 #include "dayofweek.h"
 namespace Ui {
@@ -20,7 +20,7 @@ private:
      bool ValidateDataViewList();
 
     Ui::WeekListWidget *ui;
-    DBWeekListTableManager dbWeekListTableManager;
+    WeekListTableManager dbManager;
 
    // const QStringList days = {"Other days","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
     QVector<WeekImageList>  WeekImageLists;

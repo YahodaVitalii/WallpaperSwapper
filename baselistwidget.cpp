@@ -9,9 +9,6 @@ BaseListWidget::BaseListWidget( QWidget* parent)
     uiElementFactory = new UIElementFactory(uiElementEventHandler);
     interfaceAddition = new InterfaceAddition(this,uiElementEventHandler);
     dialogWindowController = new DialogWindowController(uiElementEventHandler);
-
-
-
 }
 
 BaseListWidget::~BaseListWidget()
@@ -19,8 +16,6 @@ BaseListWidget::~BaseListWidget()
     delete scrollAreaConterinerViewTab;
     delete interfaceAddition;
 }
-
-
 
 void BaseListWidget::ConnectSignals()
 {

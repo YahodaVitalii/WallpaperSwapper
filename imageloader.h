@@ -12,7 +12,7 @@
 #include "wallpaperimage.h"
 #include "wsexception.h"
 #include "sqlitedbmanager.h"
-#include "dbimagetablemanager.h"
+#include "imagetablemanager.h"
 
 class ImageLoader : public QObject
 {
@@ -20,7 +20,7 @@ class ImageLoader : public QObject
 private:
 
     DBManager* dbManager;
-    DBImageTableManager* dbImageTableManager;
+    ImageTableManager* dbImageTableManager;
 
     QImage loadImage(const QString& fileName);
     std::unique_ptr<WallpaperImage> createWlapperImage(const QString& fileName, const QImage& image);

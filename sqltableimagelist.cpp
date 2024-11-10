@@ -3,7 +3,7 @@
 SQLTableImageList* SQLTableImageList::instance = nullptr;
 
 SQLTableImageList::SQLTableImageList(QObject* parent)
-    : ImageList(parent), dbImageTableManager(new DBImageTableManager())
+    : ImageList(parent), dbImageTableManager(new ImageTableManager())
 {
     getImagesFromTable();
 }
@@ -24,7 +24,7 @@ QVector<WallpaperImage> SQLTableImageList::getImages() {
 void SQLTableImageList::getImagesFromTable()
 {
     images.clear(); // Очистка поточного списку перед оновленням
-    images = dbImageTableManager->getAllImages();
+    images = dbImageTableManager->getAllRecords();
     qDebug() << "Loaded images count: " << images.size();
     emit imagesUpdated(); // Відправлення сигналу про оновлення зображень
 }
@@ -34,12 +34,6 @@ WallpaperImage SQLTableImageList::GetImageByIndex(int index)
     return images.at(index);
 }
 
-void SQLTableImageList::deleteImageByIndex(int index)
-{
-    dbManager->deleteImageById(images[index].getId());
-    images.removeAt(index);
-    emit imagesUpdated(); // Відправлення сигналу про оновлення зображень
-}
 
 int SQLTableImageList::getsizeOfImages()
 {

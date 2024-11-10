@@ -24,7 +24,7 @@ DayListWidget::~DayListWidget()
 
 void DayListWidget::CreateInterfaceViewTab()
 {
-    DayImageLists = dbDayListTableManager.getAllDayImageLists();
+    DayImageLists = dbManager.getAllRecords();
     for (auto& list : DayImageLists) {
         scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildDayListView(&list));
     }
@@ -49,13 +49,13 @@ void DayListWidget::UpdateViewTabItem()
 {
     currentDayImageList->setName(nameLineEdit->text());
     currentDayImageList->setImages(currentImageIds);
-    dbDayListTableManager.updateDayImageList(currentDayImageList.data());
+    dbManager.updateList(*currentDayImageList.data());
 }
 
 void DayListWidget::CreateViewTabItem()
 {
     currentDayImageList.reset(new DayImageList(nameLineEdit->text(), currentImageIds));
-    dbDayListTableManager.insertDayImageList(currentDayImageList.data());
+    dbManager.insertIntoTable(*currentDayImageList.data());
     scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildDayListView(currentDayImageList.data()));
 }
 
@@ -63,7 +63,7 @@ void DayListWidget::PrepareTabForEditingItem(int ListId)
 {
     tabWidget->setCurrentIndex(1);
     scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
-    currentDayImageList.reset(new DayImageList(dbDayListTableManager.findDayImageListById(ListId)));
+    currentDayImageList.reset(new DayImageList(dbManager.findListById(ListId)));
     nameLineEdit->setText(currentDayImageList->getName());
     currentImageIds = currentDayImageList->getImages();
     CreatInterfaceCreateTab();
@@ -130,9 +130,9 @@ void DayListWidget::AcceptSavingOfList()
             scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerViewTab);
             CreateInterfaceViewTab();
         }else {
-            throw WSExceptions("Error: Day List has incorrect index: " + CurrenDayListId);
+            throw WSException("Error: Day List has incorrect index: " + CurrenDayListId);
         }
-    } catch (const WSExceptions& e) {
+    } catch (const WSException& e) {
         qDebug() << e.what();
     }
 

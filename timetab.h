@@ -27,7 +27,6 @@ public:
 
 private slots:
     void on_TimeTabMenuBarPlusButton_clicked();
-
     void on_TimeTabMenuBarRandomButton_clicked();
     void on_TimeTabMenuBarWeekButton_clicked();
     void on_TimeTabMenuBarDayButton_clicked();

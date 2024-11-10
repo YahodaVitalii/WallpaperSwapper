@@ -1,116 +1,85 @@
 #include "moodlisttablemeneger.h"
 
-MoodListTableMeneger::MoodListTableMeneger()
-{
-}
+#include "moodlisttablemeneger.h"
 
-// Функція для вставки нового запису у MoodImageList
-bool MoodListTableMeneger::insertMoodImage(int emodjiId, int imageId) {
-    try {
-        if (emodjiId == -1 || imageId == -1) {
-            throw WSExceptions("Invalid emodjiId or imageId provided!");
-        }
+MoodListTableMeneger::MoodListTableMeneger() {}
 
-        QSqlQuery query;
-        query.prepare("INSERT INTO MoodImageList (emodjiId, imageId) VALUES (:emodjiId, :imageId)");
-        query.bindValue(":emodjiId", emodjiId);
-        query.bindValue(":imageId", imageId);
+// Insert a new mood image record
+bool MoodListTableMeneger::insertIntoTable(const QPair<int, int>& moodImage) {
+    QSqlQuery query;
+    query.prepare("INSERT INTO MoodImageList (emodjiId, imageId) VALUES (:emodjiId, :imageId)");
+    query.bindValue(":emodjiId", moodImage.first);
+    query.bindValue(":imageId", moodImage.second);
 
-        if (!query.exec()) {
-            throw WSExceptions("Error inserting mood image into MoodImageList: " + query.lastError().text());
-        }
-
-        return true;
-    } catch (const WSExceptions& ex) {
-        qDebug() << "Exception:" << ex.getMessage();
-        return false;
+    if (!query.exec()) {
+        throw WSException("Error inserting mood image: " + query.lastError().text());
     }
+
+    return true;
 }
 
-// Функція для отримання всіх записів MoodImageList
-QMap<int, int> MoodListTableMeneger::getAllMoodImages() {
+// Retrieve all mood images
+QMap<int, int> MoodListTableMeneger::getAllRecords() {
     QMap<int, int> moodImageMap;
+    QSqlQuery query("SELECT emodjiId, imageId FROM MoodImageList");
 
-    try {
-        QSqlQuery query;
-        if (!query.exec("SELECT emodjiId, imageId FROM MoodImageList")) {
-            throw WSExceptions("Error retrieving all mood images: " + query.lastError().text());
-        }
+    if (!query.exec()) {
+        throw WSException("Error retrieving mood images: " + query.lastError().text());
+    }
 
-        while (query.next()) {
-            int emodjiId = query.value(0).toInt();
-            int imageId = query.value(1).toInt();
-
-            moodImageMap.insert(emodjiId, imageId);  // Вставляємо у QMap
-        }
-    } catch (const WSExceptions& ex) {
-        qDebug() << "Exception:" << ex.getMessage();
+    while (query.next()) {
+        int emodjiId = query.value(0).toInt();
+        int imageId = query.value(1).toInt();
+        moodImageMap.insert(emodjiId, imageId);
     }
 
     return moodImageMap;
 }
 
-// Функція для отримання imageId за emodjiId
-int MoodListTableMeneger::findImageByEmodjiId(int emodjiId) {
-    int imageId = -1;  // Значення за замовчуванням, якщо не знайдено
+// Update an existing mood image
+bool MoodListTableMeneger::updateList(const QPair<int, int>& moodImage) {
+    QSqlQuery query;
+    query.prepare("UPDATE MoodImageList SET imageId = :imageId WHERE emodjiId = :emodjiId");
+    query.bindValue(":imageId", moodImage.second);
+    query.bindValue(":emodjiId", moodImage.first);
 
-    try {
-        QSqlQuery query;
-        query.prepare("SELECT imageId FROM MoodImageList WHERE emodjiId = :emodjiId");
-        query.bindValue(":emodjiId", emodjiId);
-
-        if (!query.exec()) {
-            throw WSExceptions("Error retrieving image for emodji: " + query.lastError().text());
-        }
-
-        if (query.next()) {
-            imageId = query.value(0).toInt();  // Повертаємо перший знайдений imageId
-        }
-    } catch (const WSExceptions& ex) {
-        qDebug() << "Exception:" << ex.getMessage();
+    if (!query.exec()) {
+        throw WSException("Error updating mood image: " + query.lastError().text());
     }
 
-    return imageId;
+    return true;
 }
 
-// Функція для оновлення запису
-bool MoodListTableMeneger::updateMoodImage(int emodjiId, int newImageId) {
-    try {
-        if (emodjiId == -1 || newImageId == -1) {
-            throw WSExceptions("Invalid emodjiId or imageId provided for update!");
-        }
+// Find a mood image by emodjiId
+QPair<int, int> MoodListTableMeneger::findListById(int emodjiId) {
+    QSqlQuery query;
+    query.prepare("SELECT imageId, anotherColumn FROM MoodImageList WHERE emodjiId = :emodjiId");
+    query.bindValue(":emodjiId", emodjiId);
 
-        QSqlQuery query;
-        query.prepare("UPDATE MoodImageList SET imageId = :newImageId WHERE emodjiId = :emodjiId");
-        query.bindValue(":newImageId", newImageId);
-        query.bindValue(":emodjiId", emodjiId);
-
-        if (!query.exec()) {
-            throw WSExceptions("Error updating mood image in MoodImageList: " + query.lastError().text());
-        }
-
-        return true;
-    } catch (const WSExceptions& ex) {
-        qDebug() << "Exception:" << ex.getMessage();
-        return false;
+    if (!query.exec()) {
+        throw WSException("Error finding image by emodjiId: " + query.lastError().text());
     }
+
+    if (query.next()) {
+        int imageId = query.value(0).toInt();
+        int anotherValue = query.value(1).toInt();  // Replace with the second column you need
+        return QPair<int, int>(imageId, anotherValue);
+    }
+
+    return QPair<int, int>(-1, -1); // Return an invalid pair if not found
 }
 
-// Функція для видалення запису за emodjiId та imageId
+// Delete a mood image by emodjiId and imageId
 bool MoodListTableMeneger::deleteMoodImage(int emodjiId, int imageId) {
-    try {
-        QSqlQuery query;
-        query.prepare("DELETE FROM MoodImageList WHERE emodjiId = :emodjiId AND imageId = :imageId");
-        query.bindValue(":emodjiId", emodjiId);
-        query.bindValue(":imageId", imageId);
+    QSqlQuery query;
+    query.prepare("DELETE FROM MoodImageList WHERE emodjiId = :emodjiId AND imageId = :imageId");
+    query.bindValue(":emodjiId", emodjiId);
+    query.bindValue(":imageId", imageId);
 
-        if (!query.exec()) {
-            throw WSExceptions("Error deleting mood image from MoodImageList: " + query.lastError().text());
-        }
-
-        return true;
-    } catch (const WSExceptions& ex) {
-        qDebug() << "Exception:" << ex.getMessage();
-        return false;
+    if (!query.exec()) {
+        throw WSException("Error deleting mood image: " + query.lastError().text());
     }
+
+    return true;
 }
+

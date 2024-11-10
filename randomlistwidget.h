@@ -7,7 +7,7 @@
 #include <QDebug>
 #include "imagelist.h"
 #include "dialogwindowlistofimage.h"
-#include "dbrandomlisttablemanager.h"
+#include "randomlisttablemanager.h"
 #include "timetabwidgets.h"
 namespace Ui {
 class RandomListWidget;
@@ -37,9 +37,8 @@ private:
     bool ValidateDataViewList();
     void BuildCreateTabInterface() override;
 
-
     Ui::RandomListWidget *ui;
-    DBRandomListTableManager dbManager;
+    RandomListTableManager dbManager;
 
     QScopedPointer<RandomImageList> CurrentRandomImageList;
     QVector<RandomImageList>  RandomImageLists;

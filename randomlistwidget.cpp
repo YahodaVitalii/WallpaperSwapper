@@ -19,7 +19,7 @@ RandomListWidget::~RandomListWidget()
 
 void RandomListWidget::CreateInterfaceViewTab()
 {
-    RandomImageLists = dbManager.getAllRandomImageLists();
+    RandomImageLists = dbManager.getAllRecords();
     for (const auto& list : RandomImageLists)
         scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildRandomListView(&list));
 }
@@ -35,7 +35,7 @@ void RandomListWidget::CreatInterfaceCreateTab()
 void RandomListWidget::CreateViewTabItem()
 {
     CurrentRandomImageList.reset(new RandomImageList(nameLineEdit->text(), timeEdit->dateTime(), currentImageIds));
-    dbManager.insertImageList(CurrentRandomImageList.data());
+    dbManager.insertIntoTable(*CurrentRandomImageList.data());
 }
 
 void RandomListWidget::UpdateViewTabItem()
@@ -43,7 +43,7 @@ void RandomListWidget::UpdateViewTabItem()
     CurrentRandomImageList->setName(nameLineEdit->text());
     CurrentRandomImageList->setTimeInterval(timeEdit->dateTime());
     CurrentRandomImageList->setImageIds(currentImageIds);
-    dbManager.updateRandomImageList(CurrentRandomImageList.data());
+    dbManager.updateList(*CurrentRandomImageList.data());
 }
 
 void RandomListWidget::PrepareTabForCreatingItem()
@@ -60,7 +60,7 @@ void RandomListWidget::PrepareTabForEditingItem(int ListId)
 {
     tabWidget->setCurrentIndex(1);
     scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);
-    CurrentRandomImageList.reset(new RandomImageList(dbManager.FindRandomImageListById(ListId)));
+    CurrentRandomImageList.reset(new RandomImageList(dbManager.findListById(ListId)));
     currentImageIds = CurrentRandomImageList->getImageIds();
     nameLineEdit->setText(CurrentRandomImageList->getName());
     timeEdit->setTime(CurrentRandomImageList->getTimeInterval().time());
@@ -107,17 +107,17 @@ void RandomListWidget::AcceptSavingOfList()
             int CurrentRandomListId = CurrentRandomImageList->getId();
             if (CurrentRandomListId == -1) {
                 CreateViewTabItem();
-                RandomImageLists = dbManager.getAllRandomImageLists();
+                RandomImageLists = dbManager.getAllRecords();
                 scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, interfaceAddition->BuildRandomListView(&RandomImageLists.last()));
             } else if (CurrentRandomListId > 0) {
                 UpdateViewTabItem();
                 scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerViewTab);
                 CreateInterfaceViewTab();
             } else {
-                throw WSExceptions("Error: Random List has incorrect index: " + CurrentRandomListId);
+                throw WSException("Error: Random List has incorrect index: " + CurrentRandomListId);
             }
-        } catch (const WSExceptions& e) {
-            qDebug() << "Caught WSExceptions: " << e.what();
+        } catch (const WSException& e) {
+            qDebug() << "Caught WSException: " << e.what();
         }
 
         tabWidget->setCurrentIndex(0);

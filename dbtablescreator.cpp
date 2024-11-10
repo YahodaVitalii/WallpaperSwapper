@@ -12,7 +12,7 @@ bool DBTablesCreator::BuildTables()
             createTableDayImages();
             createTableMoodImage();
             createTableEmodji();
-        } catch (const WSExceptions& e) {
+        } catch (const WSException& e) {
             qDebug() << "Database: error in createTables: " << e.what();
             return false;
         }
@@ -28,7 +28,7 @@ void DBTablesCreator::createTableImage() {
                     " width INTEGER NOT NULL"
                     " )"
                     )) {
-        throw WSExceptions("Error creating table  Images" + query.lastError().text());
+        throw WSException("Error creating table  Images" + query.lastError().text());
     }
 }
 
@@ -39,7 +39,7 @@ void DBTablesCreator::createTableRandomImageLists() {
                     "name VARCHAR(255) NOT NULL,"
                     "time_interval TIMESTAMP NOT NULL)"
                     )) {
-        throw WSExceptions("Error creating table RandomImageLists: " + query.lastError().text());
+        throw WSException("Error creating table RandomImageLists: " + query.lastError().text());
     }
 }
 void DBTablesCreator::createTableRandomImages() {
@@ -51,7 +51,7 @@ void DBTablesCreator::createTableRandomImages() {
                     "FOREIGN KEY(random_list_id) REFERENCES RandomImageLists(id) ON DELETE CASCADE, "
                     "FOREIGN KEY(image_id) REFERENCES Images(id) ON DELETE CASCADE)"
                     )) {
-        throw WSExceptions("Error creating table RandomImageListImages: " + query.lastError().text());
+        throw WSException("Error creating table RandomImageListImages: " + query.lastError().text());
     }
 }
 void DBTablesCreator::createTableWeekImageLists() {
@@ -59,7 +59,7 @@ void DBTablesCreator::createTableWeekImageLists() {
     if (!query.exec("CREATE TABLE WeekImageList ("
                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     "name TEXT NOT NULL)")) {
-        throw WSExceptions("Error creating table WeekImagesList: " + query.lastError().text());
+        throw WSException("Error creating table WeekImagesList: " + query.lastError().text());
     }
 }
 
@@ -86,7 +86,7 @@ void DBTablesCreator::createTableWeekImages() {
                     "FOREIGN KEY(sunday) REFERENCES Images(id) ON DELETE SET NULL, "
                     "FOREIGN KEY(other_days) REFERENCES Images(id) ON DELETE SET NULL"
                     ")")) {
-        throw WSExceptions("Error creating table WeekImages: " + query.lastError().text());
+        throw WSException("Error creating table WeekImages: " + query.lastError().text());
     }
 }
 
@@ -95,7 +95,7 @@ void DBTablesCreator::createTableDayImageLists() {
     if (!query.exec("CREATE TABLE DayImageList ("
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     "name TEXT)")) {
-        throw WSExceptions("Error creating table DayImageList: " + query.lastError().text());
+        throw WSException("Error creating table DayImageList: " + query.lastError().text());
     }
 }
 void DBTablesCreator::createTableDayImages() {
@@ -108,7 +108,7 @@ void DBTablesCreator::createTableDayImages() {
                     "listId INTEGER, "
                     "FOREIGN KEY(imageID) REFERENCES ImagesTable(id), "
                     "FOREIGN KEY(listId) REFERENCES WeekImagesList(id))")) {
-        throw WSExceptions("Error creating table DayImages: " + query.lastError().text());
+        throw WSException("Error creating table DayImages: " + query.lastError().text());
     }
 }
 void DBTablesCreator::createTableMoodImage() {
@@ -119,7 +119,7 @@ void DBTablesCreator::createTableMoodImage() {
                     "imageId INTEGER, "
                     "FOREIGN KEY(emodjiId) REFERENCES Emodji(id), "  // Added a comma
                     "FOREIGN KEY(imageId) REFERENCES ImagesTable(id))")) {
-        throw WSExceptions("Error creating table MoodImageList: " + query.lastError().text());
+        throw WSException("Error creating table MoodImageList: " + query.lastError().text());
     }
 }
 void DBTablesCreator::createTableEmodji() {
@@ -128,7 +128,7 @@ void DBTablesCreator::createTableEmodji() {
     if (!query.exec("CREATE TABLE Emodji ("
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     "emodji TEXT)")) {
-        throw WSExceptions("Error creating table Emodji: " + query.lastError().text());
+        throw WSException("Error creating table Emodji: " + query.lastError().text());
     }
 
 }

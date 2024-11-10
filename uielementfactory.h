@@ -24,10 +24,14 @@ class UIElementFactory: public QWidget
     Q_OBJECT
 public:
     UIElementFactory(UIElementEventHandler* uiElementEventHandler);
-     UIElementFactory();
+    UIElementFactory();
     void CreateLableWithImage(QWidget* conteinerWidget, int imageIndex, const WidgetGeometry& geometry);
+
     void CreateButtonImage(QWidget* conteinerWidget, int index, const WidgetGeometry& geometry);
     void CreateButtonSetImage(QWidget *conteinerWidget, int itemId, const WidgetGeometry& geometry);
+
+    void CreateToggleButton(QWidget *containerWidget, int id);
+
 
     void CreateButtonInfo(QWidget* conteinerWidget);
     void CreateButtonDelete(QWidget* conteinerWidget, int index, int width, int hight, int cordinate_x, int cordinate_y);
@@ -35,15 +39,12 @@ public:
     void CreateButtonEdit(QWidget* conteinerWidget, int id, int width, int hight, int cordinate_x, int cordinate_y);
 
     QLabel *CreateLableWithText(QWidget* conteinerWidget, QString TextOfLabel, int Cordinate_x, int Cordinate_y);
-    void CreateToggleButton(QWidget *containerWidget, int id);
 
-    QTimeEdit* CreateTimeEdit(QWidget *containerWidget,  const WidgetGeometry& geometry, const QTime& time);
-
+    QTabWidget *CreateTabWidget(QWidget *conteinerWidget);
     void CreateButtonAddImage(QWidget *containerWidget, const WidgetGeometry &geometry);
     void CreateButtonBox(QWidget *containerWidget, int cordinate_x, int cordinate_y);
     QLineEdit* CreateLineEdit(QWidget *containerWidget, const WidgetGeometry &geometry);
-    QTabWidget *CreateTabWidget(QWidget *conteinerWidget);
-
+    QTimeEdit* CreateTimeEdit(QWidget *containerWidget,  const WidgetGeometry& geometry, const QTime& time);
 
 private:
     UIElementEventHandler* uiElementEventHandler;

@@ -13,7 +13,7 @@
 #include "style.h"
 #include "imagelist.h"
 #include "interfaceaddition.h"
-#include "dbimagetablemanager.h"
+#include "imagetablemanager.h"
 namespace Ui {
 class DialogWindowListOfImage;
 }
