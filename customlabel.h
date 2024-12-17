@@ -11,7 +11,6 @@ class CustomLabel : public QLabel {
 
 public:
     explicit CustomLabel(QWidget* parent = nullptr);
-
     void setPixmap(const QPixmap& pixmap);
 
 protected:

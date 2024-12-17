@@ -7,14 +7,14 @@ UIElementFactory::UIElementFactory(UIElementEventHandler *uiElementEventHandler)
 
 UIElementFactory::UIElementFactory()
 {
-imageList = SQLTableImageList::getInstance();
-uiElementEventHandler = new UIElementEventHandler();
+    imageList = SQLTableImageList::getInstance();
+    uiElementEventHandler = new UIElementEventHandler();
 }
 
 void UIElementFactory::CreateLableWithImage(QWidget *containerWidget, int imageIndex, const WidgetGeometry &geometry)
 {
     QLabel* label = new QLabel(containerWidget);
-     label->setObjectName("imageLabel");
+    label->setObjectName("imageLabel");
     label->setFixedSize(geometry.width, geometry.height);
     label->move(geometry.xPos, geometry.yPos);
 
@@ -84,15 +84,22 @@ QLabel* UIElementFactory::CreateLableWithText(QWidget *conteinerWidget, QString 
     return labelText;
 }
 
-void UIElementFactory::CreateToggleButton(QWidget *containerWidget, int id)
+
+void UIElementFactory::CreateToggleButton(QWidget *containerWidget, const BaseImageList* imageList, const WidgetGeometry &geometry)
 {
     QCheckBox* checkBox = new QCheckBox(containerWidget);
-       //checkBox->setFixedSize(10, 10);
-       checkBox->move(270, 10);
-       checkBox->setProperty("CheckBoxId", id);
-       checkBox->show();
-       //connect(checkBox, &QCheckBox::stateChanged, this, &InterfaceAddition::on_checkBox_stateChanged);
+
+    checkBox->move(geometry.xPos, geometry.yPos);
+
+    // Зберігаємо вказівник на imageList як void* у властивості
+    checkBox->setProperty("ImageList", QVariant::fromValue(static_cast<void*>(const_cast<BaseImageList*>(imageList))));
+
+    checkBox->show();
+
+    // Підключаємо сигнал
+    connect(checkBox, &QCheckBox::stateChanged, uiElementEventHandler, &UIElementEventHandler::on_checkBox_stateChanged);
 }
+
 
 void UIElementFactory::CreateButtonEdit(QWidget *conteinerWidget, int id, int width, int hight, int cordinate_x, int cordinate_y)
 {
@@ -145,7 +152,7 @@ void UIElementFactory::CreateButtonAddImage(QWidget *containerWidget, const Widg
     addButton->setFixedSize(geometry.width, geometry.height);
     addButton->move(geometry.xPos, geometry.yPos);
     addButton->show();
-     connect(addButton, &QPushButton::clicked, uiElementEventHandler, &UIElementEventHandler::on_ButtonAddImage_clicked); // Connect to appropriate slot if needed
+    connect(addButton, &QPushButton::clicked, uiElementEventHandler, &UIElementEventHandler::on_ButtonAddImage_clicked); // Connect to appropriate slot if needed
 }
 
 void UIElementFactory::CreateButtonBox(QWidget *containerWidget, int cordinate_x, int cordinate_y)
@@ -153,12 +160,12 @@ void UIElementFactory::CreateButtonBox(QWidget *containerWidget, int cordinate_x
 
     QDialogButtonBox* buttonBox = new QDialogButtonBox(containerWidget);
 
-      // Add Save and Cancel buttons
-      buttonBox->addButton(tr("Save"), QDialogButtonBox::AcceptRole);
-      buttonBox->addButton(tr("Cancel"), QDialogButtonBox::RejectRole);
+    // Add Save and Cancel buttons
+    buttonBox->addButton(tr("Save"), QDialogButtonBox::AcceptRole);
+    buttonBox->addButton(tr("Cancel"), QDialogButtonBox::RejectRole);
 
-      // Move the button box to the specified coordinates
-      buttonBox->move(cordinate_x, cordinate_y);
+    // Move the button box to the specified coordinates
+    buttonBox->move(cordinate_x, cordinate_y);
     // Connect the accepted and rejected signals to the respective slots
     connect(buttonBox, &QDialogButtonBox::accepted, uiElementEventHandler, &UIElementEventHandler::onButtonBoxAccepted);
     connect(buttonBox, &QDialogButtonBox::rejected, uiElementEventHandler, &UIElementEventHandler::onButtonBoxRejected);

@@ -3,11 +3,11 @@
 
 
 WeekListWidget::WeekListWidget(QWidget *parent)
-    : TimeTabWidgets(parent), ui(new Ui::WeekListWidget)
+    : TimeTabChildrenWidget(parent), ui(new Ui::WeekListWidget)
 {
     ui->setupUi(this);
 
-    connect(uiElementEventHandler, &UIElementEventHandler:: setImageIntoListItem, this, &WeekListWidget::ShowDialogWindowListOfImage);
+   ConnectSignals();
     currentImageIds = fillCurrentImageIds();
 
     currentWeekImageList.reset(new WeekImageList());
@@ -19,7 +19,10 @@ WeekListWidget::~WeekListWidget()
 {
     delete ui;
 }
-
+void WeekListWidget::ConnectSignals()
+{
+ connect(uiElementEventHandler, &UIElementEventHandler:: setImageIntoListItem, this, &WeekListWidget::ShowDialogWindowListOfImage);
+}
 void WeekListWidget::CreatInterfaceCreateTab()
 {
     for (int i = 0; i < static_cast<int>(DayOfWeek::Count); ++i) {
@@ -83,6 +86,8 @@ bool WeekListWidget::ValidateDataViewList()
 
         return false;
 }
+
+
 void WeekListWidget::UpdateViewTabItem()
 {
     currentWeekImageList->setName(nameLineEdit->text());
@@ -151,9 +156,9 @@ void WeekListWidget::addImageInList(int index)
 {
     if (currentImageIds.contains(currentDay)) {
         currentImageIds[currentDay] = index;
-       // qDebug() << "Updated image index for" << currentDay << "to" << index;
+       //  qDebug() << "Updated image index for" << currentDay << "to" << index;
     } else {
-        //qDebug() << "Key" << currentDay << "not found in currentImageIds";
+       qDebug() << "Key";// << currentDay << "not found in currentImageIds";
     }
 
     scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerCreateTab);

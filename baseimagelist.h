@@ -1,10 +1,7 @@
 #ifndef BASEIMAGELIST_H
 #define BASEIMAGELIST_H
 
-
 #include <QString>
-#include <QJsonObject>
-#include <QJsonDocument>
 
 class BaseImageList {
 protected:
@@ -12,11 +9,9 @@ protected:
     QString name;
 
 public:
-    // Конструктор
     BaseImageList();
     BaseImageList(QString name);
 
-    // Геттери та сеттери
     int getId() const;
     void setId(int newId);
 

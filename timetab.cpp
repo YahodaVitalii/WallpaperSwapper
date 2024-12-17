@@ -24,7 +24,7 @@ void TimeTab::createChildTab(TabWidgetFactory &factory)
            currentTab = nullptr;
        }
 
-    TimeTabWidgets* tab = factory.createWidget(this);
+    TimeTabChildrenWidget* tab = factory.createWidget(this);
 
         if (currentTab != nullptr) {
             currentTab->hide();
@@ -32,7 +32,8 @@ void TimeTab::createChildTab(TabWidgetFactory &factory)
 
         currentTab = tab;
         tab->show();
-        connect(this, &TimeTab::CreateNewList, currentTab, &TimeTabWidgets::CreateViewListItem);
+        connect(this, &TimeTab::CreateNewList, currentTab, &TimeTabChildrenWidget::CreateViewListItem);
+         connect(currentTab, &TimeTabChildrenWidget::resendListSignal, this, &TimeTab::SetActiveImageList);
 }
 
 void TimeTab::on_TimeTabMenuBarPlusButton_clicked()
@@ -57,5 +58,14 @@ void TimeTab::on_TimeTabMenuBarDayButton_clicked()
     createChildTab(dayTabWidgetFactory);
 }
 
+void TimeTab::on_TimeTabMenuBarCurrentListButton_clicked()
+{
 
+}
+
+void TimeTab::SetActiveImageList(BaseImageList *imageList)
+{
+    activeImageList = imageList;
+   qDebug()<< activeImageList->getName();
+}
 

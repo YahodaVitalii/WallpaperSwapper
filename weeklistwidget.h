@@ -7,22 +7,22 @@
 #include "dialogwindowlistofimage.h"
 #include "weekimagelist.h"
 #include "weeklisttablemanager.h"
-#include "timetabwidgets.h"
+#include "timetabchildrenwidget.h"
 #include "dayofweek.h"
 namespace Ui {
 class WeekListWidget;
 }
 
-class WeekListWidget : public TimeTabWidgets
+class WeekListWidget : public TimeTabChildrenWidget
 {
     Q_OBJECT
 private:
-     bool ValidateDataViewList();
+    bool ValidateDataViewList();
+    void ConnectSignals() override;
 
     Ui::WeekListWidget *ui;
     WeekListTableManager dbManager;
 
-   // const QStringList days = {"Other days","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
     QVector<WeekImageList>  WeekImageLists;
     QScopedPointer<WeekImageList> currentWeekImageList;
     QMap<DayOfWeek, int> currentImageIds;

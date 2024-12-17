@@ -38,6 +38,7 @@ SOURCES += \
     randomlistwidget.cpp \
     randomviewimageslider.cpp \
     scrollareamanager.cpp \
+    settingtab.cpp \
     sqlitedbmanager.cpp \
     sqltableimagelist.cpp \
     standarttab.cpp \
@@ -45,7 +46,7 @@ SOURCES += \
     style.cpp \
     tabwidgetfactory.cpp \
     timetab.cpp \
-    timetabwidgets.cpp \
+    timetabchildrenwidget.cpp \
     uielementeventhandler.cpp \
     uielementfactory.cpp \
     uiimageslider.cpp \
@@ -85,6 +86,7 @@ HEADERS += \
     randomlistwidget.h \
     randomviewimageslider.h \
     scrollareamanager.h \
+    settingtab.h \
     sqlitedbmanager.h \
     sqltableimagelist.h \
     standarttab.h \
@@ -92,7 +94,7 @@ HEADERS += \
     style.h \
     tabwidgetfactory.h \
     timetab.h \
-    timetabwidgets.h \
+    timetabchildrenwidget.h \
     uielementeventhandler.h \
     uielementfactory.h \
     uiimageslider.h \
@@ -111,6 +113,7 @@ FORMS += \
     mainwindow.ui \
     moodtab.ui \
     randomlistwidget.ui \
+    settingtab.ui \
     standarttab.ui \
     timetab.ui \
     weeklistwidget.ui

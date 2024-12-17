@@ -13,6 +13,7 @@
 #include <QScopedPointer>
 #include "dialogwindowcontroller.h"
 
+
 class BaseListWidget: public QWidget
 {
     Q_OBJECT
@@ -28,7 +29,6 @@ protected:
     UIElementFactory* uiElementFactory;
     ScrollAreaManager* scrollAreaManager;
     DialogWindowController* dialogWindowController;
-
 
     QWidget* tabViewLists;
     QWidget *scrollAreaConterinerViewTab;

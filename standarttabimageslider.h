@@ -14,13 +14,13 @@ private:
     void showNextImage() override;
     void showPrevImage() override;
     QString getURLFromId(int index);
-   void updateThumbnails();
-   void createThumbnails();
+    void updateThumbnails();
+    void createThumbnails();
 
-   CustomLabel* previousSecondThumbnail;
-   CustomLabel* previousFirstThumbnail;
-   CustomLabel* nextFirstThumbnail;
-   CustomLabel* nextSecondThumbnail;
+    CustomLabel* previousSecondThumbnail;
+    CustomLabel* previousFirstThumbnail;
+    CustomLabel* nextFirstThumbnail;
+    CustomLabel* nextSecondThumbnail;
 
 };
 #endif // STANDARTTABIMAGESLIDER_H

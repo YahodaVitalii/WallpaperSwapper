@@ -3,20 +3,19 @@
 
 MoodTab::MoodTab(QWidget *parent)
     : BaseListWidget(parent),
-    ui(new Ui::MoodTab)
+      ui(new Ui::MoodTab)
 {
     ui->setupUi(this);
-emodjiManager = new EmodjiTableManager();
+    emodjiManager = new EmodjiTableManager();
 
- ui->MoodTabWidget->setStyleSheet(Style::getTabsStyle());
-CreateEmodjiPad();
+    CreateEmodjiPad();
+    tabViewLists = buildTabViewLists(ui->MoodTabWidget,scrollAreaConterinerViewTab,WidgetGeometry( 350, 400, 20, 25));
+    tabViewLists ->setStyleSheet(Style::getMoodTabStyle());
+    ui->MoodTabWidget->setStyleSheet(Style::getTabsStyle());
 
-  tabViewLists = buildTabViewLists(ui->MoodTabWidget,scrollAreaConterinerViewTab,WidgetGeometry( 350, 400, 20, 25));
-  tabViewLists ->setStyleSheet(Style::getMoodTabStyle());
+    ConnectSignals();
 
-   ConnectSignals();
-
-CreateInterfaceViewTab();
+    CreateInterfaceViewTab();
 }
 
 MoodTab::~MoodTab()
@@ -41,29 +40,29 @@ void MoodTab::CreateEmodjiPad()
 
 void MoodTab::PopulateEmodjiPad(QGridLayout* gridLayout, QWidget* emodjiPad)
 {
-     emodjis = emodjiManager->getAllRecords();
-          // Створюємо екземпляр InterfaceAddition для використання
+    emodjis = emodjiManager->getAllRecords();
+    // Створюємо екземпляр InterfaceAddition для використання
 
-        int row = 0;
-        int column = 0;
+    int row = 0;
+    int column = 0;
 
-        for (auto it = emodjis.begin(); it != emodjis.end(); ++it) {
-            QPushButton *emojiButton = interfaceAddition->CreateEmojiButton(it.key(),it.value(), emodjiPad);
+    for (auto it = emodjis.begin(); it != emodjis.end(); ++it) {
+        QPushButton *emojiButton = interfaceAddition->CreateEmojiButton(it.key(),it.value(), emodjiPad);
 
-            gridLayout->addWidget(emojiButton, row, column);
+        gridLayout->addWidget(emojiButton, row, column);
 
-            column++;
-            if (column == 4) {
-                column = 0;
-                row++;
-            }
+        column++;
+        if (column == 4) {
+            column = 0;
+            row++;
         }
+    }
 }
 
 void MoodTab::AddNewListItem(int index)
 {
     if(currentImageIds.contains(index)){
-    qDebug()<<"not exist";
+        qDebug()<<"not exist";
     }else{
         currentItemWidget  = interfaceAddition->BuildMoodTabItem(index,-1);
         scrollAreaManager->setWidgetIntoScrollArea(scrollAreaConterinerViewTab, currentItemWidget);
@@ -72,32 +71,32 @@ void MoodTab::AddNewListItem(int index)
 
 void MoodTab::ShowDialogWindowListOfImage(int itemId)
 {
-   currentItemWidget = scrollAreaManager->getWidgetById(scrollAreaConterinerViewTab,itemId);
-      currentEmodjiId = itemId;
+    currentItemWidget = scrollAreaManager->getWidgetById(scrollAreaConterinerViewTab,itemId,"WidgetItemId");
+    currentEmodjiId = itemId;
     dialogWindowController->Open(this);
 
 }
 void MoodTab::addImageInList(int index)
 {
     if (currentItemWidget) {
-           // Оновлюємо зображення в поточному елементі MoodTabItem
-           QLabel* label = currentItemWidget->findChild<QLabel*>("imageLabel"); // Припустимо, що у QLabel є ім'я "imageLabel"
-           if (label) {
-               QPixmap pixmap(imageList->GetImageByIndex(index).getUrl());
-               label->setPixmap(pixmap.scaled(label->size(), Qt::KeepAspectRatio));
-           }
-       }
-    if (currentImageIds.contains(currentEmodjiId)) {
-            // Якщо такий ключ вже є, оновлюємо значення
-            currentImageIds[currentEmodjiId] = index;
-            dbManager.updateList(QPair<int, int>(currentEmodjiId, index)); // Припускаємо, що є метод для оновлення запису в БД
-        } else {
-            // Якщо немає такого ключа, додаємо новий запис
-            currentImageIds.insert(currentEmodjiId, index);
-            dbManager.insertIntoTable(QPair<int, int>(currentEmodjiId, index));
+        // Оновлюємо зображення в поточному елементі MoodTabItem
+        QLabel* label = currentItemWidget->findChild<QLabel*>("imageLabel"); // Припустимо, що у QLabel є ім'я "imageLabel"
+        if (label) {
+            QPixmap pixmap(imageList->GetImageByIndex(index).getUrl());
+            label->setPixmap(pixmap.scaled(label->size(), Qt::KeepAspectRatio));
         }
+    }
+    if (currentImageIds.contains(currentEmodjiId)) {
+        // Якщо такий ключ вже є, оновлюємо значення
+        currentImageIds[currentEmodjiId] = index;
+        dbManager.updateList(QPair<int, int>(currentEmodjiId, index)); // Припускаємо, що є метод для оновлення запису в БД
+    } else {
+        // Якщо немає такого ключа, додаємо новий запис
+        currentImageIds.insert(currentEmodjiId, index);
+        dbManager.insertIntoTable(QPair<int, int>(currentEmodjiId, index));
+    }
 
-       dialogWindowController->Close();
+    dialogWindowController->Close();
 }
 
 void MoodTab::CreateInterfaceViewTab()
@@ -116,7 +115,6 @@ void MoodTab::CreateInterfaceViewTab()
 
 void MoodTab::ConnectSignals()
 {
-     BaseListWidget::ConnectSignals();
-     connect(uiElementEventHandler, &UIElementEventHandler::sendEmodjiID, this, &MoodTab::AddNewListItem);
-     connect(uiElementEventHandler, &UIElementEventHandler::setImageIntoListItem, this, &MoodTab::ShowDialogWindowListOfImage);
+    connect(uiElementEventHandler, &UIElementEventHandler::sendEmodjiID, this, &MoodTab::AddNewListItem);
+    connect(uiElementEventHandler, &UIElementEventHandler::setImageIntoListItem, this, &MoodTab::ShowDialogWindowListOfImage);
 }

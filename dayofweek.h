@@ -15,7 +15,6 @@ enum class DayOfWeek {
     Count  // для визначення кількості днів
 };
 
-// Оголошення функції
 QString dayOfWeekToString(DayOfWeek day);
 
-#endif // DAYOFWEEK_H
+#endif

@@ -35,7 +35,7 @@ void UIElementEventHandler::on_ButtonAddImage_clicked()
 void UIElementEventHandler::on_EmojiButton_clicked()
 {
     int key = sender()->property("emojiKey").toInt();
-emit sendEmodjiID(key);
+    emit sendEmodjiID(key);
 }
 
 void UIElementEventHandler::onButtonBoxAccepted()
@@ -47,4 +47,13 @@ void UIElementEventHandler::onButtonBoxAccepted()
 void UIElementEventHandler::onButtonBoxRejected()
 {
     emit ButtonBoxRejected();
+}
+
+void UIElementEventHandler::on_checkBox_stateChanged()
+{
+
+    QVariant property = sender()->property("ImageList");
+    BaseImageList* imageList = static_cast<BaseImageList*>(property.value<void*>());
+
+    emit sendList(imageList);
 }

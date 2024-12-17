@@ -1,6 +1,6 @@
-#include "timetabwidgets.h"
+#include "timetabchildrenwidget.h"
 
-TimeTabWidgets::TimeTabWidgets(QWidget* parent)
+TimeTabChildrenWidget::TimeTabChildrenWidget(QWidget* parent)
     : BaseListWidget(parent)
 {
     this->move(10,100);
@@ -10,40 +10,44 @@ TimeTabWidgets::TimeTabWidgets(QWidget* parent)
     scrollAreaConterinerCreateTab =  new QWidget(this);
 
     BuildTabWidget();
-    //BuildCreateTabInterface();
     ConnectSignals();
 }
-TimeTabWidgets::~TimeTabWidgets() {}
+TimeTabChildrenWidget::~TimeTabChildrenWidget() {}
 
-void TimeTabWidgets::BuildTabWidget()
+void TimeTabChildrenWidget::BuildTabWidget()
 {
     tabWidget = uiElementFactory->CreateTabWidget(this);
     tabWidget->show();
     tabWidget->addTab(tabViewLists, "View Lists");
 }
-void TimeTabWidgets::ConnectSignals()
+void TimeTabChildrenWidget::ConnectSignals()
 {
-    BaseListWidget::ConnectSignals();
-    connect(uiElementEventHandler, &UIElementEventHandler::sendEditSignalToItem, this, &TimeTabWidgets::ReceiveEditSignalForListView);
-    connect(uiElementEventHandler, &UIElementEventHandler::ButtonBoxAccepted, this, &TimeTabWidgets::AcceptSavingOfList);
-    connect(uiElementEventHandler, &UIElementEventHandler::ButtonBoxRejected, this, &TimeTabWidgets::RejectSavingOfList);
+    connect(uiElementEventHandler, &UIElementEventHandler::sendEditSignalToItem, this, &TimeTabChildrenWidget::ReceiveEditSignalForListView);
+    connect(uiElementEventHandler, &UIElementEventHandler::ButtonBoxAccepted, this, &TimeTabChildrenWidget::AcceptSavingOfList);
+    connect(uiElementEventHandler, &UIElementEventHandler::ButtonBoxRejected, this, &TimeTabChildrenWidget::RejectSavingOfList);
+    connect(uiElementEventHandler, &UIElementEventHandler::sendList, this, &TimeTabChildrenWidget::ResendList);
 }
-void TimeTabWidgets::ReceiveEditSignalForListView(int id)
+void TimeTabChildrenWidget::ReceiveEditSignalForListView(int id)
 {
     PrepareTabForEditingItem(id);
 }
 
-void TimeTabWidgets::RejectSavingOfList()
+void TimeTabChildrenWidget::RejectSavingOfList()
 {
     tabWidget->setCurrentIndex(0);
 }
 
-void TimeTabWidgets::CreateViewListItem()
+void TimeTabChildrenWidget::CreateViewListItem()
 {
     PrepareTabForCreatingItem();
 }
 
-bool TimeTabWidgets::ValidateDataViewList()
+void TimeTabChildrenWidget::ResendList(BaseImageList *imageList)
+{
+    emit resendListSignal(imageList);
+}
+
+bool TimeTabChildrenWidget::ValidateDataViewList()
 {
     if(nameLineEdit->text().isEmpty()){
         return false;
@@ -53,7 +57,7 @@ bool TimeTabWidgets::ValidateDataViewList()
     }
 }
 
-void TimeTabWidgets::BuildCreateTabInterface()
+void TimeTabChildrenWidget::BuildCreateTabInterface()
 {
     tabCreateList = new QWidget(this);
     tabCreateList->setStyleSheet(Style::getCreateTabStyle());

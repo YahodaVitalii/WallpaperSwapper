@@ -11,7 +11,7 @@ struct TimeRangeImage {
     QString startTime;
     QString endTime;
     int imageId;
-    int id; // Нове поле
+    int id;
 
     TimeRangeImage() : startTime(""), endTime(""), imageId(-1), id(-1) {}
 

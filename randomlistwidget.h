@@ -8,12 +8,12 @@
 #include "imagelist.h"
 #include "dialogwindowlistofimage.h"
 #include "randomlisttablemanager.h"
-#include "timetabwidgets.h"
+#include "timetabchildrenwidget.h"
 namespace Ui {
 class RandomListWidget;
 }
 
-class RandomListWidget :  public TimeTabWidgets
+class RandomListWidget :  public TimeTabChildrenWidget
 {
     Q_OBJECT
 
@@ -36,6 +36,7 @@ public slots:
 private:
     bool ValidateDataViewList();
     void BuildCreateTabInterface() override;
+    void ConnectSignals() override;
 
     Ui::RandomListWidget *ui;
     RandomListTableManager dbManager;

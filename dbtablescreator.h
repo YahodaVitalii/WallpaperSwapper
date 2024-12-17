@@ -17,7 +17,7 @@ private:
     void createTableWeekImages();
     void createTableDayImages();
     void createTableMoodImage();
-   void  createTableEmodji();
+    void createTableEmodji();
 };
 
 

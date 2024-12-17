@@ -17,6 +17,7 @@
 #include "sqltableimagelist.h"
 #include "widgetgeometry.h"
 #include "style.h"
+//#include "baselistwidget.h"
 
 
 class UIElementFactory: public QWidget
@@ -30,7 +31,7 @@ public:
     void CreateButtonImage(QWidget* conteinerWidget, int index, const WidgetGeometry& geometry);
     void CreateButtonSetImage(QWidget *conteinerWidget, int itemId, const WidgetGeometry& geometry);
 
-    void CreateToggleButton(QWidget *containerWidget, int id);
+    void CreateToggleButton(QWidget *containerWidget, const BaseImageList *imageList, const WidgetGeometry &geometry);
 
 
     void CreateButtonInfo(QWidget* conteinerWidget);

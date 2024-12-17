@@ -16,9 +16,10 @@ public:
     void CreateScrollArea(QWidget* parent, QWidget* child, const WidgetGeometry &geometry);
     void ClearScrollAreaConteinerWidget(QWidget* containerWidget);
     void setWidgetIntoScrollArea(QWidget* conteinerWidget,QWidget* childWidget);
-    QWidget* getWidgetById(QWidget* parentWidget, int itemId);
+    QWidget* getWidgetById(QWidget* parentWidget, int itemId, const char *propertyKey);
     void initVBoxLayout(QWidget* containerWidget);
-
+    void scrollToWidget(QWidget* parentWidget, QWidget* targetWidget);
+    void scrollToWidgetById(QWidget* parentWidget, int itemId, const char *propertyKey);
 };
 
 #endif // SCROLLAREAMANAGER_H

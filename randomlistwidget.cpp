@@ -2,16 +2,19 @@
 #include "ui_randomlistwidget.h"
 
 RandomListWidget::RandomListWidget(QWidget* parent)
-    : TimeTabWidgets(parent), ui(new Ui::RandomListWidget)
+    : TimeTabChildrenWidget(parent), ui(new Ui::RandomListWidget)
 {
     ui->setupUi(this);
     CurrentRandomImageList.reset(new RandomImageList());
-    connect(uiElementEventHandler, &UIElementEventHandler::ButtonAddImageClicked, this, &RandomListWidget::ShowDialogWindowListOfImage);
 
+    ConnectSignals();
     BuildCreateTabInterface();
     CreateInterfaceViewTab();
 }
-
+void RandomListWidget::ConnectSignals()
+{
+    connect(uiElementEventHandler, &UIElementEventHandler::ButtonAddImageClicked, this, &RandomListWidget::ShowDialogWindowListOfImage);
+}
 RandomListWidget::~RandomListWidget()
 {
     delete ui;
@@ -36,6 +39,8 @@ void RandomListWidget::CreateViewTabItem()
 {
     CurrentRandomImageList.reset(new RandomImageList(nameLineEdit->text(), timeEdit->dateTime(), currentImageIds));
     dbManager.insertIntoTable(*CurrentRandomImageList.data());
+    scrollAreaManager->scrollToWidgetById(this,5,"WidgetId");//CurrentRandomImageList.data()->getId()
+    qDebug()<<CurrentRandomImageList.data()->getId();
 }
 
 void RandomListWidget::UpdateViewTabItem()
@@ -92,13 +97,15 @@ bool RandomListWidget::ValidateDataViewList()
 
 void RandomListWidget::BuildCreateTabInterface()
 {
-    TimeTabWidgets::BuildCreateTabInterface();
+    TimeTabChildrenWidget::BuildCreateTabInterface();
 
     uiElementFactory->CreateButtonAddImage(tabCreateList,WidgetGeometry(90,30,500,10));
     uiElementFactory->CreateLableWithText(tabCreateList,"Change wlapper interval:",220,15);
     timeEdit = uiElementFactory->CreateTimeEdit(tabCreateList,WidgetGeometry(70,30,410,10),QTime::fromString("00:00:00", "hh:mm:ss"));
 
 }
+
+
 
 void RandomListWidget::AcceptSavingOfList()
 {

@@ -9,6 +9,7 @@ BaseListWidget::BaseListWidget( QWidget* parent)
     uiElementFactory = new UIElementFactory(uiElementEventHandler);
     interfaceAddition = new InterfaceAddition(this,uiElementEventHandler);
     dialogWindowController = new DialogWindowController(uiElementEventHandler);
+    ConnectSignals();
 }
 
 BaseListWidget::~BaseListWidget()

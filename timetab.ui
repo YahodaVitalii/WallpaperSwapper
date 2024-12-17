@@ -95,6 +95,19 @@
       <string>RANDOM</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="TimeTabMenuBarCurrentListButton">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>10</y>
+       <width>60</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>CURRENT</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

@@ -1,20 +1,21 @@
 #include "daylistwidget.h"
 #include "ui_daylistwidget.h"
 DayListWidget::DayListWidget(QWidget *parent)
-    : TimeTabWidgets(parent), ui(new Ui::DayListWidget)
+    : TimeTabChildrenWidget(parent), ui(new Ui::DayListWidget)
 {
     ui->setupUi(this);
-    connect(interfaceAddition, &InterfaceAddition::updateTimeEdit, this, &DayListWidget::getTimeEditUpdatetData);
-    connect(uiElementEventHandler, &UIElementEventHandler::ButtonAddImageClicked, this, &DayListWidget::ShowDialogWindowListOfImage);
 
     currentDayImageList.reset(new DayImageList());
 
-//    tabCreateList = tabInterfaceBuilder->buildTabCreateListForDayList(tabWidget,scrollAreaConterinerCreateTab);
-//    tabWidget->addTab(tabCreateList, "Craete List");
-
-//    nameLineEdit = uiElementFactory->CreateLineEdit(tabCreateList,WidgetGeometry(110,30,90,10));
-BuildCreateTabInterface();
+    BuildCreateTabInterface();
     CreateInterfaceViewTab();
+    ConnectSignals();
+}
+
+void DayListWidget::ConnectSignals()
+{
+    connect(interfaceAddition, &InterfaceAddition::updateTimeEdit, this, &DayListWidget::getTimeEditUpdatetData);
+    connect(uiElementEventHandler, &UIElementEventHandler::ButtonAddImageClicked, this, &DayListWidget::ShowDialogWindowListOfImage);
 }
 
 DayListWidget::~DayListWidget()
@@ -40,10 +41,10 @@ bool DayListWidget::ValidateDataViewList()
 {
     if(nameLineEdit->text().isEmpty() ||
             2 > currentImageIds.size()) {
-         return false;
-     } else {
-         return true;
-     }
+        return false;
+    } else {
+        return true;
+    }
 }
 void DayListWidget::UpdateViewTabItem()
 {
@@ -121,22 +122,22 @@ void DayListWidget::ShowDialogWindowListOfImage()
 void DayListWidget::AcceptSavingOfList()
 {
     if(ValidateDataViewList()){
-    int CurrenDayListId = currentDayImageList->getId();
-    try{
-        if (CurrenDayListId == -1) {
-            CreateViewTabItem();
-        } else if (CurrenDayListId > 0) {
-            UpdateViewTabItem();
-            scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerViewTab);
-            CreateInterfaceViewTab();
-        }else {
-            throw WSException("Error: Day List has incorrect index: " + CurrenDayListId);
+        int CurrenDayListId = currentDayImageList->getId();
+        try{
+            if (CurrenDayListId == -1) {
+                CreateViewTabItem();
+            } else if (CurrenDayListId > 0) {
+                UpdateViewTabItem();
+                scrollAreaManager->ClearScrollAreaConteinerWidget(scrollAreaConterinerViewTab);
+                CreateInterfaceViewTab();
+            }else {
+                throw WSException("Error: Day List has incorrect index: " + CurrenDayListId);
+            }
+        } catch (const WSException& e) {
+            qDebug() << e.what();
         }
-    } catch (const WSException& e) {
-        qDebug() << e.what();
-    }
 
-    tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(0);
     }
     else{
         QMessageBox::warning(this, "Warning", "Before creating the list, please make sure that you have entered a name and added at least two images with setted time.");
@@ -144,6 +145,8 @@ void DayListWidget::AcceptSavingOfList()
 }
 void DayListWidget::BuildCreateTabInterface()
 {
-    TimeTabWidgets::BuildCreateTabInterface();
+    TimeTabChildrenWidget::BuildCreateTabInterface();
     uiElementFactory->CreateButtonAddImage(tabCreateList,WidgetGeometry(90,30,500,10));
 }
+
+

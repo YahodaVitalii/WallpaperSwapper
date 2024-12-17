@@ -11,7 +11,6 @@ class ImageTableManager : public DBTableManager<WallpaperImage, QVector<Wallpape
 public:
     bool insertIntoTable(const WallpaperImage& wallpaperImage) override;
     QVector<WallpaperImage> getAllRecords() override;
-
     bool deleteImageById(int imageId);
 
 };

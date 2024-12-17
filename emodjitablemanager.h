@@ -2,10 +2,8 @@
 #define EMODJITABLEMANAGER_H
 #include <QSqlError>
 #include <QFile>
-#include "wsexception.h"
 #include "dbtablemanager.h"
 
-// Наслідуємо EmodjiTableManager від DBTableManager
 class EmodjiTableManager : public DBTableManager<QString, QMap<int, QString>>
 {
 public:

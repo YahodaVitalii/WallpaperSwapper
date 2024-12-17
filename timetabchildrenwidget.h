@@ -1,17 +1,21 @@
-#ifndef TIMETABWIDGETS_H
-#define TIMETABWIDGETS_H
+#ifndef TIMETABCHILDRENWIDGET_H
+#define TIMETABCHILDRENWIDGET_H
 #include "baselistwidget.h"
 
-class TimeTabWidgets : public BaseListWidget
+class TimeTabChildrenWidget : public BaseListWidget
 {
+Q_OBJECT
 public:
-    explicit TimeTabWidgets(QWidget* parent = nullptr);
-    ~TimeTabWidgets();
+    explicit TimeTabChildrenWidget(QWidget* parent = nullptr);
+    ~TimeTabChildrenWidget();
 public slots:
     virtual void AcceptSavingOfList() = 0;
     void ReceiveEditSignalForListView(int id);
     void RejectSavingOfList();
     void  CreateViewListItem();
+    void ResendList(BaseImageList* imageList);
+signals:
+    void resendListSignal(BaseImageList* imageList);
 
 protected:
     virtual void PrepareTabForCreatingItem() =0;
@@ -26,8 +30,8 @@ protected:
     QWidget *scrollAreaConterinerCreateTab;
 
 private:
-    void ConnectSignals() override;
-   void BuildTabWidget();
+    virtual void ConnectSignals() override;
+    void BuildTabWidget();
 };
 
-#endif // TIMETABWIDGETS_H
+#endif // TIMETABCHILDRENWIDGET_H

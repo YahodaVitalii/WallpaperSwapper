@@ -31,17 +31,22 @@ private slots:
     void on_TimeTabMenuBarWeekButton_clicked();
     void on_TimeTabMenuBarDayButton_clicked();
 
+    void on_TimeTabMenuBarCurrentListButton_clicked();
+public slots:
+  void  SetActiveImageList(BaseImageList* imageList);
 signals:
     void CreateNewList();
 private:
 
     Ui::TimeTab *ui;
 
-    TimeTabWidgets* currentTab;
+    TimeTabChildrenWidget* currentTab;
 
     RandomTabWidgetFactory randomTabWidgetFactory;
     WeekTabWidgetFactory weekTabWidgetFactory;
     DayTabWidgetFactory dayTabWidgetFactory;
+
+    BaseImageList* activeImageList;
 
     void createChildTab(TabWidgetFactory& factory);
 };

@@ -17,11 +17,11 @@ class MoodTab : public BaseListWidget
 public:
     explicit MoodTab(QWidget *parent = nullptr);
     ~MoodTab();
-   void CreateEmodjiPad();
-   void PopulateEmodjiPad(QGridLayout* gridLayout, QWidget* emodjiPad);
+    void CreateEmodjiPad();
+    void PopulateEmodjiPad(QGridLayout* gridLayout, QWidget* emodjiPad);
 public slots:
-   void AddNewListItem(int index);
-   void ShowDialogWindowListOfImage(int itemId);
+    void AddNewListItem(int index);
+    void ShowDialogWindowListOfImage(int itemId);
 private:
     Ui::MoodTab *ui;
     EmodjiTableManager* emodjiManager;
@@ -35,7 +35,7 @@ private:
     MoodListTableMeneger dbManager;
     QPair<int, int> moodImage;
 
-int currentEmodjiId;
+    int currentEmodjiId;
     void ConnectSignals() override;
 };
 

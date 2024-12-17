@@ -8,12 +8,12 @@
 #include "imagelist.h"
 #include "dialogwindowlistofimage.h"
 #include "daylisttablemanager.h"
-#include "timetabwidgets.h"
+#include "timetabchildrenwidget.h"
 namespace Ui {
 class DayListWidget;
 }
 
-class DayListWidget : public TimeTabWidgets
+class DayListWidget : public TimeTabChildrenWidget
 {
     Q_OBJECT
 private:
@@ -24,8 +24,9 @@ private:
     QVector<DayImageList> DayImageLists;
     QVector<TimeRangeImage> currentImageIds;
 
-     bool ValidateDataViewList();
-     void BuildCreateTabInterface();
+    bool ValidateDataViewList();
+    void BuildCreateTabInterface();
+    void ConnectSignals() override;
 
 public:
     explicit DayListWidget(QWidget *parent = nullptr);

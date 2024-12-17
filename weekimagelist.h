@@ -12,12 +12,11 @@
 
 class WeekImageList : public BaseImageList {
 private:
-    QMap<DayOfWeek, int> images; // Використовуємо DayOfWeek як ключ
+    QMap<DayOfWeek, int> images;
 public:
     WeekImageList();
     WeekImageList(QString name, const QMap<DayOfWeek, int>& images);
 
-    // Геттери та сеттери
     QMap<DayOfWeek, int> getImages() const;
     void setImages(const QMap<DayOfWeek, int>& newImages);
 };

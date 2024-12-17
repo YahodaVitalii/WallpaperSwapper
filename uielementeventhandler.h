@@ -22,6 +22,7 @@ public slots:
     void on_EmojiButton_clicked();
     void onButtonBoxAccepted();
     void onButtonBoxRejected();
+    void on_checkBox_stateChanged();
 
 signals:
     void imageSelected(int imageIndex);
@@ -31,6 +32,7 @@ signals:
     void ButtonAddImageClicked();
     void ButtonBoxAccepted();
     void ButtonBoxRejected();
+    void sendList(BaseImageList* imageList);
 };
 
 
