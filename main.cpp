@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "widgets/mainwindow.h"
 #include "sqlitedbmanager.h"
 #include <QApplication>
 #include <QPainterPath>
