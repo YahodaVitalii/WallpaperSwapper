@@ -7,7 +7,7 @@
 #include <QTimer>
 #include <QDebug>
 #include <QHBoxLayout>
-#include "SQLTableImageList.h"
+#include "models/sqltableimagelist.h"
 #include "GUI/style/widgetgeometry.h"// Підключення для доступу до зображень
 #include "GUI/CustomWidgets/uielementfactory.h"
 #include "GUI/style/style.h"

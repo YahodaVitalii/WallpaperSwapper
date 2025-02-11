@@ -8,7 +8,6 @@
 class WallpaperSetter
 {
 public:
-    WallpaperSetter();
     bool setWallpaper(const QString &imagePath);
 };
 

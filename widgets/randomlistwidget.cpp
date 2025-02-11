@@ -81,7 +81,7 @@ void RandomListWidget::addImageInList(int index)
 
 void RandomListWidget::ShowDialogWindowListOfImage()
 {
-    dialogWindowController->Open(this);
+    dialogWindowController->Open(DialogWindows::ListOfWidget, this);
 }
 
 bool RandomListWidget::ValidateDataViewList()

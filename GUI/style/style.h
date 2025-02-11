@@ -8,6 +8,7 @@ class Style
 public:
     static QString getMainWindowStyle();
     static QString getMainMenuButtonsStyle();
+    static QString getMainMenuSettingButtonStyle();
 
     static QString getTabsStyle();
     static QString getStandartTabStyle();

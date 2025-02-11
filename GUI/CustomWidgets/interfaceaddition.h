@@ -12,13 +12,13 @@
 #include <QScrollArea>
 #include <QCheckBox>
 #include "GUI/style/style.h"
-#include "imagelist.h"
+#include "models/imagelist.h"
 #include "uielementfactory.h"
-#include "sqltableimagelist.h"
+#include "models/sqltableimagelist.h"
 #include "GUI/CustomWidgets/sliders/randomviewimageslider.h"
 #include "GUI/CustomWidgets/sliders/weekviewimageslider.h"
 #include "GUI/CustomWidgets/sliders/dayviewimageslider.h"
-#include "emodjitablemanager.h"
+#include "DB/TablesManagers/emodjitablemanager.h"
 #include "models/weekimagelist.h"
 #include "models/randomimagelist.h"
 

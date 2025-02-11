@@ -3,16 +3,16 @@
 
 #include <QObject>
 #include <QWidget>
-#include "sqlitedbmanager.h"
+#include "DB/sqlitedbmanager.h"
 #include <QWidget>
 #include <QDebug>
-#include "imagelist.h"
-#include "dialogwindowlistofimage.h"
+#include "models/imagelist.h"
+#include "windowlistofimage.h"
 #include <QTabWidget>
 #include <QMessageBox>
 #include <QScopedPointer>
 #include "GUI/service/dialogwindowcontroller.h"
-
+#include "enums/dialogwindows.h"
 
 class BaseListWidget: public QWidget
 {

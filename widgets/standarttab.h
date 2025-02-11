@@ -7,11 +7,11 @@
 #include <QFileDialog>
 #include <Windows.h>
 #include <QMessageBox>
-#include "sqlitedbmanager.h"
-#include "dialogwindowlistofimage.h"
-#include "wallpapersetter.h"
+#include "DB/sqlitedbmanager.h"
+#include "windowlistofimage.h"
+#include "core/wallpapersetter.h"
 #include "GUI/service/dialogwindowcontroller.h"
-#include "imagelist.h"
+#include "models/imagelist.h"
 #include "GUI/CustomWidgets/sliders/standarttabimageslider.h"
 namespace Ui {
 class StandartTab;
@@ -22,7 +22,7 @@ class StandartTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit StandartTab(DBManager* dbManager, ImageList* imageList, QWidget *parent = nullptr);
+    explicit StandartTab(ImageList* imageList, QWidget *parent = nullptr);
     ~StandartTab();
     void setStandartTabStyle();
 private slots:

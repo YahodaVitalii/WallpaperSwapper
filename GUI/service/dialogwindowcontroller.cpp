@@ -1,33 +1,41 @@
 #include "dialogwindowcontroller.h"
 
 DialogWindowController::DialogWindowController(UIElementEventHandler *uiElementEventHandler)
-    : dialogWindowListOfImage(nullptr),uiElementEventHandler(uiElementEventHandler) // Ініціалізуємо вказівник як nullptr
-{
-}
+    : dialogWindowListOfImage(nullptr),uiElementEventHandler(uiElementEventHandler) {}
 
 DialogWindowController::~DialogWindowController()
 {
-    // Якщо діалогове вікно існує, видаляємо його
-    if (dialogWindowListOfImage) {
-        delete dialogWindowListOfImage;
+    if (dialogWindow) {
+        delete dialogWindow;
     }
 }
 
-void DialogWindowController::Open(QWidget* parent)
+void DialogWindowController::Open(DialogWindows windowtype, QWidget* parent)
 {
-    // Створюємо діалогове вікно тільки якщо воно не існує
-    if (dialogWindowListOfImage) {
-        delete dialogWindowListOfImage;
+    if (dialogWindow) {
+        delete dialogWindow;
     }
-    dialogWindowListOfImage = new DialogWindowListOfImage(parent,uiElementEventHandler);
-    dialogWindowListOfImage->show();
+    dialogWindow = BuildWindow(windowtype,parent);
+
+    dialogWindow->show();
 }
 
 void DialogWindowController::Close()
 {
-    if (dialogWindowListOfImage) {
-        dialogWindowListOfImage->hide();
-        delete dialogWindowListOfImage;
-        dialogWindowListOfImage = nullptr; // Обнуляємо вказівник після видалення
+    if (dialogWindow) {
+        dialogWindow->hide();
+        delete dialogWindow;
+        dialogWindow = nullptr;
     }
+}
+
+BaseDialogWindow* DialogWindowController::BuildWindow(DialogWindows type, QWidget *parent)
+{
+    if(type == DialogWindows::ListOfWidget){
+        return new DialogWindowListOfImage(parent, uiElementEventHandler);
+    }
+    if(type == DialogWindows::ChooseMood){
+        return new WindowChoseMood(parent, uiElementEventHandler);
+    }
+    return nullptr;
 }

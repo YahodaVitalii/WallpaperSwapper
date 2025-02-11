@@ -148,7 +148,7 @@ void WeekListWidget::AcceptSavingOfList()
 }
 void WeekListWidget::ShowDialogWindowListOfImage(int itemId)
 {
-    dialogWindowController->Open(this);
+    dialogWindowController->Open(DialogWindows::ListOfWidget, this);
     currentDay = static_cast<DayOfWeek>(itemId);
 }
 

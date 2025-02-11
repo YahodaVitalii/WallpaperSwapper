@@ -1,24 +1,14 @@
-#include "dialogwindowlistofimage.h"
+#include "windowlistofimage.h"
 #include "ui_dialogwindowlistofimage.h"
 #include <QElapsedTimer>
 #include <QDebug>
 DialogWindowListOfImage::DialogWindowListOfImage(QWidget *parent, UIElementEventHandler *uiElementEventHandler) :
-    QDialog(parent),
-    ui(new Ui::DialogWindowListOfImage),uiElementEventHandler(uiElementEventHandler)
+    BaseDialogWindow(parent, uiElementEventHandler), ui(new Ui::DialogWindowListOfImage)
 {
-
     ui->setupUi(this);
-    //this->setAttribute(Qt::WA_DeleteOnClose);
-    this->setStyleSheet(Style::getTabsStyle());
-    ui->ListOfImageMenuBar->setStyleSheet(Style::getMenuBarStyle());
     imageList = SQLTableImageList::getInstance();
-    scrollAreaConterinerWidget = new QWidget(this);
-    scrollAreaManager = new ScrollAreaManager();
-    interfaceAddition = new InterfaceAddition(this,uiElementEventHandler);
     imageLoader = new ImageLoader();
-    scrollAreaManager->CreateScrollArea(this, scrollAreaConterinerWidget,WidgetGeometry(300,420,0,80));
-    CreateListOfImageIntarface(); // Кінець заміру часу
-
+    initializeInterface();
 }
 
 void DialogWindowListOfImage::CreateListOfImageIntarface()
@@ -28,7 +18,8 @@ void DialogWindowListOfImage::CreateListOfImageIntarface()
     }
 }
 
-void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
+void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked()
+{
     try {
         if (imageLoader->ChooseImageFromFiles()) {
             imageList->getImagesFromTable();
@@ -53,8 +44,6 @@ void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
         qDebug() << "Unexpected error:" << ex.what();
     }
 }
-
-
 //void DialogWindowListOfImage::on_buttonDelete_clicked() {
 //    int index = sender()->property("imageIndex").toInt();
 //    imageManager->deleteImageByIndex(index);
@@ -69,19 +58,17 @@ void DialogWindowListOfImage::on_ListOfImageMenuBarPlusButton_clicked() {
 
 DialogWindowListOfImage::~DialogWindowListOfImage()
 {
-
-    delete imageLoader;
-    delete interfaceAddition;
     delete scrollAreaManager;
     delete scrollAreaConterinerWidget;
     delete ui;
-
-
-
-
 }
-void DialogWindowListOfImage::closeEvent() {
-    QDialog::hide();
+
+void DialogWindowListOfImage::initializeInterface()
+{
+    ui->ListOfImageMenuBar->setStyleSheet(Style::getMenuBarStyle());
+    scrollAreaConterinerWidget = new QWidget(this);
+    scrollAreaManager->CreateScrollArea(this, scrollAreaConterinerWidget,WidgetGeometry(300,420,0,80));
+    CreateListOfImageIntarface();
 }
 
 

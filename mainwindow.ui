@@ -139,6 +139,19 @@
      <bool>false</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="mainMenuSettingsButton">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>435</y>
+      <width>35</width>
+      <height>35</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources>

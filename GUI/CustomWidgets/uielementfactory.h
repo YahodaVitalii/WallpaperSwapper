@@ -12,9 +12,9 @@
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QDialogButtonBox>
-#include "imagelist.h"
+#include "models/imagelist.h"
 #include "uielementeventhandler.h"
-#include "sqltableimagelist.h"
+#include "models/sqltableimagelist.h"
 #include "GUI/style/widgetgeometry.h"
 #include "GUI/style/style.h"
 //#include "baselistwidget.h"

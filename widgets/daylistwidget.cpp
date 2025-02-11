@@ -116,7 +116,7 @@ void DayListWidget::getTimeEditUpdatetData(int id, QTime startTime, QTime endTim
 
 void DayListWidget::ShowDialogWindowListOfImage()
 {
-    dialogWindowController->Open(this);
+    dialogWindowController->Open(DialogWindows::ListOfWidget,this);
 }
 
 void DayListWidget::AcceptSavingOfList()

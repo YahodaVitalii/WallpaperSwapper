@@ -90,8 +90,6 @@ void UIElementFactory::CreateToggleButton(QWidget *containerWidget, const BaseIm
     QCheckBox* checkBox = new QCheckBox(containerWidget);
 
     checkBox->move(geometry.xPos, geometry.yPos);
-
-    // Зберігаємо вказівник на imageList як void* у властивості
     checkBox->setProperty("ImageList", QVariant::fromValue(static_cast<void*>(const_cast<BaseImageList*>(imageList))));
 
     checkBox->show();

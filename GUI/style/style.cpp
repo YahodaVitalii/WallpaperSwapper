@@ -24,6 +24,19 @@ QString Style::getMainMenuButtonsStyle(){
            "}";
 }
 
+QString Style::getMainMenuSettingButtonStyle()
+{
+    return "QPushButton{"
+           "color:#ffffff;"
+           "background:none;"
+           "background-color: rgb(83, 190, 120);"
+           "border-radius: 12px;"
+           "}"
+           "QPushButton::hover{"
+           " background-color: rgba(225, 225, 225, 120);"
+           "}";
+}
+
 QString Style::getTabsStyle()
 {
     return "QWidget{"

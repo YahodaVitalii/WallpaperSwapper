@@ -1,7 +1,5 @@
 #include "wallpapersetter.h"
-WallpaperSetter::WallpaperSetter(){
 
-}
 bool WallpaperSetter::setWallpaper(const QString &imagePath) {
     try {
         std::wstring path = imagePath.toStdWString();

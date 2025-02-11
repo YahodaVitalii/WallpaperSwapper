@@ -20,20 +20,20 @@ TimeTab::~TimeTab()
 void TimeTab::createChildTab(TabWidgetFactory &factory)
 {
     if (currentTab != nullptr) {
-           delete currentTab;  // Видалити попередню вкладку, якщо вона існує
-           currentTab = nullptr;
-       }
+        delete currentTab;  // Видалити попередню вкладку, якщо вона існує
+        currentTab = nullptr;
+    }
 
     TimeTabChildrenWidget* tab = factory.createWidget(this);
 
-        if (currentTab != nullptr) {
-            currentTab->hide();
-        }
+    if (currentTab != nullptr) {
+        currentTab->hide();
+    }
 
-        currentTab = tab;
-        tab->show();
-        connect(this, &TimeTab::CreateNewList, currentTab, &TimeTabChildrenWidget::CreateViewListItem);
-         connect(currentTab, &TimeTabChildrenWidget::resendListSignal, this, &TimeTab::SetActiveImageList);
+    currentTab = tab;
+    tab->show();
+    connect(this, &TimeTab::CreateNewList, currentTab, &TimeTabChildrenWidget::CreateViewListItem);
+    connect(currentTab, &TimeTabChildrenWidget::resendListSignal, this, &TimeTab::SetActiveImageList);
 }
 
 void TimeTab::on_TimeTabMenuBarPlusButton_clicked()
@@ -44,7 +44,7 @@ void TimeTab::on_TimeTabMenuBarPlusButton_clicked()
 
 void TimeTab::on_TimeTabMenuBarRandomButton_clicked()
 {
-   createChildTab(randomTabWidgetFactory);
+    createChildTab(randomTabWidgetFactory);
 }
 
 
@@ -66,6 +66,6 @@ void TimeTab::on_TimeTabMenuBarCurrentListButton_clicked()
 void TimeTab::SetActiveImageList(BaseImageList *imageList)
 {
     activeImageList = imageList;
-   qDebug()<< activeImageList->getName();
+    qDebug()<< activeImageList->getName();
 }
 

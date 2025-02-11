@@ -16,6 +16,8 @@ MoodTab::MoodTab(QWidget *parent)
     ConnectSignals();
 
     CreateInterfaceViewTab();
+
+     dialogWindowController->Open(DialogWindows::ChooseMood, this);
 }
 
 MoodTab::~MoodTab()
@@ -31,17 +33,14 @@ void MoodTab::CreateEmodjiPad()
     QGridLayout *gridLayout = new QGridLayout(emodjiPad);
     emodjiPad->setLayout(gridLayout);
 
-    // Викликаємо окрему функцію для заповнення сітки емоджі
     PopulateEmodjiPad(gridLayout, emodjiPad);
 
-    // Додаємо скрол для перегляду емоджі
     scrollAreaManager->CreateScrollArea(ui->MoodTabWidget, emodjiPad, WidgetGeometry(180, 450, 440, 25));
 }
 
 void MoodTab::PopulateEmodjiPad(QGridLayout* gridLayout, QWidget* emodjiPad)
 {
     emodjis = emodjiManager->getAllRecords();
-    // Створюємо екземпляр InterfaceAddition для використання
 
     int row = 0;
     int column = 0;
@@ -73,13 +72,12 @@ void MoodTab::ShowDialogWindowListOfImage(int itemId)
 {
     currentItemWidget = scrollAreaManager->getWidgetById(scrollAreaConterinerViewTab,itemId,"WidgetItemId");
     currentEmodjiId = itemId;
-    dialogWindowController->Open(this);
+    dialogWindowController->Open(DialogWindows::ListOfWidget, this);
 
 }
 void MoodTab::addImageInList(int index)
 {
     if (currentItemWidget) {
-        // Оновлюємо зображення в поточному елементі MoodTabItem
         QLabel* label = currentItemWidget->findChild<QLabel*>("imageLabel"); // Припустимо, що у QLabel є ім'я "imageLabel"
         if (label) {
             QPixmap pixmap(imageList->GetImageByIndex(index).getUrl());
@@ -87,11 +85,9 @@ void MoodTab::addImageInList(int index)
         }
     }
     if (currentImageIds.contains(currentEmodjiId)) {
-        // Якщо такий ключ вже є, оновлюємо значення
         currentImageIds[currentEmodjiId] = index;
         dbManager.updateList(QPair<int, int>(currentEmodjiId, index)); // Припускаємо, що є метод для оновлення запису в БД
     } else {
-        // Якщо немає такого ключа, додаємо новий запис
         currentImageIds.insert(currentEmodjiId, index);
         dbManager.insertIntoTable(QPair<int, int>(currentEmodjiId, index));
     }

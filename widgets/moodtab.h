@@ -4,8 +4,8 @@
 #include <QWidget>
 #include "GUI/style/style.h"
 #include "baselistwidget.h"
-#include "emodjitablemanager.h"
-#include "moodlisttablemeneger.h"
+#include "DB/TablesManagers/emodjitablemanager.h"
+#include "DB/TablesManagers/moodlisttablemeneger.h"
 namespace Ui {
 class MoodTab;
 }

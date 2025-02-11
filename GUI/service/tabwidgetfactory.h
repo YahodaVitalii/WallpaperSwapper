@@ -1,10 +1,10 @@
 #ifndef TABWIDGETFACTORY_H
 #define TABWIDGETFACTORY_H
 #include "QWidget"
-#include "imagelist.h"
-#include "daylistwidget.h"
-#include "randomlistwidget.h"
-#include "weeklistwidget.h"
+#include "models/imagelist.h"
+#include "widgets/daylistwidget.h"
+#include "widgets/randomlistwidget.h"
+#include "widgets/weeklistwidget.h"
 
 class TabWidgetFactory {
 public:

@@ -7,17 +7,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include "baseimagelist.h"
-struct TimeRangeImage {
-    QString startTime;
-    QString endTime;
-    int imageId;
-    int id;
-
-    TimeRangeImage() : startTime(""), endTime(""), imageId(-1), id(-1) {}
-
-    TimeRangeImage(const QString& start, const QString& end, int imageId, int id)
-        : startTime(start), endTime(end), imageId(imageId), id(id) {}
-};
+#include "struct/timerangeimage.h"
 
 class DayImageList : public BaseImageList {
 private:

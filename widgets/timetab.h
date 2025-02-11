@@ -5,8 +5,8 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QFileDialog>
-#include "sqlitedbmanager.h"
-#include "imagelist.h"
+#include "DB/sqlitedbmanager.h"
+#include "models/imagelist.h"
 #include "GUI/style/style.h"
 #include "randomlistwidget.h"
 #include "weeklistwidget.h"

@@ -2,11 +2,11 @@
 #define WEEKLISTWIDGET_H
 
 #include <QWidget>
-#include "sqlitedbmanager.h"
-#include "imagelist.h"
-#include "dialogwindowlistofimage.h"
+#include "DB/sqlitedbmanager.h"
+#include "models/imagelist.h"
+#include "windowlistofimage.h"
 #include "models/weekimagelist.h"
-#include "weeklisttablemanager.h"
+#include "DB/TablesManagers/weeklisttablemanager.h"
 #include "timetabchildrenwidget.h"
 #include "enums/dayofweek.h"
 namespace Ui {

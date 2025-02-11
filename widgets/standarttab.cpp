@@ -1,16 +1,16 @@
 #include "standarttab.h"
 #include "ui_standarttab.h"
 #include "GUI/style/style.h"
-StandartTab::StandartTab(DBManager *dbManager, ImageList *imageList, QWidget *parent) :
+StandartTab::StandartTab(ImageList *imageList, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::StandartTab), dbManager(dbManager),imageList(imageList)
+    ui(new Ui::StandartTab),imageList(imageList)
 {
     ui->setupUi(this);
+     dbManager = SqliteDBManager::getInstance();
     setStandartTabStyle();
     uiElementEventHandler = new UIElementEventHandler();
     interfaceAddition = new InterfaceAddition(parent,uiElementEventHandler);
-    imageLoader = new ImageLoader();
-    wallpaperSetter = new WallpaperSetter();
+
     dialogWindowController = new DialogWindowController(uiElementEventHandler);
     imageSlider = new StandartTabImageSlider(WidgetGeometry(540,300,50,20),this);
 
@@ -38,7 +38,7 @@ void StandartTab::updateImage(int index)
 
 void StandartTab::on_StandartTabChooseButton_clicked()
 {
-    dialogWindowController ->Open(this);
+    dialogWindowController ->Open(DialogWindows::ListOfWidget, this);
 }
 
 void StandartTab::on_StandartTabAddButton_clicked()

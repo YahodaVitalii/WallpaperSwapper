@@ -2,12 +2,12 @@
 #define DAYLISTWIDGET_H
 
 #include <QWidget>
-#include "sqlitedbmanager.h"
+#include "DB/sqlitedbmanager.h"
 #include <QWidget>
 #include <QDebug>
-#include "imagelist.h"
-#include "dialogwindowlistofimage.h"
-#include "daylisttablemanager.h"
+#include "models/imagelist.h"
+#include "windowlistofimage.h"
+#include "DB/TablesManagers/daylisttablemanager.h"
 #include "timetabchildrenwidget.h"
 namespace Ui {
 class DayListWidget;

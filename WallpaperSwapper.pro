@@ -34,7 +34,16 @@ SOURCES += \
     GUI/service/scrollareamanager.cpp \
     GUI/service/tabwidgetfactory.cpp \
     GUI/style/style.cpp \
+    controller/appstatecontroller.cpp \
+    core/appcoreservice.cpp \
     core/imageloader.cpp \
+    core/states/appstate.cpp \
+    core/states/daystate.cpp \
+    core/states/moodstate.cpp \
+    core/states/randomstate.cpp \
+    core/states/standartstate.cpp \
+    core/states/timestate.cpp \
+    core/states/weekstate.cpp \
     core/wallpapersetter.cpp \
     enums/dayofweek.cpp \
     exception/wsexception.cpp \
@@ -48,7 +57,6 @@ SOURCES += \
     models/weekimagelist.cpp \
     widgets/baselistwidget.cpp \
     widgets/daylistwidget.cpp \
-    widgets/dialogwindowlistofimage.cpp \
     widgets/mainwindow.cpp \
     widgets/moodtab.cpp \
     widgets/randomlistwidget.cpp \
@@ -56,7 +64,10 @@ SOURCES += \
     widgets/standarttab.cpp \
     widgets/timetab.cpp \
     widgets/timetabchildrenwidget.cpp \
-    widgets/weeklistwidget.cpp
+    widgets/weeklistwidget.cpp \
+    window/dialog/basedialogwindow.cpp \
+    window/dialog/windowchoosemood.cpp \
+    window/dialog/windowlistofimage.cpp
 
 HEADERS += \
     DB/TablesManagers/daylisttablemanager.h \
@@ -84,9 +95,21 @@ HEADERS += \
     GUI/service/tabwidgetfactory.h \
     GUI/style/style.h \
     GUI/style/widgetgeometry.h \
+    constants/constants.h \
+    controller/appstatecontroller.h \
+    core/appcoreservice.h \
     core/imageloader.h \
+    core/states/appstate.h \
+    core/states/daystate.h \
+    core/states/moodstate.h \
+    core/states/randomstate.h \
+    core/states/standartstate.h \
+    core/states/timestate.h \
+    core/states/weekstate.h \
     core/wallpapersetter.h \
+    enums/appState.h \
     enums/dayofweek.h \
+    enums/dialogwindows.h \
     exception/wsexception.h \
     models/baseimagelist.h \
     models/dayimagelist.h \
@@ -95,9 +118,9 @@ HEADERS += \
     models/sqltableimagelist.h \
     models/wallpaperimage.h \
     models/weekimagelist.h \
+    struct/timerangeimage.h \
     widgets/baselistwidget.h \
     widgets/daylistwidget.h \
-    widgets/dialogwindowlistofimage.h \
     widgets/mainwindow.h \
     widgets/moodtab.h \
     widgets/randomlistwidget.h \
@@ -105,18 +128,22 @@ HEADERS += \
     widgets/standarttab.h \
     widgets/timetab.h \
     widgets/timetabchildrenwidget.h \
-    widgets/weeklistwidget.h
+    widgets/weeklistwidget.h \
+    window/dialog/basedialogwindow.h \
+    window/dialog/windowchoosemood.h \
+    window/dialog/windowlistofimage.h
 
 FORMS += \
     daylistwidget.ui \
-    dialogwindowlistofimage.ui \
     mainwindow.ui \
     moodtab.ui \
     randomlistwidget.ui \
     settingtab.ui \
     standarttab.ui \
     timetab.ui \
-    weeklistwidget.ui
+    weeklistwidget.ui \
+    window/dialog/windowchoosemood.ui \
+    window/dialog/windowlistofimage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

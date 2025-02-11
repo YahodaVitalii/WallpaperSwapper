@@ -6,8 +6,8 @@
 #include "standarttab.h"
 #include "timetab.h"
 #include "moodtab.h"
-#include "dbmanager.h"
-#include "sqlitedbmanager.h"
+#include "DB/dbmanager.h"
+#include "DB/sqlitedbmanager.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 
@@ -20,7 +20,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(DBManager* dbManrage, QWidget *parent = nullptr);
+    MainWindow( QWidget *parent = nullptr);
     ~MainWindow();
 
 protected:
@@ -38,7 +38,6 @@ private:
     TimeTab* timeTab;
     MoodTab* moodTab;
 
-    DBManager* dbManager;
     InterfaceAddition* interfaceAddition;
     UIElementFactory* uiElementFactory;
     ImageList* imageList;

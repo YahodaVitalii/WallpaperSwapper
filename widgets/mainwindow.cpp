@@ -4,16 +4,16 @@
 #include <QStyleOption>
 #include <QDebug>
 #include <QFontDatabase>
-MainWindow::MainWindow(DBManager* dbManager,QWidget *parent)
+MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), dbManager(dbManager)
+    , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
     setInterfaceStyle();
     imageList = SQLTableImageList::getInstance();
 
-    standartTab = new StandartTab(dbManager,imageList,this);
+    standartTab = new StandartTab(imageList,this);
     standartTab ->move(165, 0);
     standartTab->setFixedSize(640,500);
     standartTab->hide();
@@ -52,6 +52,11 @@ void MainWindow::setInterfaceStyle()
     QString family = QFontDatabase::applicationFontFamilies(fontId).at(0);
 
     this->setStyleSheet(Style::getMainWindowStyle());
+
+    ui->mainMenuSettingsButton->setStyleSheet(Style::getMainMenuSettingButtonStyle());
+    ui->mainMenuSettingsButton->setIcon(QIcon(":/resource/Setting_fill@3x.png"));
+    ui->mainMenuSettingsButton->setIconSize(QSize(35, 35));
+
     ui->mainMenuStandartButton->setStyleSheet(Style::getMainMenuButtonsStyle());
     ui->mainMenuTimeButton->setStyleSheet(Style::getMainMenuButtonsStyle());
     ui->mainMenuMoodButton->setStyleSheet(Style::getMainMenuButtonsStyle());
@@ -71,7 +76,7 @@ void MainWindow::on_mainMenuStandartButton_clicked()
 void MainWindow::on_mainMenuTimeButton_clicked()
 {
     timeTab->show();
-    standartTab ->hide();
+    standartTab->hide();
     moodTab->hide();
 }
 
@@ -79,7 +84,7 @@ void MainWindow::on_mainMenuTimeButton_clicked()
 void MainWindow::on_mainMenuMoodButton_clicked()
 {
     timeTab->hide();
-    standartTab ->hide();
+    standartTab->hide();
     moodTab->show();
 }
 

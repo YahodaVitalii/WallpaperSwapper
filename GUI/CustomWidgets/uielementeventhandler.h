@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QDesktopServices>
 #include <QUrl>
-#include "imagelist.h"
+#include "models/imagelist.h"
 #include "models/baseimagelist.h"
 
 class UIElementEventHandler : public QObject
